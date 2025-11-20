@@ -1,7 +1,6 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Shared/Navbar";
 import Home from "./Pages/Home";
 import Map from "./Pages/Map";
 import PostCreation from "./Pages/PostCreation";
@@ -14,7 +13,6 @@ import AdminDashboard from "./Pages/AdminDashboard";
 const App = () => {
   return (
     <Router>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/map" element={<Map />} />
