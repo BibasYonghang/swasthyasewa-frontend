@@ -1,14 +1,14 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
-import Map from "./Pages/Map";
-import PostCreation from "./Pages/PostCreation";
-import Chat from "./Pages/Chat";
-import Profile from "./Pages/Profile";
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
-import AdminDashboard from "./Pages/AdminDashboard";
+import Home from "./pages/Home";
+import Map from "./pages/Map";
+import PostCreation from "./pages/PostCreation";
+import Chat from "./pages/Chat";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const App = () => {
   return (
