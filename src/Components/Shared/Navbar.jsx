@@ -1,7 +1,6 @@
-// src/components/Home/Navbar.jsx
 import React from "react";
 
-const Navbar = () => {
+export default function Navbar() {
   return (
     <nav className="flex items-center justify-between bg-white shadow-md px-6 py-4">
       <div className="text-xl font-bold">LifeAssistant</div>
@@ -17,6 +16,4 @@ const Navbar = () => {
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

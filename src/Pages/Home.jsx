@@ -1,30 +1,22 @@
 // src/pages/HomePage.jsx
 import React from "react";
-import Navbar from "../components/Shared/Navbar";
 import Sidebar from "../components/Home/Sidebar";
-// import HomeFeed from "../components/Home/HomeFeed";
-// import NearbyHelpers from "../components/Home/NearbyHelpers";
-// import Alerts from "../components/Home/Alerts";
-import AiRecommendations from "../Components/Home/AiRecommandations";
+import Alerts from "../Components/Home/Alerts";
+import HomeFeed from "../Components/Home/HomeFeed";
+import AiRecommandations from "../Components/Home/AiRecommandations";
+import NearbyHelpers from "../Components/Home/NearbyHelpers";
+
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
       <div className="flex flex-1">
         <Sidebar />
 
         <main className="flex-1 p-6 space-y-6">
-          {/* Alerts */}
-          {/* <Alerts /> */}
-
-          {/* Home Feed */}
-          {/* <HomeFeed /> */}
-
-          {/* AI Recommendations */}
-          <AiRecommendations />
-
-          {/* Nearby Helpers */}
-          {/* <NearbyHelpers /> */}
+          <Alerts />
+          <HomeFeed />
+          <AiRecommandations />
+          <NearbyHelpers />
         </main>
       </div>
     </div>

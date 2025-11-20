@@ -4,7 +4,7 @@ import Navbar from "../components/Shared/Navbar";
 import Sidebar from "../components/Home/Sidebar";
 import axios from "axios";
 
-const AdminDashboard = () => {
+export default function AdminDashboard() {
   const [reports, setReports] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -18,7 +18,6 @@ const AdminDashboard = () => {
     };
     fetchData();
   }, []);
-
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
@@ -40,7 +39,9 @@ const AdminDashboard = () => {
             <h2 className="font-bold mb-2">Users</h2>
             <ul className="bg-white p-4 rounded shadow-md space-y-2">
               {users.map((u) => (
-                <li key={u._id}>{u.name} - {u.role}</li>
+                <li key={u._id}>
+                  {u.name} - {u.role}
+                </li>
               ))}
             </ul>
           </section>
@@ -48,6 +49,4 @@ const AdminDashboard = () => {
       </div>
     </div>
   );
-};
-
-export default AdminDashboard;
+}
