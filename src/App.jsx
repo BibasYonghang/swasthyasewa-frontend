@@ -8,8 +8,8 @@ import PostCreation from "./Pages/PostCreation";
 import Chat from "./Pages/Chat";
 import Profile from "./Pages/Profile";
 
-import Login from "./Pages/Login";
-import Register from "./Pages/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import AdminDashboard from "./Pages/AdminDashboard";
 import WelcomePage from "./pages/Welcome";
 
