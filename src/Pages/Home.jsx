@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import CreatePost from "../Components/Home/CreatePost";
 import PostCard from "../Components/Home/PostCard"; // Each post UI
+import HomeTop from "../Components/Home/HomeTop";
 
 export default function Home() {
   const [posts, setPosts] = React.useState([]);
@@ -30,8 +31,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex justify-center  min-h-screen pt-4 mt-16">
+    <div className="flex justify-center  min-h-screen mt-16">
       <div className="w-full max-w-2xl">
+        <HomeTop />
         {/* Create Post Box */}
         <CreatePost />
 

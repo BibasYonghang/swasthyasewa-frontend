@@ -10,7 +10,7 @@ import {
 
 export default function RightSidebar() {
   return (
-    <aside className="hidden lg:block rounded-2xl w-80 h-screen sticky top-16 overflow-y-auto p-4 bg-white shadow-sm">
+    <aside className="hidden lg:block rounded-2xl w-80 h-screen sticky top-16 overflow-y-auto pl-4 py-4 bg-white shadow-sm">
       {/* QUICK ACTIONS */}
       <div className="space-y-3 mb-6">
         <h2 className="font-semibold text-gray-700">Quick Actions</h2>

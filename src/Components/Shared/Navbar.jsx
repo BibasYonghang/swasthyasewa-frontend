@@ -17,7 +17,7 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <nav className="flex w-full items-center justify-between bg-white shadow-md px-6 py-2 h-16 fixed top-0 z-50">
+    <nav className="flex w-full items-center justify-between bg-white shadow-md px-3 py-2 h-16 fixed top-0 z-50">
       {/* LEFT */}
       <div className="flex items-center gap-4">
         {/* Logo */}
