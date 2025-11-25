@@ -4,8 +4,8 @@ import AdminLayout from "./Layout//AdminLayout.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
-import AdminDashboard from "./ages/AdminDashboard.jsx";
-import WelcomePage from "./pages/Welcome.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
+import Welcome from "./pages/Welcome.jsx";
 import Settings from "./pages/settings/Settings.jsx";
 import SettingsLayout from "./Layout/SettingsLayout.jsx";
 import SavedLayout from "./Layout/SavedLayout.jsx";
@@ -32,7 +32,7 @@ export default function App() {
         {/* Public pages (no navbar) */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<WelcomePage />} />
+        <Route path="/" element={<Welcome />} />
 
         {/* User layout */}
         <Route element={<MainLayout />}>
