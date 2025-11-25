@@ -2,8 +2,8 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
-import PostCard from "../Components/Home/PostCard";
-import HomeTop from "../Components/Home/HomeTop";
+import PostCard from "../Components/Home/PostCard.jsx";
+import HomeTop from "../Components/Home/HomeTop.jsx";
 
 export default function Home() {
   const [posts, setPosts] = React.useState([]);
@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <div className="flex justify-center min-h-screen mt-16">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-lg ">
         <HomeTop />
         <InfiniteScroll
           dataLength={posts.length}

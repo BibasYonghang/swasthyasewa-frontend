@@ -1,5 +1,5 @@
 import React from "react";
-import CommunityLeftSidebar from "./sidebar/left/CommunityLeftSidebar";
+import CommunityLeftSidebar from "./sidebar/left/CommunityLeftSidebar.jsx";
 import { Outlet } from "react-router-dom";
 
 export default function CommunityLayout() {

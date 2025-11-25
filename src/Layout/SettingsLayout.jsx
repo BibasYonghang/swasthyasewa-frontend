@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SettingsLeftSidebar from "./sidebar/left/SettingsLeftSidebar";
+import SettingsLeftSidebar from "./sidebar/left/SettingsLeftSidebar.jsx";
 
 export default function SettingsLayout() {
   return (

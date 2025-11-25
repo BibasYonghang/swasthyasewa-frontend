@@ -1,7 +1,7 @@
 import Navbar from "../Components/Shared/Navbar";
 import { Outlet } from "react-router-dom";
-import MainLeftSidebar from "../Layout/sidebar/left/MainLeftSidebar";
-import MainRightSidebar from "../Layout/sidebar/right/MainRightSidebar";
+import MainLeftSidebar from "../Layout/sidebar/left/MainLeftSidebar.jsx";
+import MainRightSidebar from "../Layout/sidebar/right/MainRightSidebar.jsx";
 
 export default function MainLayout() {
   return (

@@ -1,31 +1,29 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from "./Layout/MainLayout";
-import AdminLayout from "./Layout//AdminLayout";
-
-import Home from "./pages/Home";
-
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import AdminDashboard from "./ages/AdminDashboard";
-import WelcomePage from "./pages/Welcome";
-import Settings from "./pages/settings/Settings";
-import SettingsLayout from "./Layout/SettingsLayout";
-import SavedLayout from "./Layout/SavedLayout";
-import Saved from "./pages/saved/Saved";
-import MessageLayout from "./Layout/MessageLayout";
-import Message from "./pages/messages/Message";
-import MyRequestLayout from "./Layout/MyRequestLayout";
-import MyRequest from "./pages/myRequest/MyRequest";
-import WalletLayout from "./Layout/WalletLayout";
-import Wallet from "./pages/wallet/Wallet";
-import NearbyHelpersLayout from "./Layout/NearbyHelpersLayout";
-import NearbyHelpers from "./pages/helpers/NearbyHelpers";
-import AlertsLayout from "./Layout/AlertsLayout";
-import Alerts from "./pages/alerts/Alerts";
-import PostHelpLayout from "./Layout/PostHelpLayout";
-import CreatePost from "./pages/createPost/CreatePost";
-import CommunityLayout from "./Layout/CommunityLayout";
-import Community from "./pages/community/Community";
+import MainLayout from "./Layout/MainLayout.jsx";
+import AdminLayout from "./Layout//AdminLayout.jsx";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import AdminDashboard from "./ages/AdminDashboard.jsx";
+import WelcomePage from "./pages/Welcome.jsx";
+import Settings from "./pages/settings/Settings.jsx";
+import SettingsLayout from "./Layout/SettingsLayout.jsx";
+import SavedLayout from "./Layout/SavedLayout.jsx";
+import Saved from "./pages/saved/Saved.jsx";
+import MessageLayout from "./Layout/MessageLayout.jsx";
+import Message from "./pages/messages/Message.jsx";
+import MyRequestLayout from "./Layout/MyRequestLayout.jsx";
+import MyRequest from "./pages/myRequest/MyRequest.jsx";
+import WalletLayout from "./Layout/WalletLayout.jsx";
+import Wallet from "./pages/wallet/Wallet.jsx";
+import NearbyHelpersLayout from "./Layout/NearbyHelpersLayout.jsx";
+import NearbyHelpers from "./pages/helpers/NearbyHelpers.jsx";
+import AlertsLayout from "./Layout/AlertsLayout.jsx";
+import Alerts from "./pages/alerts/Alerts.jsx";
+import PostHelpLayout from "./Layout/PostHelpLayout.jsx";
+import CreatePost from "./pages/createPost/CreatePost.jsx";
+import CommunityLayout from "./Layout/CommunityLayout.jsx";
+import Community from "./pages/community/Community.jsx";
 
 export default function App() {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SavedLeftSidebar from "./sidebar/left/SavedLeftSidebar";
+import SavedLeftSidebar from "./sidebar/left/SavedLeftSidebar.jsx";
 
 export default function SavedLayout() {
   return (
