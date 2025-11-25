@@ -31,9 +31,9 @@ const menuItems = [
     classname: "text-blue-500",
   },
   {
-    name: "Post Help",
+    name: "Create Post",
     icon: <PlusCircle size={24} />,
-    path: "/create",
+    path: "/create-post",
     classname: "text-indigo-700",
   },
   {
@@ -45,7 +45,7 @@ const menuItems = [
   {
     name: "Messages",
     icon: <MessageSquare size={24} />,
-    path: "/chat",
+    path: "/message",
     classname: "text-sky-700",
   },
   {
@@ -55,15 +55,9 @@ const menuItems = [
     classname: "text-blue-700",
   },
   {
-    name: "Map",
-    icon: <MapPin size={24} />,
-    path: "/map",
-    classname: "text-blue-700",
-  },
-  {
     name: "Settings",
     icon: <Settings size={24} />,
-    path: "/settings-layout",
+    path: "/settings",
     classname: "text-blue-700",
   },
   {

@@ -1,12 +1,12 @@
 import React from "react";
-import AlertsLeftSidebar from "./sidebar/left/AlertsLeftSidebar";
+import PostHelpLeftSidebar from "./sidebar/left/PostHelpLeftSidebar";
 import { Outlet } from "react-router-dom";
 
-export default function AlertsLayout() {
+export default function PostHelpLayout() {
   return (
     <>
       <div className="flex">
-        <AlertsLeftSidebar />
+        <PostHelpLeftSidebar />
         <main>
           <Outlet />
         </main>

@@ -1,12 +1,12 @@
 import React from "react";
-import AlertsLeftSidebar from "./sidebar/left/AlertsLeftSidebar";
+import NearbyHelpersLeftSidebar from "./sidebar/left/NearbyHelpersLeftSidebar";
 import { Outlet } from "react-router-dom";
 
-export default function AlertsLayout() {
+export default function NearbyHelpersLayout() {
   return (
     <>
       <div className="flex">
-        <AlertsLeftSidebar />
+        <NearbyHelpersLeftSidebar />
         <main>
           <Outlet />
         </main>

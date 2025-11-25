@@ -1,12 +1,12 @@
 import React from "react";
-import AlertsLeftSidebar from "./sidebar/left/AlertsLeftSidebar";
+import WalletLeftSidebar from "./sidebar/left/WalletLeftSidebar";
 import { Outlet } from "react-router-dom";
 
-export default function AlertsLayout() {
+export default function WalletLayout() {
   return (
     <>
       <div className="flex">
-        <AlertsLeftSidebar />
+        <WalletLeftSidebar />
         <main>
           <Outlet />
         </main>
