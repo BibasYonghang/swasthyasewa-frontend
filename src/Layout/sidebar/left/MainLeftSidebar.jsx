@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext"; // <-- import
+import { useAuth } from "../../../../context/AuthContext"; // <-- import
 
 import {
   Home,
@@ -27,7 +27,7 @@ const menuItems = [
   {
     name: "Ask AI",
     icon: <Sparkles size={24} />,
-    path: "/ai",
+    path: "https://chud-ai.vercel.app/",
     classname: "text-blue-500",
   },
   {
@@ -63,7 +63,7 @@ const menuItems = [
   {
     name: "Settings",
     icon: <Settings size={24} />,
-    path: "/settings",
+    path: "/settings-layout",
     classname: "text-blue-700",
   },
   {
@@ -106,21 +106,36 @@ export default function LeftSidebar() {
       </div>
 
       {/* Menu */}
-      <nav className="overflow-y-auto space-y-4 mt-3 ">
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.name}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-2 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200 text-gray-700 transition-all ${
-                isActive ? "font-bold text-indigo-600" : ""
-              }`
-            }
-          >
-            <span className={item.classname}>{item.icon}</span>
-            <span className="text-md font-semibold">{item.name}</span>
-          </NavLink>
-        ))}
+      <nav className="overflow-y-auto space-y-4 mt-3">
+        {menuItems.map((item) =>
+          item.name === "Ask AI" ? (
+            // External link opens in a new tab
+            <a
+              key={item.name}
+              href={item.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 px-2 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200 text-gray-700 transition-all"
+            >
+              <span className={item.classname}>{item.icon}</span>
+              <span className="text-md font-semibold">{item.name}</span>
+            </a>
+          ) : (
+            // Internal routing using NavLink
+            <NavLink
+              key={item.name}
+              to={item.path}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-2 py-2 rounded-md hover:cursor-pointer hover:bg-gray-200 text-gray-700 transition-all ${
+                  isActive ? "font-bold text-indigo-600" : ""
+                }`
+              }
+            >
+              <span className={item.classname}>{item.icon}</span>
+              <span className="text-md font-semibold">{item.name}</span>
+            </NavLink>
+          )
+        )}
       </nav>
     </aside>
   );

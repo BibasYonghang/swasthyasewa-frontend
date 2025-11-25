@@ -30,7 +30,7 @@ export default function Navbar() {
         </div>
 
         {/* Search */}
-        <div className="flex items-center w-[55vw] sm:w-[60vw] md:w-[28vw] xl:w-[35vw]">
+        <div className="flex items-center w-[72vw] sm:w-[80vw] md:w-[31vw] xl:w-[45vw]">
           <div className="relative w-full">
             <Search
               className="absolute left-3 top-2.5 text-gray-400"
@@ -109,7 +109,7 @@ export default function Navbar() {
         {/* Mobile Menu */}
       </div>
       <Menu
-        className="lg:hidden flex cursor-pointer"
+        className="lg:hidden flex cursor-pointer ml-5"
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       />
 

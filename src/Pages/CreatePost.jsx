@@ -6,7 +6,7 @@ export default function CreatePost() {
   const [postText, setPostText] = useState("");
 
   return (
-    <div className="bg-white shadow rounded-xl p-4">
+    <div className="flex justify-center min-h-screen mt-16">
       <div className="flex items-start gap-3">
         <img
           src="/default-user.png"
