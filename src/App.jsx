@@ -2,11 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "./Layout/MainLayout";
 import AdminLayout from "./Layout//AdminLayout";
 
-import Home from "./Pages/Home";
+import Home from "./pages/Home";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AdminDashboard from "./Pages/AdminDashboard";
+import AdminDashboard from "./ages/AdminDashboard";
 import WelcomePage from "./pages/Welcome";
 import Settings from "./pages/settings/Settings";
 import SettingsLayout from "./Layout/SettingsLayout";

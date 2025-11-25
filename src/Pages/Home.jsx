@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <div className="flex justify-center min-h-screen mt-16">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-lg">
         <HomeTop />
         <InfiniteScroll
           dataLength={posts.length}

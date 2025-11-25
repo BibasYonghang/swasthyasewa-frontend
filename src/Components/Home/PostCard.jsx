@@ -3,8 +3,9 @@ import React from "react";
 
 export default function PostCard({ post }) {
   return (
-    <div className="bg-white shadow-md rounded-xl p-4 mb-4">
-      <div className="flex items-center gap-3 mb-2">
+    <div className="bg-white shadow-md rounded-xl text-black p-4 mb-4">
+      {/* Top section: profile */}
+      <div className="flex items-center gap-3 mb-3">
         <img
           src="/default-user.png"
           alt="user"
@@ -15,12 +16,20 @@ export default function PostCard({ post }) {
           <p className="text-sm text-gray-500">{post.timeAgo}</p>
         </div>
       </div>
-      <p className="text-gray-700">{post.text}</p>
+
+      {/* Text content */}
+      {post.text && (
+        <p className="text-gray-800 mb-3 whitespace-pre-line leading-relaxed">
+          {post.text}
+        </p>
+      )}
+
+      {/* Image (height auto, adjusts dynamically like Facebook) */}
       {post.image && (
         <img
           src={post.image}
           alt=""
-          className="mt-3 w-full h-64 object-cover rounded-xl"
+          className="w-full rounded-xl object-cover"
         />
       )}
     </div>
