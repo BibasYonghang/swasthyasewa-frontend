@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Bell,
   MapPinned,
@@ -17,124 +18,193 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <nav className="flex w-full items-center justify-between bg-white shadow-md px-3 py-2 h-16 fixed top-0 z-50">
-      {/* LEFT */}
-      <div className="flex items-center gap-4">
-        {/* Logo */}
-        <div className="flex items-center gap-2 cursor-pointer">
-          <img
-            src="/neighborly-logo.png"
-            alt="Neighborly"
-            className="h-12 w-12 object-contain"
-          />
-        </div>
+    <nav className="fixed top-0 z-50 w-full bg-white shadow-md px-3 py-2 h-16">
+      <div className="flex items-center justify-between h-full">
+        {/* LEFT */}
+        <div className="flex items-center gap-4">
+          {/* Logo */}
+          <Link to="/home" className="flex items-center gap-2">
+            <img
+              src="/neighborly-logo.png"
+              alt="Neighborly Logo"
+              className="h-12 w-12 object-contain"
+            />
+          </Link>
 
-        {/* Search */}
-        <div className="flex items-center w-[72vw] sm:w-[80vw] md:w-[31vw] xl:w-[45vw]">
-          <div className="relative w-full">
+          {/* Search */}
+          <div className="relative w-[72vw] sm:w-[80vw] md:w-[31vw] xl:w-[45vw]">
             <Search
               className="absolute left-3 top-2.5 text-gray-400"
               size={18}
             />
             <input
-              type="text"
+              type="search"
               placeholder="Search Neighborly"
+              aria-label="Search Neighborly"
               className="w-full rounded-full bg-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring focus:ring-blue-300"
             />
           </div>
         </div>
-      </div>
 
-      {/* RIGHT */}
-      <div className="hidden lg:flex items-center gap-4">
-        {/* AI Assistant */}
-        <button className="flex items-center gap-1 bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition">
-          <Sparkles size={18} />
-          <span className="hidden md:block">Ask AI</span>
-        </button>
+        {/* RIGHT */}
+        <ul className="hidden lg:flex items-center gap-4">
+          {/* AI Assistant */}
+          <li>
+            <a
+              href="https://chud-ai.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 bg-purple-600 text-white px-4 py-2 rounded-full hover:bg-purple-700 transition"
+            >
+              <Sparkles size={18} />
+              <span className="hidden md:block">Ask AI</span>
+            </a>
+          </li>
 
-        {/* Alerts */}
-        <button className="hidden md:flex items-center gap-1 bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition">
-          <AlertCircle size={18} />
-          Alerts
-        </button>
+          {/* Alerts */}
+          <li>
+            <Link
+              to="/alerts"
+              className="flex items-center gap-1 bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition"
+            >
+              <AlertCircle size={18} />
+              <span className="hidden md:block">Alerts</span>
+            </Link>
+          </li>
 
-        {/* Community Feed */}
-        <button className="hidden md:flex items-center gap-1 bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition">
-          <MessageCircle size={18} />
-          Community
-        </button>
+          {/* Community Feed */}
+          <li>
+            <Link
+              to="/community"
+              className="flex items-center gap-1 bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 transition"
+            >
+              <MessageCircle size={18} />
+              <span className="hidden md:block">Community</span>
+            </Link>
+          </li>
 
-        {/* Nearby Map */}
-        <button className="hidden md:flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">
-          <MapPinned size={18} />
-          Nearby
-        </button>
+          {/* Nearby Map */}
+          <li>
+            <Link
+              to="/map"
+              className="flex items-center gap-1 bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
+            >
+              <MapPinned size={18} />
+              <span className="hidden md:block">Nearby</span>
+            </Link>
+          </li>
 
-        {/* Notifications */}
-        <button className="relative bg-blue-500 text-white px-3 py-2 rounded-full hover:bg-blue-600 transition">
-          <Bell size={20} />
-          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-            3
-          </span>
-        </button>
+          {/* Notifications */}
+          <li className="relative">
+            <Link
+              to="/notifications"
+              className="bg-blue-500 text-white px-3 py-2 rounded-full hover:bg-blue-600 transition flex items-center"
+              aria-label="Notifications"
+            >
+              <Bell size={20} />
+              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                3
+              </span>
+            </Link>
+          </li>
 
-        {/* Profile Dropdown */}
-        <div
-          className="relative hidden md:block"
-          onMouseLeave={() => setProfileOpen(false)}
+          {/* Profile Dropdown */}
+          <li className="relative" onMouseLeave={() => setProfileOpen(false)}>
+            <button
+              onMouseEnter={() => setProfileOpen(true)}
+              aria-haspopup="true"
+              aria-expanded={profileOpen}
+              className="bg-gray-200 rounded-full p-2 cursor-pointer"
+            >
+              <User size={20} />
+            </button>
+
+            {profileOpen && (
+              <ul
+                className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-40 py-2"
+                role="menu"
+              >
+                <li>
+                  <Link
+                    to="/profile"
+                    className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2"
+                    role="menuitem"
+                  >
+                    <User size={16} /> Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/settings"
+                    className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2"
+                    role="menuitem"
+                  >
+                    <Settings size={16} /> Settings
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/logout"
+                    className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2"
+                    role="menuitem"
+                  >
+                    <LogOut size={16} /> Logout
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+        </ul>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden ml-5"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Open Mobile Menu"
         >
-          <button
-            onMouseEnter={() => setProfileOpen(true)}
-            className="bg-gray-200 rounded-full p-2 cursor-pointer"
-          >
-            <User size={20} />
-          </button>
-
-          {profileOpen && (
-            <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-40 py-2">
-              <button className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2">
-                <User size={16} /> Profile
-              </button>
-              <button className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2">
-                <Settings size={16} /> Settings
-              </button>
-              <button className="flex w-full px-4 py-2 hover:bg-gray-100 gap-2">
-                <LogOut size={16} /> Logout
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Mobile Menu */}
+          <Menu size={24} />
+        </button>
       </div>
-      <Menu
-        className="lg:hidden flex cursor-pointer ml-5"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      />
 
       {/* MOBILE DROPDOWN */}
       {mobileMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col p-4 gap-3 lg:hidden">
-          <button className="flex items-center gap-2">
-            <Sparkles size={18} /> Ask AI
-          </button>
-          <button className="flex items-center gap-2">
-            <AlertCircle size={18} /> Alerts
-          </button>
-          <button className="flex items-center gap-2">
-            <MessageCircle size={18} /> Community Feed
-          </button>
-          <button className="flex items-center gap-2">
-            <MapPinned size={18} /> Nearby Map
-          </button>
-          <button className="flex items-center gap-2">
-            <Bell size={18} /> Notifications
-          </button>
-          <button className="flex items-center gap-2">
-            <User size={18} /> Profile
-          </button>
-        </div>
+        <ul className="absolute top-16 left-0 w-full bg-white shadow-md flex flex-col p-4 gap-3 lg:hidden">
+          <li>
+            <a
+              href="https://chud-ai.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <Sparkles size={18} /> Ask AI
+            </a>
+          </li>
+          <li>
+            <Link to="/alerts" className="flex items-center gap-2">
+              <AlertCircle size={18} /> Alerts
+            </Link>
+          </li>
+          <li>
+            <Link to="/community" className="flex items-center gap-2">
+              <MessageCircle size={18} /> Community Feed
+            </Link>
+          </li>
+          <li>
+            <Link to="/map" className="flex items-center gap-2">
+              <MapPinned size={18} /> Nearby Map
+            </Link>
+          </li>
+          <li>
+            <Link to="/notifications" className="flex items-center gap-2">
+              <Bell size={18} /> Notifications
+            </Link>
+          </li>
+          <li>
+            <Link to="/profile" className="flex items-center gap-2">
+              <User size={18} /> Profile
+            </Link>
+          </li>
+        </ul>
       )}
     </nav>
   );

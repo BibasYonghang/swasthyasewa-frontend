@@ -24,6 +24,8 @@ import AlertsLayout from "./Layout/AlertsLayout";
 import Alerts from "./pages/alerts/Alerts";
 import PostHelpLayout from "./Layout/PostHelpLayout";
 import CreatePost from "./pages/createPost/CreatePost";
+import CommunityLayout from "./Layout/CommunityLayout";
+import Community from "./pages/community/Community";
 
 export default function App() {
   return (
@@ -69,6 +71,10 @@ export default function App() {
 
         <Route element={<PostHelpLayout />}>
           <Route path="/create-post" element={<CreatePost />} />
+        </Route>
+
+        <Route element={<CommunityLayout />}>
+          <Route path="/community" element={<Community />} />
         </Route>
 
         {/* Admin layout */}

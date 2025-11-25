@@ -1,5 +1,6 @@
 // src/Components/Layout/RightSidebar.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   AlertCircle,
   Users,
@@ -8,114 +9,155 @@ import {
   Plus,
 } from "lucide-react";
 
+const quickActions = [
+  {
+    label: "Create Post",
+    icon: <Plus size={18} />,
+    to: "/create-post",
+    bg: "bg-blue-600",
+    hover: "hover:bg-blue-700",
+  },
+  {
+    label: "Alerts",
+    icon: <AlertCircle size={18} />,
+    to: "/alerts",
+    bg: "bg-red-600",
+    hover: "hover:bg-red-700",
+  },
+  {
+    label: "Ask AI",
+    icon: <Sparkles size={18} />,
+    href: "https://chud-ai.vercel.app/",
+    bg: "bg-purple-600",
+    hover: "hover:bg-purple-700",
+    external: true,
+  },
+];
+
+const trendingRequests = [
+  "Urgent: Fire incident reported nearby!",
+  "Looking for a plumber around your area",
+  "Lost mobile phone near city mall",
+];
+
+const nearbyHelpers = [
+  { name: "Hari (Electrician)", distance: "0.1 km away", img: 11 },
+  { name: "Suman (Plumber)", distance: "0.2 km away", img: 12 },
+  { name: "Rita (Nurse)", distance: "0.3 km away", img: 13 },
+];
+
+const suggestedCommunities = [
+  { name: "Lost & Found", icon: <MessageCircle size={18} /> },
+  { name: "Local Volunteers", icon: <Users size={18} /> },
+  { name: "Emergency Helpers", icon: <AlertCircle size={18} /> },
+];
+
+const activeUsers = [21, 22, 23, 24, 25, 26];
+
 export default function RightSidebar() {
   return (
-    <aside className="hidden lg:block rounded-2xl w-80 h-screen sticky top-16 overflow-y-auto pl-4 py-4 bg-white shadow-sm">
+    <aside className="hidden lg:block w-80 h-screen sticky top-16 overflow-y-auto pl-4 py-4 bg-white rounded-2xl shadow-sm">
       {/* QUICK ACTIONS */}
-      <div className="space-y-3 mb-6">
+      <section className="space-y-3 mb-6">
         <h2 className="font-semibold text-gray-700">Quick Actions</h2>
         <div className="flex flex-col gap-3">
-          <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            <Plus size={18} /> Create Post
-          </button>
-
-          <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-            <AlertCircle size={18} /> Alerts
-          </button>
-
-          <button className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-            <Sparkles size={18} /> Ask AI
-          </button>
+          {quickActions.map((action, idx) =>
+            action.external ? (
+              <a
+                key={idx}
+                href={action.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg ${action.bg} ${action.hover} transition`}
+              >
+                {action.icon} {action.label}
+              </a>
+            ) : (
+              <Link
+                key={idx}
+                to={action.to}
+                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg ${action.bg} ${action.hover} transition`}
+              >
+                {action.icon} {action.label}
+              </Link>
+            )
+          )}
         </div>
-      </div>
+      </section>
 
       {/* TRENDING HELP REQUESTS */}
-      <div className="mb-8">
+      <section className="mb-8">
         <h2 className="font-semibold text-gray-700 mb-2">Trending Requests</h2>
         <div className="space-y-3">
-          {[1, 2, 3].map((item) => (
+          {trendingRequests.map((req, idx) => (
             <div
-              key={item}
+              key={idx}
               className="p-3 bg-gray-100 rounded-lg border hover:bg-gray-200 transition cursor-pointer"
             >
-              <h3 className="font-medium text-gray-800">
-                {item === 1
-                  ? "Urgent: Fire incident reported nearby!"
-                  : item === 2
-                  ? "Looking for a plumber around your area"
-                  : "Lost mobile phone near city mall"}
-              </h3>
+              <h3 className="font-medium text-gray-800">{req}</h3>
               <p className="text-sm text-gray-500">2 min ago</p>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* NEARBY HELPERS */}
-      <div className="mb-8">
+      <section className="mb-8">
         <h2 className="font-semibold text-gray-700 mb-2">Nearby Helpers</h2>
         <div className="space-y-3">
-          {[1, 2, 3].map((user) => (
+          {nearbyHelpers.map((helper, idx) => (
             <div
-              key={user}
+              key={idx}
               className="flex items-center gap-3 p-3 bg-white shadow-sm border rounded-lg hover:bg-gray-50 cursor-pointer transition"
             >
               <img
-                src={`https://i.pravatar.cc/150?img=${user + 10}`}
-                alt=""
+                src={`https://i.pravatar.cc/150?img=${helper.img}`}
+                alt={helper.name}
                 className="w-10 h-10 rounded-full"
               />
               <div>
-                <h4 className="font-medium text-gray-800">
-                  {user === 1
-                    ? "Hari (Electrician)"
-                    : user === 2
-                    ? "Suman (Plumber)"
-                    : "Rita (Nurse)"}
-                </h4>
-                <p className="text-sm text-gray-500">0.{user} km away</p>
+                <h4 className="font-medium text-gray-800">{helper.name}</h4>
+                <p className="text-sm text-gray-500">{helper.distance}</p>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* SUGGESTED COMMUNITIES */}
-      <div className="mb-8">
+      <section className="mb-8">
         <h2 className="font-semibold text-gray-700 mb-2">
           Suggested Communities
         </h2>
         <ul className="space-y-2">
-          <li className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer rounded-lg">
-            <span>Lost & Found</span>
-            <MessageCircle size={18} />
-          </li>
-          <li className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer rounded-lg">
-            <span>Local Volunteers</span>
-            <Users size={18} />
-          </li>
-          <li className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer rounded-lg">
-            <span>Emergency Helpers</span>
-            <AlertCircle size={18} />
-          </li>
+          {suggestedCommunities.map((community, idx) => (
+            <li
+              key={idx}
+              className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer rounded-lg"
+            >
+              <span>{community.name}</span>
+              {community.icon}
+            </li>
+          ))}
         </ul>
-      </div>
+      </section>
 
       {/* ACTIVE USERS */}
-      <div className="mb-8">
+      <section className="mb-8">
         <h2 className="font-semibold text-gray-700 mb-3">Active Now</h2>
         <div className="flex flex-wrap gap-3">
-          {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="relative">
+          {activeUsers.map((id) => (
+            <div key={id} className="relative">
               <img
-                src={`https://i.pravatar.cc/100?img=${n + 20}`}
+                src={`https://i.pravatar.cc/100?img=${id}`}
                 className="w-12 h-12 rounded-full"
+                alt="Active User"
               />
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </aside>
   );
 }
