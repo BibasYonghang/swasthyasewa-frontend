@@ -2,8 +2,14 @@
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
-import PostCard from "../Components/Home/PostCard.jsx";
 import HomeTop from "../Components/Home/HomeTop.jsx";
+import {
+  CornerUpRight,
+  MessageCircle,
+  Share,
+  Share2,
+  ThumbsUp,
+} from "lucide-react";
 
 export default function Home() {
   const [posts, setPosts] = React.useState([]);
@@ -58,8 +64,60 @@ export default function Home() {
             <p className="text-center text-gray-500 mt-4">No more posts</p>
           }
         >
-          {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
+          {posts.map(({ user, content, images, likes, _id }) => (
+            <div
+              key={_id}
+              className="bg-white shadow-md rounded-xl text-black p-4 mb-4"
+            >
+              {/* Top section: profile */}
+              <div className="flex items-center gap-3 mb-3">
+                <img
+                  src="/default-user.png"
+                  alt="user"
+                  className="w-10 h-10 rounded-full"
+                />
+                <div>
+                  <h4 className="font-semibold">{user.name}</h4>
+                  <p className="text-sm text-gray-500"></p>
+                </div>
+              </div>
+
+              {/* Text content */}
+              {content && (
+                <p className="text-gray-800 mb-3 whitespace-pre-line leading-relaxed">
+                  {content}
+                </p>
+              )}
+
+              {/* Image (height auto, adjusts dynamically like Facebook) */}
+              {images && (
+                <img
+                  src={images}
+                  alt=""
+                  className="w-full rounded-xl object-cover"
+                />
+              )}
+              <div className="h-10 w-full justify-between flex">
+                <div className="hover:cursor-pointer w-[30%] justify-center items-center flex hover:bg-gray-100 p-2 rounded-md transition-all duration-150">
+                  <p>{likes}</p>
+                  <div className="flex">
+                    <ThumbsUp /> Like
+                  </div>
+                </div>
+                <div className="hover:cursor-pointer  w-[30%] justify-center items-center flex hover:bg-gray-100 p-2 rounded-md transition-all duration-150">
+                  <p>{likes}</p>
+                  <div className="flex">
+                    <MessageCircle /> Comment
+                  </div>
+                </div>
+                <div className="hover:cursor-pointer justify-center items-center flex  w-[30%] hover:bg-gray-100 p-2 rounded-md transition-all duration-150">
+                  <p>{likes}</p>
+                  <div className="flex">
+                    <CornerUpRight /> Share
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
         </InfiniteScroll>
 
