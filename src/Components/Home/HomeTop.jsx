@@ -22,10 +22,7 @@ export default function HomeTop() {
 
   return (
     <div className="h-16 rounded-xl bg-white mb-2 gap-1 flex items-center">
-      <Link
-        to="/create-post"
-        className="bg-gray-200 p-5 w-10 rounded-full mx-3"
-      >
+      <Link to="/profile" className="bg-gray-200 p-5 w-10 rounded-full mx-3">
         <img src="" alt="" className=" h-full w-full" />
       </Link>
 

@@ -24,6 +24,8 @@ import PostHelpLayout from "./Layout/PostHelpLayout.jsx";
 import CreatePost from "./pages/createPost/CreatePost.jsx";
 import CommunityLayout from "./Layout/CommunityLayout.jsx";
 import Community from "./pages/community/Community.jsx";
+import Profile from "./pages/Profile.jsx";
+import Comment from "./pages/Comment.jsx";
 
 export default function App() {
   return (
@@ -37,6 +39,8 @@ export default function App() {
         {/* User layout */}
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/comment" element={<Comment />} />
         </Route>
 
         <Route element={<SettingsLayout />}>
