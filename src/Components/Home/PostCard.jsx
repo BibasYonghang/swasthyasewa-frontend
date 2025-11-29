@@ -1,125 +1,250 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ThumbsUp, MessageCircle, CornerUpRight } from "lucide-react";
+import {
+  ThumbsUp,
+  MessageCircle,
+  CornerUpRight,
+  MapPin,
+  Clock,
+} from "lucide-react";
+
 import ReactionPopup from "./ReactionPopup";
 import ShareModal from "./ShareModal";
-import CommentModal from "./CommentModal"; // New modal for comments
-import { REACTIONS, getReactionObj } from "../reactions.js";
+import CommentModal from "./CommentModal";
+import { getReactionObj } from "../reactions";
 
 export default function PostCard({ post, updatePost }) {
   const [reactingPost, setReactingPost] = useState(false);
   const [sharePost, setSharePost] = useState(false);
   const [commentModalOpen, setCommentModalOpen] = useState(false);
-  const reactionTimeout = useRef(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
-  const toggleLikeClick = () => {
-    const reaction = post.userReaction ? null : "like";
-    updatePost(post._id, reaction);
+  const reactionContainerRef = useRef(null);
+
+  /* -----------------------------------------------------------
+   * Handlers
+   * ---------------------------------------------------------*/
+
+  const handleReaction = (reactionType) => {
+    const newReaction =
+      reactionType === post.userReaction ? null : reactionType;
+
+    updatePost(post._id, newReaction);
+    setReactingPost(false);
   };
 
-  return (
-    <div className="bg-white shadow-md rounded-xl text-black p-4 mb-4">
-      {/* Shared post header */}
-      {post.sharedFrom && (
-        <div className="text-sm text-gray-500 mb-2 flex items-center gap-2">
-          <span className="font-medium">{post.user.name}</span> shared{" "}
-          <span className="font-medium">
-            {post.sharedFrom.user?.name ?? "a post"}
-          </span>
-        </div>
-      )}
+  const handleLikeClick = (e) => {
+    e.stopPropagation();
 
-      {/* User info */}
-      <div className="flex items-center gap-3 mb-3">
-        <Link to="/profile">
+    // using optional chaining
+    if (post?.userReaction) {
+      handleReaction(post.userReaction);
+    } else {
+      setReactingPost(true);
+    }
+  };
+
+  /* -----------------------------------------------------------
+   * Close Popup When Clicking Outside
+   * ---------------------------------------------------------*/
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        reactingPost &&
+        reactionContainerRef.current &&
+        !reactionContainerRef.current.contains(event.target)
+      ) {
+        setReactingPost(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [reactingPost]);
+
+  /* -----------------------------------------------------------
+   * Helpers
+   * ---------------------------------------------------------*/
+
+  const formatTime = (timestamp) =>
+    timestamp
+      ? new Date(timestamp).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        })
+      : "";
+
+  const getPostImages = () => {
+    if (post?.images?.length > 0) return post.images.filter(Boolean);
+    if (post?.sharedFrom?.images?.length > 0)
+      return post.sharedFrom.images.filter(Boolean);
+
+    return [];
+  };
+
+  const images = getPostImages();
+  const hasMultipleImages = images.length > 1;
+
+  /* -----------------------------------------------------------
+   * Render
+   * ---------------------------------------------------------*/
+
+  return (
+    <div className="bg-white shadow-md rounded-xl text-black p-4 mb-4 border border-gray-200">
+      {/* -------------------- User Info -------------------- */}
+      <div className="flex items-start gap-3 mb-3">
+        <Link to={`/profile/${post?.user?._id}`}>
           <img
-            src={post.user.profilePicture || "/default-user.png"}
-            alt="user"
-            className="w-10 h-10 rounded-full"
+            src={post?.user?.profilePicture || "/default-user.png"}
+            alt={post?.user?.name || "User"}
+            className="w-12 h-12 rounded-full border-2 border-blue-500"
+            onError={(e) => (e.target.src = "/default-user.png")}
           />
         </Link>
-        <div>
-          <h4 className="font-semibold hover:cursor-pointer hover:underline">
-            {post.user.name}
-          </h4>
+
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <Link
+              to={`/profile/${post?.user?._id}`}
+              className="font-semibold text-gray-900 hover:underline"
+            >
+              {post?.user?.name || "Unknown"}
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-3 text-sm text-gray-500 mt-1 flex-wrap">
+            {post?.location && (
+              <div className="flex items-center gap-1">
+                <MapPin size={14} />
+                <span>{post.location}</span>
+              </div>
+            )}
+
+            {post?.location && <span>•</span>}
+
+            <div className="flex items-center gap-1">
+              <Clock size={14} />
+              <span>{formatTime(post?.createdAt)}</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Post content */}
-      <p className="text-gray-800 mb-3 whitespace-pre-line leading-relaxed">
-        {post.content || post.sharedFrom?.content}
-      </p>
-      {post.images && (
-        <img
-          src={post.images || post.sharedFrom?.images}
-          alt=""
-          className="w-full rounded-xl object-cover"
-        />
-      )}
-
-      {/* Reaction summary placeholder */}
-      <div className="py-1 flex items-center gap-2 text-sm min-h-[28px] ml-[4px]">
-        {/* You can render reactions summary here */}
+      {/* -------------------- Post Content -------------------- */}
+      <div className="mb-4">
+        <p className="text-gray-800 whitespace-pre-line leading-relaxed text-[15px]">
+          {post?.content || post?.sharedFrom?.content}
+        </p>
       </div>
 
-      {/* Buttons */}
-      <div className="h-10 w-full mt-4 justify-between flex relative">
-        {/* LIKE BUTTON */}
-        <div className="relative flex-1 flex justify-center">
-          <button
-            onClick={toggleLikeClick}
-            onMouseEnter={() => setReactingPost(true)}
-            onMouseLeave={() =>
-              (reactionTimeout.current = setTimeout(
-                () => setReactingPost(false),
-                250
-              ))
-            }
-            className="relative hover:cursor-pointer w-full justify-center font-semibold text-md items-center flex hover:bg-gray-100 p-2 rounded-md transition-colors"
-          >
-            {post.userReaction ? (
-              getReactionObj(post.userReaction).emoji
-            ) : (
-              <ThumbsUp size={20} />
-            )}
-            <span className="pl-1">
-              {post.userReaction
-                ? getReactionObj(post.userReaction).label
-                : "Like"}
-            </span>
-          </button>
-          {reactingPost && (
-            <ReactionPopup
-              postId={post._id}
-              setReactingPost={setReactingPost}
-              updatePost={updatePost}
-            />
+      {/* -------------------- Images -------------------- */}
+      {images.length > 0 && (
+        <div
+          className={`mb-4 rounded-xl overflow-hidden border border-gray-200 ${
+            hasMultipleImages ? "grid gap-1" : ""
+          } ${
+            images.length === 2
+              ? "grid-cols-2"
+              : images.length >= 3
+              ? "grid-cols-2 grid-rows-2"
+              : ""
+          }`}
+        >
+          {images.map((image, index) => (
+            <div
+              key={index}
+              className={`relative cursor-pointer transition-transform hover:opacity-95 ${
+                images.length === 3 && index === 0 ? "row-span-2" : ""
+              }`}
+              onClick={() => setSelectedImageIndex(index)}
+            >
+              <img
+                src={image}
+                alt={`Post image ${index + 1}`}
+                className={`w-full h-full object-cover ${
+                  hasMultipleImages ? "aspect-square" : "max-h-96"
+                }`}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* -------------------- Stats -------------------- */}
+      <div className="py-2 flex items-center justify-between text-sm text-gray-500 border-b border-gray-100">
+        <div className="flex items-center gap-1">
+          {post?.reactions?.length > 0 && (
+            <span>{post.reactions.length} reactions</span>
           )}
         </div>
 
-        {/* COMMENT BUTTON */}
+        {post?.comments?.length > 0 && (
+          <span>{post.comments.length} comments</span>
+        )}
+      </div>
+
+      {/* -------------------- Action Buttons -------------------- */}
+      <div className="h-10 w-full mt-2 flex justify-between relative">
+        {/* Like Button */}
+        <div
+          ref={reactionContainerRef}
+          className="relative flex-1 flex justify-center"
+        >
+          <button
+            onClick={handleLikeClick}
+            className={`w-full flex items-center justify-center font-semibold text-md p-2 rounded-md hover:bg-gray-100 transition-colors ${
+              post?.userReaction
+                ? `text-${getReactionObj(post.userReaction)?.color}-600`
+                : "text-gray-600"
+            }`}
+          >
+            {post?.userReaction ? (
+              <span className="text-lg">
+                {getReactionObj(post.userReaction)?.emoji}
+              </span>
+            ) : (
+              <ThumbsUp size={20} />
+            )}
+
+            <span className="pl-1">
+              {post?.userReaction
+                ? getReactionObj(post.userReaction)?.label
+                : "Like"}
+            </span>
+          </button>
+
+          {reactingPost && <ReactionPopup handleReaction={handleReaction} />}
+        </div>
+
+        {/* Comment Button */}
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 justify-center font-semibold hover:cursor-pointer text-md text-gray-600 items-center flex hover:bg-gray-100 p-2 rounded-md transition-colors"
+          className="flex-1 flex items-center justify-center font-semibold text-md text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors"
         >
           <MessageCircle size={20} />
           <span className="pl-1">Comment</span>
         </button>
 
-        {/* SHARE BUTTON */}
+        {/* Share Button */}
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 hover:cursor-pointer justify-center font-semibold text-md text-gray-600 items-center flex hover:bg-gray-100 p-2 rounded-md transition-colors"
+          className="flex-1 flex items-center justify-center font-semibold text-md text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors"
         >
           <CornerUpRight size={20} />
           <span className="pl-1">Share</span>
         </button>
       </div>
 
-      {/* MODALS */}
+      {/* -------------------- Modals -------------------- */}
       {commentModalOpen && (
         <CommentModal post={post} close={() => setCommentModalOpen(false)} />
       )}
+
       {sharePost && (
         <ShareModal post={post} close={() => setSharePost(false)} />
       )}

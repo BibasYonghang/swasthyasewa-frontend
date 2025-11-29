@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useSelector } from "react-redux"; // ✅ Import Redux hook
 import { fetchPosts, sendReaction } from "../api/posts";
 import HomeTop from "../components/Home/HomeTop";
 import PostCard from "../components/Home/PostCard";
@@ -8,6 +9,9 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+
+  // ✅ Get the logged-in user from Redux
+  const loggedInUser = useSelector((state) => state.auth.user);
 
   const getPosts = async () => {
     const data = await fetchPosts(page);
@@ -34,7 +38,8 @@ export default function Home() {
   return (
     <div className="flex justify-center min-h-screen mt-16 relative">
       <div className="w-full max-w-lg">
-        <HomeTop />
+        {/* ✅ Pass logged-in user to HomeTop */}
+        <HomeTop currentUser={loggedInUser} />
         <InfiniteScroll
           dataLength={posts.length}
           next={getPosts}

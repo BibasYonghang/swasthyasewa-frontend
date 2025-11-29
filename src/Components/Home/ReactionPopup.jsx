@@ -1,21 +1,27 @@
 import React from "react";
-import { REACTIONS } from "../reactions.js";
+import { REACTIONS } from "../reactions";
 
-export default function ReactionPopup({ postId, setReactingPost, updatePost }) {
+export default function ReactionPopup({ handleReaction }) {
+  const handleClick = (reactionType, e) => {
+    e.stopPropagation(); // Prevent bubbling
+    handleReaction(reactionType); // Trigger reaction in PostCard
+  };
+
   return (
-    <div
-      className="absolute z-50 -top-12 left-1/2 -translate-x-1/2 bg-white border shadow-xl px-2 py-1 rounded-full flex gap-2 items-center"
-      onMouseEnter={() => setReactingPost(true)}
-      onMouseLeave={() => setReactingPost(false)}
+    <div 
+      className="absolute bottom-10 flex bg-white shadow-lg rounded-full p-1 gap-1 z-50 border border-gray-200"
+      onClick={(e) => e.stopPropagation()} // Prevent popup click from closing
     >
-      {REACTIONS.map(({ id, emoji }) => (
-        <span
-          key={id}
-          className="text-2xl mx-0.5 hover:scale-125 cursor-pointer transition-transform select-none"
-          onClick={() => updatePost(postId, id)}
+      {REACTIONS.map((r) => (
+        <button
+          key={r.id}
+          onClick={(e) => handleClick(r.id, e)}
+          className="cursor-pointer text-xl hover:scale-125 transition-transform transform hover:-translate-y-1 duration-200 focus:outline-none"
+          title={r.label}
+          type="button"
         >
-          {emoji}
-        </span>
+          {r.emoji}
+        </button>
       ))}
     </div>
   );
