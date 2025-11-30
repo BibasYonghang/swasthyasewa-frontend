@@ -145,7 +145,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(`${API}/api/login`, form, {
+      const res = await axios.post(`${API}/login`, form, {
         headers: { "Content-Type": "application/json" },
       });
 

@@ -57,7 +57,7 @@ export default function Profile() {
 
       // Fetch user info
       const userRes = await axios.get(
-        `${API}/api/users/${profileId}`
+        `${API}/users/${profileId}`
       );
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
@@ -65,7 +65,7 @@ export default function Profile() {
 
       // Fetch posts for this user
       const postsRes = await axios.get(
-        `${API}/api/posts?userId=${profileId}`
+        `${API}/posts?userId=${profileId}`
       );
       const allPosts = postsRes.data?.posts || [];
 
@@ -90,7 +90,7 @@ export default function Profile() {
   const handleUpdatePost = async (postId, reaction) => {
     try {
       const res = await axios.post(
-        `${API}/api/posts/${postId}/reaction`,
+        `${API}/posts/${postId}/reaction`,
         { reaction }
       );
 
@@ -127,7 +127,7 @@ export default function Profile() {
       }
 
       const res = await axios.post(
-        `${API}/api/users/${profileId}/upload-${type}`,
+        `${API}/users/${profileId}/upload-${type}`,
         formData,
         {
           headers: {

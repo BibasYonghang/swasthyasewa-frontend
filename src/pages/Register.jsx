@@ -178,7 +178,7 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      await axios.post(`${API}/api/register`, form, {
+      await axios.post(`${API}/register`, form, {
         headers: { "Content-Type": "application/json" },
       });
 
