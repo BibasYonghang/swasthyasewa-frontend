@@ -143,7 +143,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/api/login", form, {
+      const res = await axios.post("https://neighborly-backend-c0qy.onrender.com/api/login", form, {
         headers: { "Content-Type": "application/json" },
       });
 

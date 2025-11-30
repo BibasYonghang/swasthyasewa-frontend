@@ -176,7 +176,7 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      await axios.post("http://localhost:3000/api/register", form, {
+      await axios.post("https://neighborly-backend-c0qy.onrender.com/api/register", form, {
         headers: { "Content-Type": "application/json" },
       });
 

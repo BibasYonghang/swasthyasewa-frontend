@@ -1,6 +1,4 @@
 import axios from "axios";
-
-// Ensure your .env file has VITE_API_BASE=http://localhost:5000/api (or your backend URL)
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const getAuthHeaders = () => {

@@ -54,7 +54,7 @@ export default function Profile() {
 
       // Fetch user info
       const userRes = await axios.get(
-        `http://localhost:3000/api/users/${profileId}`
+        `https://neighborly-backend-c0qy.onrender.com/api/users/${profileId}`
       );
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
@@ -62,7 +62,7 @@ export default function Profile() {
 
       // Fetch posts for this user
       const postsRes = await axios.get(
-        `http://localhost:3000/api/posts?userId=${profileId}`
+        `https://neighborly-backend-c0qy.onrender.com/api/posts?userId=${profileId}`
       );
       const allPosts = postsRes.data?.posts || [];
 
@@ -87,7 +87,7 @@ export default function Profile() {
   const handleUpdatePost = async (postId, reaction) => {
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/posts/${postId}/reaction`,
+        `https://neighborly-backend-c0qy.onrender.com/api/posts/${postId}/reaction`,
         { reaction }
       );
 
@@ -124,7 +124,7 @@ export default function Profile() {
       }
 
       const res = await axios.post(
-        `http://localhost:3000/api/users/${profileId}/upload-${type}`,
+        `https://neighborly-backend-c0qy.onrender.com/api/users/${profileId}/upload-${type}`,
         formData,
         {
           headers: {
