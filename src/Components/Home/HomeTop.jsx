@@ -1,3 +1,4 @@
+// src/Components/Home/HomeTop.jsx
 import { Image } from "lucide-react";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +9,7 @@ export default function HomeTop() {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.auth.user);
 
-  if (!currentUser) return null;
+  if (!currentUser || !currentUser._id) return null;
 
   const handleInputClick = () => navigate("/create-post");
   const handleImageClick = () => fileInputRef.current.click();
@@ -16,7 +17,6 @@ export default function HomeTop() {
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
     if (files.length === 0) return;
-
     localStorage.setItem("selectedFiles", JSON.stringify(files));
     navigate("/create-post");
   };
@@ -24,16 +24,19 @@ export default function HomeTop() {
   return (
     <div className="h-16 rounded-xl bg-white mb-2 gap-1 flex items-center px-3">
       <Link
-        to={`/profile/${currentUser._id}`} // ✅ now _id exists
+        to={`/profile/${currentUser._id}`}
         className="bg-gray-200 w-10 h-10 rounded-full overflow-hidden"
       >
         <img
-          src={currentUser.profilePic || "/default-user.png"}
+          src={
+            currentUser.profilePicture ||
+            currentUser.profilePic ||
+            "/default-user.png"
+          }
           alt={currentUser.name || "User"}
           className="w-full h-full object-cover"
         />
       </Link>
-
       <input
         type="text"
         placeholder="What's on your mind?"
@@ -41,7 +44,6 @@ export default function HomeTop() {
         onClick={handleInputClick}
         readOnly
       />
-
       <input
         type="file"
         ref={fileInputRef}
@@ -50,7 +52,6 @@ export default function HomeTop() {
         multiple
         onChange={handleFileChange}
       />
-
       <button className="hover:cursor-pointer mx-2" onClick={handleImageClick}>
         <Image size={30} className="text-green-500" />
       </button>

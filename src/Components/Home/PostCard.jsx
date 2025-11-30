@@ -6,6 +6,7 @@ import {
   CornerUpRight,
   MapPin,
   Clock,
+  User,
 } from "lucide-react";
 
 import ReactionPopup from "./ReactionPopup";
@@ -21,10 +22,7 @@ export default function PostCard({ post, updatePost }) {
 
   const reactionContainerRef = useRef(null);
 
-  /* -----------------------------------------------------------
-   * Handlers
-   * ---------------------------------------------------------*/
-
+  // ---------------------- Reaction handling ----------------------
   const handleReaction = (reactionType) => {
     const newReaction =
       reactionType === post.userReaction ? null : reactionType;
@@ -36,7 +34,6 @@ export default function PostCard({ post, updatePost }) {
   const handleLikeClick = (e) => {
     e.stopPropagation();
 
-    // using optional chaining
     if (post?.userReaction) {
       handleReaction(post.userReaction);
     } else {
@@ -44,10 +41,7 @@ export default function PostCard({ post, updatePost }) {
     }
   };
 
-  /* -----------------------------------------------------------
-   * Close Popup When Clicking Outside
-   * ---------------------------------------------------------*/
-
+  // ---------------------- Close popup on outside click ----------------------
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -63,10 +57,7 @@ export default function PostCard({ post, updatePost }) {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [reactingPost]);
 
-  /* -----------------------------------------------------------
-   * Helpers
-   * ---------------------------------------------------------*/
-
+  // ---------------------- Helpers ----------------------
   const formatTime = (timestamp) =>
     timestamp
       ? new Date(timestamp).toLocaleString("en-US", {
@@ -86,24 +77,69 @@ export default function PostCard({ post, updatePost }) {
     return [];
   };
 
+  // Check if user has a valid profile picture
+  const hasProfilePicture = () => {
+    return (
+      post?.user?.profilePicture &&
+      post.user.profilePicture.trim() !== "" &&
+      post.user.profilePicture !== "null" &&
+      !post.user.profilePicture.includes("default-user.png")
+    );
+  };
+
+  // Generate Facebook-style default avatar with user's initial
+  const getDefaultAvatar = () => {
+    const userName = post?.user?.name || "User";
+    const initial = userName.charAt(0).toUpperCase();
+
+    // Facebook-like color palette
+    const colors = [
+      "bg-blue-500",
+      "bg-red-500",
+      "bg-green-500",
+      "bg-yellow-500",
+      "bg-purple-500",
+      "bg-pink-500",
+      "bg-indigo-500",
+      "bg-teal-500",
+    ];
+
+    // Consistent color based on user ID or name
+    const colorIndex = post?.user?._id
+      ? post.user._id.charCodeAt(0) % colors.length
+      : userName.charCodeAt(0) % colors.length;
+
+    return (
+      <div
+        className={`w-12 h-12 rounded-full ${colors[colorIndex]} flex items-center justify-center text-white font-semibold text-lg border-2 border-white shadow-sm`}
+      >
+        {initial}
+      </div>
+    );
+  };
+
   const images = getPostImages();
   const hasMultipleImages = images.length > 1;
 
-  /* -----------------------------------------------------------
-   * Render
-   * ---------------------------------------------------------*/
-
+  // ---------------------- Render ----------------------
   return (
     <div className="bg-white shadow-md rounded-xl text-black p-4 mb-4 border border-gray-200">
       {/* -------------------- User Info -------------------- */}
       <div className="flex items-start gap-3 mb-3">
-        <Link to={`/profile/${post?.user?._id}`}>
-          <img
-            src={post?.user?.profilePicture || "/default-user.png"}
-            alt={post?.user?.name || "User"}
-            className="w-12 h-12 rounded-full border-2 border-blue-500"
-            onError={(e) => (e.target.src = "/default-user.png")}
-          />
+        <Link to={`/profile/${post?.user?._id}`} className="flex-shrink-0">
+          {hasProfilePicture() ? (
+            <img
+              src={post.user.profilePicture}
+              alt={post?.user?.name || "User"}
+              className="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/default-user.png";
+              }}
+            />
+          ) : (
+            getDefaultAvatar()
+          )}
         </Link>
 
         <div className="flex-1">

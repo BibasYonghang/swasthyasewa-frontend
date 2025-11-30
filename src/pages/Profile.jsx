@@ -1,6 +1,6 @@
 // src/pages/Profile.jsx
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
@@ -8,10 +8,8 @@ import PostCard from "../Components/Home/PostCard";
 
 export default function Profile() {
   const { id: routeId } = useParams();
+  const navigate = useNavigate();
   const loggedInUser = useSelector((state) => state.auth.user);
-
-  // Use routeId if available, else logged-in user
-  const id = routeId || loggedInUser?._id;
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -21,38 +19,70 @@ export default function Profile() {
   const [uploadingProfile, setUploadingProfile] = useState(false);
 
   useEffect(() => {
-    if (!id) return; // Wait for valid ID
+    console.log("Profile useEffect - Route ID:", routeId);
+    console.log("Profile useEffect - Logged in user:", loggedInUser);
 
-    const fetchData = async () => {
-      try {
-        // Fetch user info
-        const userRes = await axios.get(`http://localhost:3000/api/users/${id}`);
-        const userData = userRes.data || {};
-        userData.followers = userData.followers || [];
-        setUser(userData);
+    // If we have a route ID, use that
+    if (routeId) {
+      console.log("Using route ID:", routeId);
+      fetchProfileData(routeId);
+      return;
+    }
 
-        // Fetch posts for this user
-        const postsRes = await axios.get(
-          `http://localhost:3000/api/posts?userId=${id}`
-        );
-        const allPosts = postsRes.data?.posts || [];
+    // If no route ID, check if we have a valid logged-in user
+    if (loggedInUser && loggedInUser._id) {
+      console.log("Using logged in user ID:", loggedInUser._id);
+      fetchProfileData(loggedInUser._id);
+      return;
+    }
 
-        const userPosts = allPosts.filter(
-          (post) => post.user?._id === id || post.sharedFrom?.user?._id === id
-        );
+    // If we get here, we have no valid ID
+    console.log("No valid ID available");
+    setLoading(false);
+  }, [routeId, loggedInUser]);
 
-        userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(userPosts);
-      } catch (err) {
-        console.error("Error fetching profile data:", err);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProfileData = async (profileId) => {
+    if (!profileId) {
+      console.error("No profile ID provided to fetchProfileData");
+      setLoading(false);
+      return;
+    }
 
-    fetchData();
-  }, [id]);
+    try {
+      setLoading(true);
+      console.log("Fetching data for profile ID:", profileId);
+
+      // Fetch user info
+      const userRes = await axios.get(
+        `http://localhost:3000/api/users/${profileId}`
+      );
+      const userData = userRes.data || {};
+      userData.followers = userData.followers || [];
+      setUser(userData);
+
+      // Fetch posts for this user
+      const postsRes = await axios.get(
+        `http://localhost:3000/api/posts?userId=${profileId}`
+      );
+      const allPosts = postsRes.data?.posts || [];
+
+      const userPosts = allPosts.filter(
+        (post) =>
+          post.user?._id === profileId ||
+          post.sharedFrom?.user?._id === profileId
+      );
+
+      userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(userPosts);
+
+      console.log("Data fetched successfully");
+    } catch (err) {
+      console.error("Error fetching profile data:", err);
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleUpdatePost = async (postId, reaction) => {
     try {
@@ -64,7 +94,11 @@ export default function Profile() {
       setPosts((prevPosts) =>
         prevPosts.map((p) =>
           p._id === postId
-            ? { ...p, reactions: res.data.reactions, userReaction: res.data.userReaction }
+            ? {
+                ...p,
+                reactions: res.data.reactions,
+                userReaction: res.data.userReaction,
+              }
             : p
         )
       );
@@ -75,18 +109,28 @@ export default function Profile() {
 
   const handleFileUpload = async (e, type) => {
     const file = e.target.files[0];
-    if (!file) return;
+    const profileId = routeId || loggedInUser?._id;
+
+    if (!file || !profileId) return;
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      type === "cover" ? setUploadingCover(true) : setUploadingProfile(true);
+      if (type === "cover") {
+        setUploadingCover(true);
+      } else {
+        setUploadingProfile(true);
+      }
 
       const res = await axios.post(
-        `http://localhost:3000/api/users/${id}/upload-${type}`,
+        `http://localhost:3000/api/users/${profileId}/upload-${type}`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       setUser((prev) => ({
@@ -96,13 +140,67 @@ export default function Profile() {
     } catch (err) {
       console.error(`Error uploading ${type}:`, err);
     } finally {
-      type === "cover" ? setUploadingCover(false) : setUploadingProfile(false);
+      if (type === "cover") {
+        setUploadingCover(false);
+      } else {
+        setUploadingProfile(false);
+      }
     }
   };
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
-  if (!id) return <div className="text-center mt-10">No user selected</div>;
-  if (!user) return <div className="text-center mt-10">User not found</div>;
+  // Determine current profile ID for rendering
+  const currentProfileId =
+    routeId || (loggedInUser?._id ? loggedInUser._id : null);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // No ID state - user not logged in and no route ID
+  if (!currentProfileId) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center text-gray-600">
+          <p className="text-lg">Please log in to view profiles</p>
+          <p className="text-sm mt-2">
+            You need to be logged in to access profiles
+          </p>
+          <button
+            onClick={() => navigate("/login")}
+            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Go to Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // User not found state
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center text-gray-600">
+          <p className="text-lg">Profile not found</p>
+          <p className="text-sm mt-2">The user profile could not be loaded</p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Go Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 text-black">
@@ -112,15 +210,23 @@ export default function Profile() {
           src={user.coverPicture || "/default-cover.jpg"}
           alt="Cover"
           className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.src = "/default-cover.jpg";
+          }}
         />
-        {loggedInUser?._id === id && (
-          <label className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer">
-            {uploadingCover ? "Uploading..." : <Camera size={20} />}
+        {loggedInUser?._id === currentProfileId && (
+          <label className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
+            {uploadingCover ? (
+              <span className="text-xs">Uploading...</span>
+            ) : (
+              <Camera size={20} />
+            )}
             <input
               type="file"
               accept="image/*"
               className="hidden"
               onChange={(e) => handleFileUpload(e, "cover")}
+              disabled={uploadingCover}
             />
           </label>
         )}
@@ -134,50 +240,67 @@ export default function Profile() {
               src={user.profilePicture || "/default-profile.png"}
               alt={user.name || "User"}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.src = "/default-profile.png";
+              }}
             />
-            {loggedInUser?._id === id && (
-              <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full shadow-md cursor-pointer">
-                {uploadingProfile ? "Uploading..." : <Camera size={18} />}
+            {loggedInUser?._id === currentProfileId && (
+              <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
+                {uploadingProfile ? (
+                  <span className="text-xs">...</span>
+                ) : (
+                  <Camera size={18} />
+                )}
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={(e) => handleFileUpload(e, "profile")}
+                  disabled={uploadingProfile}
                 />
               </label>
             )}
           </div>
 
           <div className="flex-1">
-            <h1 className="text-3xl font-bold">{user.name || "Unknown"}</h1>
-            <p className="text-gray-600">
-              @{user.username || "username"} | {user.bio || "No bio"}
+            <h1 className="text-3xl font-bold text-gray-900">
+              {user.name || "Unknown User"}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              @{user.username || "username"} {user.bio && "| " + user.bio}
             </p>
             <div className="flex gap-4 mt-2 text-gray-700 text-sm flex-wrap">
+              {user.location && (
+                <span className="flex items-center gap-1">
+                  <MapPin size={16} />
+                  {user.location}
+                </span>
+              )}
               <span className="flex items-center gap-1">
-                <MapPin size={16} /> {user.location || "Unknown"}
+                <Users size={16} />
+                {user.followers?.length || 0} followers
               </span>
               <span className="flex items-center gap-1">
-                <Users size={16} /> {user.followers?.length || 0} followers
-              </span>
-              <span className="flex items-center gap-1">
-                <CalendarDays size={16} /> Joined{" "}
-                {user.createdAt ? new Date(user.createdAt).getFullYear() : "N/A"}
+                <CalendarDays size={16} />
+                Joined{" "}
+                {user.createdAt
+                  ? new Date(user.createdAt).getFullYear()
+                  : "N/A"}
               </span>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="mt-6 border-b flex gap-8 text-gray-700 font-medium">
+        <div className="mt-6 border-b border-gray-300 flex gap-8 text-gray-700 font-medium">
           {["Posts", "About", "Friends", "Photos"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-3 ${
+              className={`pb-3 px-1 transition-colors ${
                 activeTab === tab
-                  ? "border-b-2 border-black font-semibold"
-                  : "hover:border-b-2 hover:border-gray-400"
+                  ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
+                  : "hover:text-gray-900"
               }`}
             >
               {tab}
@@ -197,14 +320,22 @@ export default function Profile() {
                 />
               ))
             ) : (
-              <p className="text-gray-500 text-center">No posts yet.</p>
+              <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">No posts yet.</p>
+                <p className="text-gray-400 text-sm mt-2">
+                  When {user.name || "this user"} posts something, it will
+                  appear here.
+                </p>
+              </div>
             )}
           </div>
         )}
 
         {activeTab !== "Posts" && (
-          <div className="mt-6 text-center text-gray-500">
-            {activeTab} content will be shown here.
+          <div className="mt-6 text-center py-12">
+            <p className="text-gray-500">
+              {activeTab} content will be shown here.
+            </p>
           </div>
         )}
       </div>

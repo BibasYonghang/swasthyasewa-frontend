@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/auth/AuthSlice.jsx";
 import {
   Mail,
   Lock,
@@ -13,12 +15,12 @@ import {
   Shield,
   Globe,
   Smartphone,
-  Laptop,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const canvasRef = useRef(null);
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -144,8 +146,15 @@ export default function Login() {
       const res = await axios.post("http://localhost:3000/api/login", form, {
         headers: { "Content-Type": "application/json" },
       });
+
+      console.log("Login response:", res.data); // Debug log
+
+      // ✅ Save token and user to localStorage
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // ✅ CRITICAL: Dispatch user data to Redux store
+      dispatch(setUser(res.data.user));
 
       navigate("/home");
     } catch (err) {

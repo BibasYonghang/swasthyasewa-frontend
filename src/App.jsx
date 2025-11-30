@@ -1,4 +1,8 @@
+// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser, setToken } from "./redux/auth/AuthSlice.jsx";
 import MainLayout from "./Layout/MainLayout.jsx";
 import AdminLayout from "./Layout//AdminLayout.jsx";
 import Home from "./pages/Home.jsx";
@@ -28,7 +32,20 @@ import Profile from "./pages/Profile.jsx";
 import Comment from "./pages/Comment.jsx";
 import NavbarLayout from "./Layout/NavbarLayout.jsx";
 
-export default function App() {
+function AppContent() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Auto-login from localStorage
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
+    if (token && user) {
+      dispatch(setToken(token));
+      dispatch(setUser(JSON.parse(user)));
+    }
+  }, [dispatch]);
+
   return (
     <Router>
       <Routes>
@@ -91,3 +108,5 @@ export default function App() {
     </Router>
   );
 }
+
+export default AppContent;
