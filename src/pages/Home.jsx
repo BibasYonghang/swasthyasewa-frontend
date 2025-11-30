@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux"; // ✅ Import Redux hook
 import { fetchPosts, sendReaction } from "../api/posts";
-import HomeTop from "../components/Home/HomeTop";
-import PostCard from "../components/Home/PostCard";
+import HomeTop from "../Components/Home/HomeTop.jsx";
+import PostCard from "../Components/Home/PostCard.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
