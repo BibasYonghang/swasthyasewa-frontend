@@ -29,6 +29,8 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
 
+  const API = import.meta.env.VITE_API_BASE;
+
   const features = [
     {
       icon: Zap,
@@ -143,7 +145,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("https://neighborly-backend-c0qy.onrender.com/api/login", form, {
+      const res = await axios.post(`${API}/api/login`, form, {
         headers: { "Content-Type": "application/json" },
       });
 

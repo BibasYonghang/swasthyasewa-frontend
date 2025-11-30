@@ -38,6 +38,8 @@ export default function Register() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
+  const API = import.meta.env.VITE_API_BASE;
+
   const features = [
     {
       icon: Users,
@@ -176,7 +178,7 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      await axios.post("https://neighborly-backend-c0qy.onrender.com/api/register", form, {
+      await axios.post(`${API}/api/register`, form, {
         headers: { "Content-Type": "application/json" },
       });
 

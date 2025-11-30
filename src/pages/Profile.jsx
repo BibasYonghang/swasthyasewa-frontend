@@ -18,6 +18,9 @@ export default function Profile() {
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingProfile, setUploadingProfile] = useState(false);
 
+    const API = import.meta.env.VITE_API_BASE;
+
+
   useEffect(() => {
     console.log("Profile useEffect - Route ID:", routeId);
     console.log("Profile useEffect - Logged in user:", loggedInUser);
@@ -54,7 +57,7 @@ export default function Profile() {
 
       // Fetch user info
       const userRes = await axios.get(
-        `https://neighborly-backend-c0qy.onrender.com/api/users/${profileId}`
+        `${API}/api/users/${profileId}`
       );
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
@@ -62,7 +65,7 @@ export default function Profile() {
 
       // Fetch posts for this user
       const postsRes = await axios.get(
-        `https://neighborly-backend-c0qy.onrender.com/api/posts?userId=${profileId}`
+        `${API}/api/posts?userId=${profileId}`
       );
       const allPosts = postsRes.data?.posts || [];
 
@@ -87,7 +90,7 @@ export default function Profile() {
   const handleUpdatePost = async (postId, reaction) => {
     try {
       const res = await axios.post(
-        `https://neighborly-backend-c0qy.onrender.com/api/posts/${postId}/reaction`,
+        `${API}/api/posts/${postId}/reaction`,
         { reaction }
       );
 
@@ -124,7 +127,7 @@ export default function Profile() {
       }
 
       const res = await axios.post(
-        `https://neighborly-backend-c0qy.onrender.com/api/users/${profileId}/upload-${type}`,
+        `${API}/api/users/${profileId}/upload-${type}`,
         formData,
         {
           headers: {
