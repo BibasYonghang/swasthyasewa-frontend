@@ -30,6 +30,7 @@ export default function Login() {
   const [currentFeature, setCurrentFeature] = useState(0);
 
   const API = import.meta.env.VITE_API_BASE;
+  console.log("API base URL:", import.meta.env.VITE_API_BASE);
 
   const features = [
     {
