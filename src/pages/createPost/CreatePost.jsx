@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Image, MapPin, Send, Smile, X, Loader } from "lucide-react";
-import { createNewPost } from "../../api/posts";
+import { createNewPost } from "../../config/api/posts.js";
 import { useNavigate } from "react-router-dom";
 
 export default function CreatePostPage() {

@@ -17,6 +17,7 @@ import {
   Globe,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL } from "../config/env.js";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -38,32 +39,36 @@ export default function Register() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const API = import.meta.env.VITE_API_BASE;
+  console.log("BACKEND_URL:", BACKEND_URL);
 
+  // Features updated for HealthConnect
   const features = [
     {
       icon: Users,
-      title: "Join Our Community",
+      title: "Connect with Verified Doctors",
       description:
-        "Connect with thousands of helpers and problem-solvers worldwide",
+        "Schedule video calls, chat, and follow up with trusted medical professionals worldwide.",
       color: "from-blue-400 to-cyan-500",
     },
     {
       icon: Rocket,
-      title: "Instant Access",
-      description: "Start getting help and providing assistance immediately",
+      title: "Track Your Health Progress",
+      description:
+        "Monitor fitness, sleep, diet, and chronic condition metrics, all in one app.",
       color: "from-purple-400 to-pink-500",
     },
     {
       icon: Shield,
-      title: "Secure Platform",
-      description: "Your data is protected with enterprise-grade security",
+      title: "Secure & Private",
+      description:
+        "End-to-end encryption for personal health records, lab results, and consultations.",
       color: "from-green-400 to-emerald-500",
     },
     {
       icon: Globe,
-      title: "Global Reach",
-      description: "Access help anytime, anywhere across the globe",
+      title: "Global Health Platform",
+      description:
+        "Access health support anytime, anywhere, with wearable & telemedicine integration.",
       color: "from-orange-400 to-red-500",
     },
   ];
@@ -178,11 +183,11 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      await axios.post(`${API}/register`, form, {
+      await axios.post(`${BACKEND_URL}/api/register`, form, {
         headers: { "Content-Type": "application/json" },
       });
 
-      setSuccess("🎉 Account created successfully! Welcome to our community!");
+      setSuccess("🎉 Account created successfully! Welcome to HealthConnect!");
       setForm({ name: "", email: "", password: "" });
 
       setTimeout(() => navigate("/login"), 2000);
@@ -223,62 +228,42 @@ export default function Register() {
     }
   }, [success]);
 
+  // Motion variants (unchanged)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
+      transition: { delayChildren: 0.3, staggerChildren: 0.2 },
     },
   };
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
+      transition: { type: "spring", stiffness: 100, damping: 10 },
     },
   };
-
   const cardVariants = {
     hidden: { scale: 0.9, opacity: 0, rotateX: 10 },
     visible: {
       scale: 1,
       opacity: 1,
       rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        delay: 0.2,
-      },
+      transition: { type: "spring", stiffness: 100, delay: 0.2 },
     },
     hover: {
       y: -5,
       scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-      },
+      transition: { type: "spring", stiffness: 400 },
     },
   };
-
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)",
-    },
+    hover: { scale: 1.05, boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)" },
     tap: { scale: 0.95 },
     loading: { scale: 0.98 },
   };
-
   const inputVariants = {
     focus: {
       scale: 1.02,
@@ -286,7 +271,6 @@ export default function Register() {
       transition: { type: "spring", stiffness: 400 },
     },
   };
-
   const progressVariants = {
     initial: { width: 0 },
     animate: {
@@ -329,7 +313,7 @@ export default function Register() {
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
-              Neighborly
+              HealthConnect
             </h1>
           </motion.div>
 
@@ -366,10 +350,10 @@ export default function Register() {
           {/* Benefits List */}
           <motion.div className="space-y-4 mt-8" variants={itemVariants}>
             {[
-              "Instant access to global helper network",
-              "24/7 real-time assistance",
-              "Secure and private communication",
-              "Multi-platform support",
+              "Personalized health insights and reports",
+              "Track progress with wearables integration",
+              "Secure communication with doctors",
+              "Real-time consultation & follow-ups",
             ].map((benefit, index) => (
               <motion.div
                 key={index}
@@ -413,10 +397,11 @@ export default function Register() {
                   <UserPlus className="text-white" size={22} />
                 </motion.div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Join Our Community
+                  Start Your Health Journey
                 </h2>
                 <p className="text-gray-600 text-lg">
-                  Start your journey with us today
+                  Sign up to track, test, and connect with verified doctors
+                  globally
                 </p>
               </motion.div>
 
@@ -659,26 +644,26 @@ export default function Register() {
                   </motion.div>
                 </p>
               </motion.div>
-            </motion.div>
 
-            {/* Mobile Feature Indicator */}
-            <motion.div
-              className="lg:hidden flex justify-center mt-6 space-x-2"
-              variants={itemVariants}
-            >
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentFeature
-                      ? "bg-purple-600 w-6"
-                      : "bg-gray-300"
-                  }`}
-                  onClick={() => setCurrentFeature(index)}
-                  type="button"
-                  aria-label={`Show feature ${index + 1}`}
-                />
-              ))}
+              {/* Mobile Feature Indicator */}
+              <motion.div
+                className="lg:hidden flex justify-center mt-6 space-x-2"
+                variants={itemVariants}
+              >
+                {features.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentFeature
+                        ? "bg-purple-600 w-6"
+                        : "bg-gray-300"
+                    }`}
+                    onClick={() => setCurrentFeature(index)}
+                    type="button"
+                    aria-label={`Show feature ${index + 1}`}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -687,22 +672,12 @@ export default function Register() {
       {/* Floating Elements */}
       <motion.div
         className="absolute top-20 left-20 w-3 h-3 bg-purple-400 rounded-full opacity-60 hidden lg:block"
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={{ y: [0, -30, 0], opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-32 right-32 w-4 h-4 bg-pink-400 rounded-full opacity-40 hidden lg:block"
-        animate={{
-          y: [0, 20, 0],
-          opacity: [0.4, 0.8, 0.4],
-        }}
+        animate={{ y: [0, 20, 0], opacity: [0.4, 0.8, 0.4] }}
         transition={{
           duration: 3,
           repeat: Infinity,

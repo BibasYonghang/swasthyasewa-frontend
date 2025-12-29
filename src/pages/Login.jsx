@@ -11,12 +11,13 @@ import {
   Eye,
   EyeOff,
   Sparkles,
-  Zap,
+  Users,
+  Rocket,
   Shield,
   Globe,
-  Smartphone,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL } from "../config/env.js";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -29,41 +30,42 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
 
-  const API = import.meta.env.VITE_API_BASE;
-  console.log("API base URL:", import.meta.env.VITE_API_BASE);
-
+  // Features updated for HealthConnect
   const features = [
     {
-      icon: Zap,
-      title: "Lightning Fast",
-      description: "Instant access to real-time assistance",
-      color: "from-yellow-400 to-orange-500",
+      icon: Users,
+      title: "Connect with Verified Doctors",
+      description:
+        "Schedule video calls, chat, and follow up with trusted medical professionals worldwide.",
+      color: "from-blue-400 to-cyan-500",
+    },
+    {
+      icon: Rocket,
+      title: "Track Your Health Progress",
+      description:
+        "Monitor fitness, sleep, diet, and chronic condition metrics, all in one app.",
+      color: "from-purple-400 to-pink-500",
     },
     {
       icon: Shield,
       title: "Secure & Private",
-      description: "Your data is encrypted and protected",
-      color: "from-green-400 to-blue-500",
+      description:
+        "End-to-end encryption for personal health records, lab results, and consultations.",
+      color: "from-green-400 to-emerald-500",
     },
     {
       icon: Globe,
-      title: "Global Network",
-      description: "Connect with helpers worldwide",
-      color: "from-purple-400 to-pink-500",
-    },
-    {
-      icon: Smartphone,
-      title: "Multi-Device",
-      description: "Access from any device, anywhere",
-      color: "from-blue-400 to-cyan-500",
+      title: "Global Health Platform",
+      description:
+        "Access health support anytime, anywhere, with wearable & telemedicine integration.",
+      color: "from-orange-400 to-red-500",
     },
   ];
 
-  // Animated background particles
+  // Animated background particles (unchanged)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -81,17 +83,14 @@ export default function Login() {
         this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
         this.alpha = Math.random() * 0.6 + 0.2;
       }
-
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-
         if (this.x > canvas.width) this.x = 0;
         else if (this.x < 0) this.x = canvas.width;
         if (this.y > canvas.height) this.y = 0;
         else if (this.y < 0) this.y = canvas.height;
       }
-
       draw() {
         ctx.save();
         ctx.globalAlpha = this.alpha;
@@ -109,20 +108,18 @@ export default function Login() {
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
       });
       requestAnimationFrame(animate);
     }
-
     animate();
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -144,27 +141,21 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      const res = await axios.post(`${API}/login`, form, {
+      const res = await axios.post(`${BACKEND_URL}/api/login`, form, {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log("Login response:", res.data); // Debug log
-
-      // ✅ Save token and user to localStorage
+      // Save token and user
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      // ✅ CRITICAL: Dispatch user data to Redux store
       dispatch(setUser(res.data.user));
-
       navigate("/home");
     } catch (err) {
       setError(
         err?.response?.data?.message || "Login failed. Please try again."
       );
-      setForm((prevForm) => ({ ...prevForm, password: "" }));
+      setForm((prev) => ({ ...prev, password: "" }));
     } finally {
       setIsLoading(false);
     }
@@ -184,58 +175,37 @@ export default function Login() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
+      transition: { delayChildren: 0.3, staggerChildren: 0.2 },
     },
   };
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
+      transition: { type: "spring", stiffness: 100, damping: 10 },
     },
   };
-
   const cardVariants = {
     hidden: { scale: 0.9, opacity: 0, rotateX: 10 },
     visible: {
       scale: 1,
       opacity: 1,
       rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        delay: 0.2,
-      },
+      transition: { type: "spring", stiffness: 100, delay: 0.2 },
     },
     hover: {
       y: -5,
       scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-      },
+      transition: { type: "spring", stiffness: 400 },
     },
   };
-
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)",
-    },
+    hover: { scale: 1.05, boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)" },
     tap: { scale: 0.95 },
     loading: { scale: 0.98 },
   };
-
   const inputVariants = {
     focus: {
       scale: 1.02,
@@ -266,7 +236,6 @@ export default function Login() {
           initial="hidden"
           animate="visible"
         >
-          {/* Logo */}
           <motion.div
             className="flex items-center gap-3 mb-8"
             variants={itemVariants}
@@ -278,11 +247,10 @@ export default function Login() {
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
-              Neighborly
+              HealthConnect
             </h1>
           </motion.div>
 
-          {/* Feature Carousel */}
           <div className="relative h-64">
             <AnimatePresence mode="wait">
               <motion.div
@@ -311,21 +279,6 @@ export default function Login() {
               </motion.div>
             </AnimatePresence>
           </div>
-
-          {/* Stats */}
-          <motion.div
-            className="grid grid-cols-2 gap-6 mt-8"
-            variants={itemVariants}
-          >
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-800">50K+</div>
-              <div className="text-gray-600 text-sm">Active Users</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-800">24/7</div>
-              <div className="text-gray-600 text-sm">Support</div>
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* Right Side - Login Form */}
@@ -357,11 +310,10 @@ export default function Login() {
                   Welcome Back
                 </h2>
                 <p className="text-gray-600 text-lg">
-                  Sign in to continue your journey
+                  Sign in to track your health & connect with doctors
                 </p>
               </motion.div>
 
-              {/* Messages */}
               <AnimatePresence>
                 {error && (
                   <motion.div
@@ -381,7 +333,6 @@ export default function Login() {
                 className="space-y-6"
                 variants={containerVariants}
               >
-                {/* Email Field */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Email Address
@@ -403,7 +354,6 @@ export default function Login() {
                   </motion.div>
                 </motion.div>
 
-                {/* Password Field */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Password
@@ -434,7 +384,6 @@ export default function Login() {
                   </motion.div>
                 </motion.div>
 
-                {/* Submit Button */}
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"
@@ -461,8 +410,6 @@ export default function Login() {
                       )}
                       {isLoading ? "Signing In..." : "Sign In"}
                     </div>
-
-                    {/* Button Shine Effect */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                       initial={{ x: "-100%" }}
@@ -501,26 +448,26 @@ export default function Login() {
                   </motion.span>
                 </p>
               </motion.div>
-            </motion.div>
 
-            {/* Mobile Feature Indicator */}
-            <motion.div
-              className="lg:hidden flex justify-center mt-6 space-x-2"
-              variants={itemVariants}
-            >
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentFeature
-                      ? "bg-indigo-600 w-6"
-                      : "bg-gray-300"
-                  }`}
-                  onClick={() => setCurrentFeature(index)}
-                  aria-label={`Show feature ${index + 1}`}
-                />
-              ))}
+              {/* Mobile Feature Indicators */}
+              <motion.div
+                className="lg:hidden flex justify-center mt-6 space-x-2"
+                variants={itemVariants}
+              >
+                {features.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentFeature
+                        ? "bg-indigo-600 w-6"
+                        : "bg-gray-300"
+                    }`}
+                    onClick={() => setCurrentFeature(index)}
+                    aria-label={`Show feature ${index + 1}`}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -529,22 +476,12 @@ export default function Login() {
       {/* Floating Elements */}
       <motion.div
         className="absolute bottom-20 left-20 w-3 h-3 bg-indigo-400 rounded-full opacity-60 hidden lg:block"
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={{ y: [0, -30, 0], opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute top-32 right-32 w-4 h-4 bg-purple-400 rounded-full opacity-40 hidden lg:block"
-        animate={{
-          y: [0, 20, 0],
-          opacity: [0.4, 0.8, 0.4],
-        }}
+        animate={{ y: [0, 20, 0], opacity: [0.4, 0.8, 0.4] }}
         transition={{
           duration: 3,
           repeat: Infinity,

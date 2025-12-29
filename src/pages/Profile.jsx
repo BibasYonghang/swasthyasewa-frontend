@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
 import PostCard from "../Components/Home/PostCard";
+import { BACKEND_URL } from "../config/env.js";
 
 export default function Profile() {
   const { id: routeId } = useParams();
@@ -17,9 +18,6 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("Posts");
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingProfile, setUploadingProfile] = useState(false);
-
-    const API = import.meta.env.VITE_API_BASE;
-
 
   useEffect(() => {
     console.log("Profile useEffect - Route ID:", routeId);
@@ -56,16 +54,14 @@ export default function Profile() {
       console.log("Fetching data for profile ID:", profileId);
 
       // Fetch user info
-      const userRes = await axios.get(
-        `${API}/users/${profileId}`
-      );
+      const userRes = await axios.get(`${BACKEND_URL}/api/users/${profileId}`);
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
       setUser(userData);
 
       // Fetch posts for this user
       const postsRes = await axios.get(
-        `${API}/posts?userId=${profileId}`
+        `${BACKEND_URL}/api/posts?userId=${profileId}`
       );
       const allPosts = postsRes.data?.posts || [];
 
@@ -90,7 +86,7 @@ export default function Profile() {
   const handleUpdatePost = async (postId, reaction) => {
     try {
       const res = await axios.post(
-        `${API}/posts/${postId}/reaction`,
+        `${BACKEND_URL}/api/posts/${postId}/reaction`,
         { reaction }
       );
 
@@ -127,7 +123,7 @@ export default function Profile() {
       }
 
       const res = await axios.post(
-        `${API}/users/${profileId}/upload-${type}`,
+        `${BACKEND_URL}/api/users/${profileId}/upload-${type}`,
         formData,
         {
           headers: {
