@@ -2,7 +2,7 @@
 .env.development
 .env.production
 
-.branchMerging.md
+branchMerging.md
 
 # Logs
 logs

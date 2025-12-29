@@ -25,7 +25,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/home" className="flex items-center gap-2">
             <img
-              src="/neighborly-logo.png"
+              src="/swasthyasewa-logo.png"
               alt="Neighborly Logo"
               className="h-12 w-12 object-contain"
             />

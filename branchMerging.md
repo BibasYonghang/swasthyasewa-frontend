@@ -149,3 +149,11 @@ bash
 Copy code
 git branch -d <branch-name>      # delete local branch
 git push origin --delete <branch-name>  # delete remote branch
+
+
+
+Recommended professional workflow (best practice)
+git checkout -b feature-name
+git add .
+git commit -m "Meaningful message"
+git push -u origin feature-name
