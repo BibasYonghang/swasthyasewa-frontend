@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE = import.meta.env.VITE_API_BASE;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem("token");
@@ -15,7 +15,7 @@ const getAuthHeaders = () => {
 export const fetchPosts = async (page, limit = 5) => {
   try {
     const res = await axios.get(
-      `${API_BASE}/posts?page=${page}&limit=${limit}`,
+      `${BACKEND_URL}/api/posts?page=${page}&limit=${limit}`,
       {
         headers: getAuthHeaders(),
       }
@@ -37,7 +37,7 @@ export const fetchPosts = async (page, limit = 5) => {
 export const sendReaction = async (postId, reaction) => {
   try {
     const res = await axios.post(
-      `${API_BASE}/posts/${postId}/react`,
+      `${BACKEND_URL}/api/posts/${postId}/react`,
       { reaction }, // only reaction needed
       { headers: getAuthHeaders() }
     );
@@ -57,7 +57,7 @@ export const sendReaction = async (postId, reaction) => {
 export const shareToTimeline = async (postId, comment) => {
   try {
     const res = await axios.post(
-      `${API_BASE}/posts/${postId}/share`,
+      `${BACKEND_URL}/api/posts/${postId}/share`,
       { comment },
       { headers: getAuthHeaders() }
     );
@@ -81,7 +81,7 @@ export const shareToTimeline = async (postId, comment) => {
 export const shareInMessenger = async (postId, toUser, comment) => {
   try {
     const res = await axios.post(
-      `${API_BASE}/posts/${postId}/share-messenger`,
+      `${BACKEND_URL}/api/posts/${postId}/share-messenger`,
       { toUser, comment },
       { headers: getAuthHeaders() }
     );
@@ -103,7 +103,7 @@ export const shareInMessenger = async (postId, toUser, comment) => {
  */
 export const createNewPost = async (formData, token) => {
   try {
-    const res = await fetch(`${API_BASE}/posts`, {
+    const res = await fetch(`${BACKEND_URL}/api/posts`, {
       method: "POST",
       body: formData, // Let the browser set Content-Type automatically for FormData
       headers: token ? { Authorization: `Bearer ${token}` } : getAuthHeaders(),
