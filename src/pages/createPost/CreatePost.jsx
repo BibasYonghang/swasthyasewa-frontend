@@ -17,34 +17,28 @@ export default function CreatePostPage() {
   const navigate = useNavigate();
 
   const feelings = [
-    { emoji: "😊", label: "Happy" },
-    { emoji: "😢", label: "Sad" },
-    { emoji: "😡", label: "Angry" },
-    { emoji: "😴", label: "Tired" },
-    { emoji: "🤩", label: "Excited" },
-    { emoji: "😎", label: "Cool" },
-    { emoji: "❤️", label: "Loved" },
-    { emoji: "😮", label: "Surprised" },
-    { emoji: "🏃", label: "Running" },
-    { emoji: "🍕", label: "Eating" },
-    { emoji: "🎵", label: "Listening to music" },
-    { emoji: "🎮", label: "Gaming" },
+    { emoji: "💪", label: "Exercised" },
+    { emoji: "🛌", label: "Slept Well" },
+    { emoji: "🤒", label: "Feeling Unwell" },
+    { emoji: "🩺", label: "Doctor Visit" },
+    { emoji: "🥗", label: "Healthy Meal" },
+    { emoji: "💊", label: "Took Medication" },
+    { emoji: "🧘", label: "Meditation / Yoga" },
+    { emoji: "🏃", label: "Running / Walking" },
+    { emoji: "🚴", label: "Cycling" },
+    { emoji: "🧴", label: "Self Care" },
   ];
 
   const popularLocations = [
-    "New York, NY",
-    "Los Angeles, CA",
-    "Chicago, IL",
-    "Miami, FL",
-    "San Francisco, CA",
-    "Seattle, WA",
-    "Austin, TX",
-    "Boston, MA",
     "Home",
-    "Work",
-    "Beach",
-    "Restaurant",
+    "Gym",
+    "Clinic",
+    "Hospital",
+    "Pharmacy",
+    "Yoga Studio",
     "Park",
+    "Lab",
+    "Office",
   ];
 
   const handleImageSelect = (event) => {
@@ -120,8 +114,8 @@ export default function CreatePostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-gray-50 py-8">
+      <div className="w-[90vw] sm:w-[70vw] mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Header */}
         <div className="border-b border-gray-200 px-6 py-4">
           <h1 className="text-2xl font-bold text-gray-800">Create Post</h1>
@@ -172,7 +166,8 @@ export default function CreatePostPage() {
               <textarea
                 value={postText}
                 onChange={(e) => setPostText(e.target.value)}
-                placeholder="What's on your mind?"
+                placeholder="Share your health update or question..."
+                aria-label="Health Update"
                 className="w-full resize-none p-4 rounded-2xl bg-gray-50 outline-none text-gray-800 placeholder-gray-500 border border-gray-200 focus:border-blue-500 transition-colors min-h-[120px]"
                 rows={4}
               />
@@ -228,52 +223,49 @@ export default function CreatePostPage() {
 
         {/* Action buttons */}
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            {/* Left side action buttons */}
-            <div className="flex gap-2">
-              {/* Photo upload */}
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
-              >
-                <Image size={20} className="text-green-500" />
-                <span>Photo</span>
-                {selectedImages.length > 0 && (
-                  <span className="bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    {selectedImages.length}
-                  </span>
-                )}
-              </button>
+          {/* Left side action buttons */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {/* Photo upload */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center justify-center hover:cursor-pointer gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+            >
+              <Image size={20} className="text-green-500" />
+              <span>Photo</span>
+              {selectedImages.length > 0 && (
+                <span className="bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {selectedImages.length}
+                </span>
+              )}
+            </button>
 
-              {/* Location */}
-              <button
-                onClick={() => setShowLocationModal(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
-              >
-                <MapPin size={20} className="text-red-500" />
-                <span>Location</span>
-              </button>
+            {/* Location */}
+            <button
+              onClick={() => setShowLocationModal(true)}
+              className="flex hover:cursor-pointer justify-center items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+            >
+              <MapPin size={20} className="text-red-500" />
+              <span>Location</span>
+            </button>
 
-              {/* Feeling */}
-              <button
-                onClick={() => setShowFeelingModal(true)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
-              >
-                <Smile size={20} className="text-yellow-500" />
-                <span>Feeling</span>
-              </button>
-            </div>
-
+            {/* Feeling */}
+            <button
+              onClick={() => setShowFeelingModal(true)}
+              className="flex hover:cursor-pointer justify-center items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"
+            >
+              <Smile size={20} className="text-yellow-500" />
+              <span>Feeling</span>
+            </button>
             {/* Post button */}
             <button
               onClick={handleSubmit}
               disabled={
                 loading || (!postText.trim() && selectedImages.length === 0)
               }
-              className={`flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+              className={`flex items-center gap-2 justify-center px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
                 loading || (!postText.trim() && selectedImages.length === 0)
                   ? "bg-gray-400 cursor-not-allowed text-white"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  : "bg-gradient-to-r from-blue-600 hover:cursor-pointer to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               }`}
             >
               {loading ? (

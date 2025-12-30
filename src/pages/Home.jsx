@@ -36,7 +36,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center min-h-screen mt-16 relative">
+    <div className="flex justify-center min-h-screen mt-2 relative">
       <div className="w-full max-w-lg">
         {/* ✅ Pass logged-in user to HomeTop */}
         <HomeTop currentUser={loggedInUser} />
