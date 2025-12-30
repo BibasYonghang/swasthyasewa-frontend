@@ -83,7 +83,7 @@ export default function LeftSidebar() {
   const user = useSelector((state) => state.auth.user); // <-- FIXED
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 h-screen sticky left-0 top-16 bg-whiter rounded-2xl border-gray-200 p-4">
+    <aside className="hidden lg:flex flex-col w-64 bg-white h-screen sticky left-0 top-16 bg-whiter rounded-2xl border-gray-200 p-4">
       {/* User Profile */}
       <div className="mb-4 px-2 flex items-center gap-3">
         <img
@@ -103,7 +103,7 @@ export default function LeftSidebar() {
               href={item.path}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-200 text-gray-700 transition-all"
+              className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700 transition-all"
             >
               <span className={item.classname}>{item.icon}</span>
               <span className="text-md font-semibold">{item.name}</span>
@@ -113,7 +113,7 @@ export default function LeftSidebar() {
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-200 text-gray-700 transition-all ${
+                `flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700 transition-all ${
                   isActive ? "font-bold text-indigo-600" : ""
                 }`
               }

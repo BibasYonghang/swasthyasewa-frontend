@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"; // ✅ Import Redux hook
 import { fetchPosts, sendReaction } from "../config/api/posts.js";
 import HomeTop from "../Components/Home/HomeTop.jsx";
 import PostCard from "../Components/Home/PostCard.jsx";
+import StorySection from "../Components/Home/StorySection.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -37,9 +38,10 @@ export default function Home() {
 
   return (
     <div className="flex justify-center min-h-screen mt-2 relative">
-      <div className="w-full max-w-lg">
+      <div className="lg:w-md xl:w-xl w-[96vw]">
         {/* ✅ Pass logged-in user to HomeTop */}
         <HomeTop currentUser={loggedInUser} />
+        <StorySection />
         <InfiniteScroll
           dataLength={posts.length}
           next={getPosts}
