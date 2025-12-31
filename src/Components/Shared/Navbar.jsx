@@ -22,6 +22,8 @@ import {
   Shield,
   HelpCircle,
 } from "lucide-react";
+import { scrollToTop } from "../../utils/scrollToTop.js";
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,6 +32,9 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const profileRef = useRef(null);
   const notificationsRef = useRef(null);
+  const currentUser = useSelector((state) => state.auth.user);
+
+  if (!currentUser || !currentUser._id) return null;
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -85,15 +90,18 @@ export default function Navbar() {
           {/* LEFT: Logo & Search */}
           <div className="flex items-center gap-3">
             {/* Logo */}
-            <Link to="/home" className="flex items-center gap-2 min-w-fit">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/swasthyasewa-logo.png"
-                  alt="HealthConnect Logo"
-                  className="h-9 w-9 object-contain rounded-full"
-                />
-              </div>
-            </Link>
+            <button
+              onClick={scrollToTop}
+              type="button"
+              aria-label="Scroll To Top"
+              className="flex items-center hover:cursor-pointer gap-2 min-w-fit"
+            >
+              <img
+                src="/swasthyasewa-logo.png"
+                alt="HealthConnect Logo"
+                className="h-9 w-9 object-contain rounded-full"
+              />
+            </button>
 
             {/* Search Bar - Desktop */}
             <div className="hidden lg:flex items-center max-w-md">
@@ -217,7 +225,7 @@ export default function Navbar() {
                       <Link
                         key={notification.id}
                         to="/notifications"
-                        className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0"
+                        className="flex items-start gap-3 px-4 py-3 hover:bg-gray-100 border-b border-gray-100 last:border-b-0"
                       >
                         <div
                           className={`w-2 h-2 rounded-full mt-2 ${
@@ -253,7 +261,7 @@ export default function Navbar() {
             <div className="relative" ref={profileRef}>
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 p-1 hover:cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
                 aria-label="Profile menu"
               >
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
@@ -274,8 +282,8 @@ export default function Navbar() {
                   </div>
 
                   <Link
-                    to="/profile"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    to={`/profile/${currentUser._id}`}
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <User size={18} className="text-gray-600" />
                     <span>My Profile</span>
@@ -283,7 +291,7 @@ export default function Navbar() {
 
                   <Link
                     to="/appointments"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Calendar size={18} className="text-blue-600" />
                     <span>Appointments</span>
@@ -291,7 +299,7 @@ export default function Navbar() {
 
                   <Link
                     to="/medical-records"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <FileText size={18} className="text-green-600" />
                     <span>Medical Records</span>
@@ -301,15 +309,15 @@ export default function Navbar() {
 
                   <Link
                     to="/settings"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Settings size={18} className="text-gray-600" />
                     <span>Settings & Privacy</span>
                   </Link>
 
                   <Link
-                    to="/help"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    to="/support"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <HelpCircle size={18} className="text-gray-600" />
                     <span>Help & Support</span>
@@ -318,8 +326,8 @@ export default function Navbar() {
                   <div className="border-t border-gray-100 my-2"></div>
 
                   <Link
-                    to="/logout"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-red-600"
+                    to="/login"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-red-600"
                   >
                     <LogOut size={18} />
                     <span>Log Out</span>
@@ -330,7 +338,7 @@ export default function Navbar() {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden  p-2 rounded-full hover:bg-gray-100"
+              className="lg:hidden hover:cursor-pointer  p-2 rounded-full hover:bg-gray-100"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Menu"
             >
@@ -418,7 +426,7 @@ export default function Navbar() {
                 <div className="space-y-1">
                   <Link
                     to="/home"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-blue-600"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-blue-600"
                   >
                     <Home size={22} />
                     <span className="font-medium">Home</span>
@@ -426,7 +434,7 @@ export default function Navbar() {
 
                   <Link
                     to="/nearby-clinics"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <MapPinned size={22} className="text-blue-500" />
                     <span className="font-medium">Nearby Clinics</span>
@@ -436,7 +444,7 @@ export default function Navbar() {
                     href="https://chud-ai.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Sparkles size={22} className="text-purple-500" />
                     <span className="font-medium">Health AI Assistant</span>
@@ -444,7 +452,7 @@ export default function Navbar() {
 
                   <Link
                     to="/alerts"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <AlertCircle size={22} className="text-red-500" />
                     <span className="font-medium">Medical Alerts</span>
@@ -455,7 +463,7 @@ export default function Navbar() {
 
                   <Link
                     to="/video-consult"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Video size={22} className="text-green-500" />
                     <span className="font-medium">Video Consult</span>
@@ -463,7 +471,7 @@ export default function Navbar() {
 
                   <Link
                     to="/messages"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <MessageCircle size={22} className="text-blue-400" />
                     <span className="font-medium">Messages</span>
@@ -482,7 +490,7 @@ export default function Navbar() {
                 <div className="space-y-1">
                   <Link
                     to="/doctors"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Stethoscope size={22} className="text-teal-500" />
                     <span className="font-medium">Find Doctors</span>
@@ -490,7 +498,7 @@ export default function Navbar() {
 
                   <Link
                     to="/appointments"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Calendar size={22} className="text-blue-600" />
                     <span className="font-medium">Appointments</span>
@@ -498,7 +506,7 @@ export default function Navbar() {
 
                   <Link
                     to="/lab-reports"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <FileText size={22} className="text-green-600" />
                     <span className="font-medium">Lab Reports</span>
@@ -506,7 +514,7 @@ export default function Navbar() {
 
                   <Link
                     to="/medications"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <HeartPulse size={22} className="text-red-500" />
                     <span className="font-medium">Medications</span>
@@ -521,8 +529,8 @@ export default function Navbar() {
                 </h3>
                 <div className="space-y-1">
                   <Link
-                    to="/profile"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    to={`/profile/${currentUser._id}`}
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <User size={22} className="text-gray-600" />
                     <span className="font-medium">My Profile</span>
@@ -530,7 +538,7 @@ export default function Navbar() {
 
                   <Link
                     to="/settings"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Settings size={22} className="text-gray-600" />
                     <span className="font-medium">Settings</span>
@@ -538,15 +546,15 @@ export default function Navbar() {
 
                   <Link
                     to="/privacy"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <Shield size={22} className="text-gray-600" />
                     <span className="font-medium">Privacy Center</span>
                   </Link>
 
                   <Link
-                    to="/help"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50"
+                    to="/support"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
                     <HelpCircle size={22} className="text-gray-600" />
                     <span className="font-medium">Help & Support</span>
@@ -555,10 +563,10 @@ export default function Navbar() {
               </div>
 
               {/* Logout */}
-              <div className="py-3 border-t border-gray-100 mt-4">
+              <div className="py-3 mt-4">
                 <Link
-                  to="/logout"
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 text-red-600"
+                  to="/login"
+                  className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-red-600"
                 >
                   <LogOut size={22} />
                   <span className="font-medium">Log Out</span>

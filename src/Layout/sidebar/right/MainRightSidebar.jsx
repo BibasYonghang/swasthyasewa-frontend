@@ -23,14 +23,14 @@ const quickActions = [
   {
     label: "Book Consultation",
     icon: <Users size={18} />,
-    to: "/consultations",
+    to: "/doctor-consultations",
     bg: "bg-blue-600",
     hover: "hover:bg-blue-700",
   },
   {
     label: "Ask Health AI",
     icon: <Sparkles size={18} />,
-    to: "/ai-insights",
+    to: "https://chud-ai.vercel.app/",
     bg: "bg-purple-600",
     hover: "hover:bg-purple-700",
   },

@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import MessagesLeftSidebar from "./sidebar/left/MessageLeftSidebar.jsx";
+import PersonalPlans from "./sidebar/left/PersonalPlans";
 
-export default function MessageLayout() {
+export default function PersonalPlansLayout() {
   return (
     <>
-      <MessagesLeftSidebar />
+      <PersonalPlans />
       <main>
         <Outlet />
       </main>

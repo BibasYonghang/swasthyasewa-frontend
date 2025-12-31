@@ -1,12 +1,12 @@
 import React from "react";
-import CommunityLeftSidebar from "./sidebar/left/CommunityLeftSidebar.jsx";
 import { Outlet } from "react-router-dom";
+import DoctorConsultations from "./sidebar/left/DoctorConsultations";
 
-export default function CommunityLayout() {
+export default function DoctorConsultationsLayout() {
   return (
     <>
       <div className="flex">
-        <CommunityLeftSidebar />
+        <DoctorConsultations />
         <main>
           <Outlet />
         </main>

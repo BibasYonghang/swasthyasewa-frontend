@@ -1,12 +1,12 @@
 import React from "react";
-import NearbyHelpersLeftSidebar from "./sidebar/left/NearbyHelpersLeftSidebar.jsx";
 import { Outlet } from "react-router-dom";
+import Dashboard from "./sidebar/left/Dashboard.jsx";
 
-export default function NearbyHelpersLayout() {
+export default function DashboardLayout() {
   return (
     <>
       <div className="flex">
-        <NearbyHelpersLeftSidebar />
+        <Dashboard />
         <main>
           <Outlet />
         </main>

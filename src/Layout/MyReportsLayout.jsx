@@ -1,12 +1,12 @@
 import React from "react";
-import MyRequestsLeftSidebar from "./sidebar/left/MyRequestLeftSidebar.jsx";
 import { Outlet } from "react-router-dom";
+import MyReports from "./sidebar/left/MyReports";
 
-export default function MyRequestLayout() {
+export default function MyReportsLayout() {
   return (
     <>
       <div className="flex">
-        <MyRequestsLeftSidebar />
+        <MyReports />
         <main>
           <Outlet />
         </main>

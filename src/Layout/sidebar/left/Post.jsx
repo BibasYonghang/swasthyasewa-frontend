@@ -1,16 +1,16 @@
 import { NavLink } from "react-router-dom";
-import { List, Clock, CheckCircle2 } from "lucide-react";
+import { PlusCircle, Edit, HelpCircle } from "lucide-react";
 
-export default function MyRequestsLeftSidebar() {
+export default function Post() {
   const items = [
-    { name: "All Requests", icon: <List />, to: "/my-requests" },
-    { name: "Pending", icon: <Clock />, to: "/my-requests/pending" },
-    { name: "Completed", icon: <CheckCircle2 />, to: "/my-requests/completed" },
+    { name: "Create New", icon: <PlusCircle />, to: "/create" },
+    { name: "My Posts", icon: <Edit />, to: "/post-help/my-posts" },
+    { name: "Help Topics", icon: <HelpCircle />, to: "/post-help/topics" },
   ];
 
   return (
     <div className="p-4 space-y-3">
-      <h2 className="text-lg font-semibold mb-3">My Requests</h2>
+      <h2 className="text-lg font-semibold mb-3">Post Help</h2>
 
       {items.map((item) => (
         <NavLink

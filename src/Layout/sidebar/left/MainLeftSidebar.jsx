@@ -26,38 +26,26 @@ const menuItems = [
   {
     name: "Health Tests",
     icon: <List size={24} />,
-    path: "/health-tests",
+    path: "/health-test",
     classname: "text-green-500",
   },
   {
     name: "My Reports",
     icon: <Bookmark size={24} />,
-    path: "/reports",
+    path: "/my-reports",
     classname: "text-yellow-500",
   },
   {
     name: "Doctor Consultations",
     icon: <Users size={24} />,
-    path: "/consultations",
+    path: "/doctor-consultations",
     classname: "text-purple-500",
   },
   {
     name: "Personal Plans",
     icon: <PlusCircle size={24} />,
-    path: "/plans",
+    path: "/personal-plans",
     classname: "text-indigo-700",
-  },
-  {
-    name: "Reminders",
-    icon: <Bell size={24} />,
-    path: "/reminders",
-    classname: "text-red-500",
-  },
-  {
-    name: "AI Insights",
-    icon: <Sparkles size={24} />,
-    path: "/ai-insights",
-    classname: "text-cyan-500",
   },
   {
     name: "Wallet",

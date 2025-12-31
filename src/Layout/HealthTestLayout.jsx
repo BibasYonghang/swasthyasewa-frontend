@@ -1,12 +1,12 @@
 import React from "react";
-import AlertsLeftSidebar from "./sidebar/left/AlertsLeftSidebar.jsx";
 import { Outlet } from "react-router-dom";
+import HealthTests from "./sidebar/left/HealthTest";
 
-export default function AlertsLayout() {
+export default function HealthTestLayout() {
   return (
     <>
       <div className="flex">
-        <AlertsLeftSidebar />
+        <HealthTests />
         <main>
           <Outlet />
         </main>

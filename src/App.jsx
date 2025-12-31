@@ -12,25 +12,25 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import Welcome from "./pages/Welcome.jsx";
 import Settings from "./pages/settings/Settings.jsx";
 import SettingsLayout from "./Layout/SettingsLayout.jsx";
-import SavedLayout from "./Layout/SavedLayout.jsx";
-import Saved from "./pages/saved/Saved.jsx";
-import MessageLayout from "./Layout/MessageLayout.jsx";
-import Message from "./pages/messages/Message.jsx";
-import MyRequestLayout from "./Layout/MyRequestLayout.jsx";
-import MyRequest from "./pages/myRequest/MyRequest.jsx";
-import WalletLayout from "./Layout/WalletLayout.jsx";
 import Wallet from "./pages/wallet/Wallet.jsx";
-import NearbyHelpersLayout from "./Layout/NearbyHelpersLayout.jsx";
-import NearbyHelpers from "./pages/helpers/NearbyHelpers.jsx";
-import AlertsLayout from "./Layout/AlertsLayout.jsx";
-import Alerts from "./pages/alerts/Alerts.jsx";
-import PostHelpLayout from "./Layout/PostHelpLayout.jsx";
 import CreatePost from "./pages/createPost/CreatePost.jsx";
-import CommunityLayout from "./Layout/CommunityLayout.jsx";
-import Community from "./pages/community/Community.jsx";
 import Profile from "./pages/Profile.jsx";
 import Comment from "./pages/Comment.jsx";
 import NavbarLayout from "./Layout/NavbarLayout.jsx";
+import DashboardLayout from "./Layout/DashboardLayout.jsx";
+import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import DoctorConsultationsLayout from "./Layout/DoctorConsultationsLayout.jsx";
+import DoctorConsultation from "./pages/doctorConsultation/DoctorConsultation.jsx";
+import MyReportsLayout from "./Layout/MyReportsLayout.jsx";
+import MyReports from "./pages/myReports/MyReports.jsx";
+import WalletLayout from "./Layout/WalletLayout.jsx";
+import PersonalPlans from "./Layout/sidebar/left/PersonalPlans.jsx";
+import PersonalPlansLayout from "./Layout/PersonalPlansLayout.jsx";
+import SupportLayout from "./Layout/SupportLayout.jsx";
+import Support from "./pages/support/Support.jsx";
+import HealthTestLayout from "./Layout/HealthTestLayout.jsx";
+import HealthTest from "./pages/healthTest/HealthTest.jsx";
+import PostsLayout from "./Layout/PostsLayout.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -68,36 +68,36 @@ function AppContent() {
           <Route path="/settings" element={<Settings />} />
         </Route>
 
-        <Route element={<SavedLayout />}>
-          <Route path="/saved" element={<Saved />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
-        <Route element={<MessageLayout />}>
-          <Route path="/message" element={<Message />} />
+        <Route element={<DoctorConsultationsLayout />}>
+          <Route path="/doctor-consultations" element={<DoctorConsultation />} />
         </Route>
 
-        <Route element={<MyRequestLayout />}>
-          <Route path="/my-requests" element={<MyRequest />} />
+        <Route element={<MyReportsLayout />}>
+          <Route path="/my-reports" element={<MyReports />} />
         </Route>
 
         <Route element={<WalletLayout />}>
           <Route path="/wallet" element={<Wallet />} />
         </Route>
 
-        <Route element={<NearbyHelpersLayout />}>
-          <Route path="/helpers" element={<NearbyHelpers />} />
+        <Route element={<PersonalPlansLayout />}>
+          <Route path="/personal-plans" element={<PersonalPlans />} />
         </Route>
 
-        <Route element={<AlertsLayout />}>
-          <Route path="/alerts" element={<Alerts />} />
+        <Route element={<SupportLayout />}>
+          <Route path="/support" element={<Support />} />
         </Route>
 
-        <Route element={<PostHelpLayout />}>
+        <Route element={<PostsLayout />}>
           <Route path="/create-post" element={<CreatePost />} />
         </Route>
 
-        <Route element={<CommunityLayout />}>
-          <Route path="/community" element={<Community />} />
+        <Route element={<HealthTestLayout />}>
+          <Route path="/health-test" element={<HealthTest />} />
         </Route>
 
         {/* Admin layout */}
