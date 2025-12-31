@@ -309,9 +309,6 @@ export default function Login() {
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Welcome Back
                 </h2>
-                <p className="text-gray-600 text-lg">
-                  Sign in to track your health & connect with doctors
-                </p>
               </motion.div>
 
               <AnimatePresence>
@@ -391,7 +388,7 @@ export default function Login() {
                     className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
                     variants={buttonVariants}
                     initial="initial"
-                    whileHover={isLoading ? "loading" : "hover"}
+                    whileHover="loading"
                     whileTap="tap"
                   >
                     <div className="relative hover:cursor-pointer z-10 flex items-center justify-center gap-3">
@@ -408,7 +405,7 @@ export default function Login() {
                       ) : (
                         <LogIn size={20} />
                       )}
-                      {isLoading ? "Signing In..." : "Sign In"}
+                      {isLoading ? "Logging In..." : "Log In"}
                     </div>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"

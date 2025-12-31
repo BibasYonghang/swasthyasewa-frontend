@@ -280,7 +280,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
+    <div className=" relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       {/* Animated Background */}
       <canvas
         ref={canvasRef}
@@ -399,10 +399,6 @@ export default function Register() {
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   Start Your Health Journey
                 </h2>
-                <p className="text-gray-600 text-lg">
-                  Sign up to track, test, and connect with verified doctors
-                  globally
-                </p>
               </motion.div>
 
               {/* Messages */}
@@ -432,7 +428,7 @@ export default function Register() {
               {/* Form */}
               <motion.form
                 onSubmit={handleSubmit}
-                className="space-y-6"
+                className="space-y-4"
                 variants={containerVariants}
               >
                 {/* Name Field */}
@@ -574,10 +570,10 @@ export default function Register() {
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                     variants={buttonVariants}
                     initial="initial"
-                    whileHover={isLoading ? "loading" : "hover"}
+                    whileHover="loading"
                     whileTap="tap"
                   >
-                    <div className="relative z-10 flex items-center justify-center gap-3">
+                    <div className="relative hover:cursor-pointer z-10 flex items-center justify-center gap-3">
                       {isLoading ? (
                         <motion.div
                           animate={{ rotate: 360 }}
@@ -618,7 +614,7 @@ export default function Register() {
 
               {/* Footer */}
               <motion.div
-                className="text-center mt-8 pt-6 border-t border-gray-200/50"
+                className="text-center mt-4 border-gray-200/50"
                 variants={itemVariants}
               >
                 <p className="text-gray-600 text-sm">
@@ -632,7 +628,7 @@ export default function Register() {
                       className="text-purple-600 font-semibold hover:text-purple-700 transition-colors relative"
                     >
                       <span className="relative">
-                        Sign In
+                        Log In
                         <motion.span
                           className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600"
                           initial={{ scaleX: 0 }}

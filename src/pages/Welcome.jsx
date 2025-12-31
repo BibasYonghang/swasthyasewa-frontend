@@ -292,7 +292,6 @@ export default function WelcomePage() {
           <div className="space-y-3 md:space-y-4">
             <motion.div
               variants={buttonVariants}
-              whileHover="hover"
               whileTap="tap"
             >
               <Link
@@ -304,7 +303,6 @@ export default function WelcomePage() {
             </motion.div>
             <motion.div
               variants={buttonVariants}
-              whileHover="hover"
               whileTap="tap"
             >
               <Link
