@@ -199,7 +199,7 @@ export default function PostCard({ post, updatePost }) {
               onClick={() => setSelectedImageIndex(index)}
             >
               <img
-                src={image}
+                src={image[selectedImageIndex]}
                 alt={`Post image ${index + 1}`}
                 className={`w-full h-full object-cover ${
                   hasMultipleImages ? "aspect-square" : "max-h-96"
