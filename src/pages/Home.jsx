@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { fetchPosts, sendReaction } from "../config/api/posts.js";
@@ -12,20 +12,14 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
 
   const loggedInUser = useSelector((state) => state.auth.user);
-  const hasFetched = useRef(false);
 
   const getPosts = useCallback(async () => {
     const data = await fetchPosts(page);
+
     setPosts((prev) => [...prev, ...(data.posts || [])]);
     setPage((prev) => prev + 1);
     setHasMore(data.hasMore);
   }, [page]);
-
-  useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-    getPosts();
-  }, [getPosts]);
 
   const updatePost = async (postId, reaction) => {
     const res = await sendReaction(postId, reaction);
@@ -43,6 +37,7 @@ export default function Home() {
       <div className="lg:w-md xl:w-xl w-[96vw]">
         <HomeTop currentUser={loggedInUser} />
         <StorySection />
+
         <InfiniteScroll
           dataLength={posts.length}
           next={getPosts}
@@ -50,9 +45,16 @@ export default function Home() {
           loader={<h4 className="text-center mt-4">Loading...</h4>}
         >
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} updatePost={updatePost} />
+            <PostCard
+              key={post._id}
+              post={post}
+              updatePost={updatePost}
+            />
           ))}
         </InfiniteScroll>
+
+        {/* 👇 trigger initial load once */}
+        {posts.length === 0 && hasMore && getPosts()}
       </div>
     </div>
   );

@@ -16,17 +16,49 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+/* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/env.js";
+
+// ✅ Particle class moved outside component
+class Particle {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
+    this.alpha = Math.random() * 0.6 + 0.2;
+  }
+
+  update(canvas) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x > canvas.width) this.x = 0;
+    else if (this.x < 0) this.x = canvas.width;
+    if (this.y > canvas.height) this.y = 0;
+    else if (this.y < 0) this.y = canvas.height;
+  }
+
+  draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
 
 export default function Register() {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -39,9 +71,7 @@ export default function Register() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  console.log("BACKEND_URL:", BACKEND_URL);
-
-  // Features updated for HealthConnect
+  // Features for HealthConnect
   const features = [
     {
       icon: Users,
@@ -73,12 +103,7 @@ export default function Register() {
     },
   ];
 
-  // Password strength calculator
-  useEffect(() => {
-    const strength = calculatePasswordStrength(form.password);
-    setPasswordStrength(strength);
-  }, [form.password]);
-
+  // Password strength calculation
   const calculatePasswordStrength = (password) => {
     let strength = 0;
     if (password.length >= 6) strength += 25;
@@ -95,75 +120,42 @@ export default function Register() {
     return "bg-green-500";
   };
 
+  useEffect(() => {
+    setPasswordStrength(calculatePasswordStrength(form.password));
+  }, [form.password]);
+
   // Animated background particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles = [];
     const particleCount = window.innerWidth < 768 ? 30 : 80;
+    const particles = [];
+    for (let i = 0; i < particleCount; i++)
+      particles.push(new Particle(canvas));
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
-        this.alpha = Math.random() * 0.6 + 0.2;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x > canvas.width) this.x = 0;
-        else if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        else if (this.y < 0) this.y = canvas.height;
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
+    const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
+      particles.forEach((p) => {
+        p.update(canvas);
+        p.draw(ctx);
       });
       requestAnimationFrame(animate);
-    }
-
+    };
     animate();
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Feature carousel
+  // Carousel auto change
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % features.length);
@@ -171,6 +163,7 @@ export default function Register() {
     return () => clearInterval(interval);
   }, [features.length]);
 
+  // Form handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -181,54 +174,49 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
       await axios.post(`${BACKEND_URL}/api/register`, form, {
         headers: { "Content-Type": "application/json" },
       });
-
       setSuccess("🎉 Account created successfully! Welcome to HealthConnect!");
       setForm({ name: "", email: "", password: "" });
-
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       const message =
         error.response?.data?.message ||
         "Something went wrong. Please try again.";
-
-      if (message.toLowerCase().includes("email")) {
+      if (message.toLowerCase().includes("email"))
         setErrors((prev) => ({ ...prev, email: message }));
-      } else if (message.toLowerCase().includes("password")) {
+      else if (message.toLowerCase().includes("password"))
         setErrors((prev) => ({ ...prev, password: message }));
-      } else if (message.toLowerCase().includes("name")) {
+      else if (message.toLowerCase().includes("name"))
         setErrors((prev) => ({ ...prev, name: message }));
-      } else {
-        setErrors((prev) => ({ ...prev, general: message }));
-      }
-
+      else setErrors((prev) => ({ ...prev, general: message }));
       setForm((prev) => ({ ...prev, password: "" }));
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (errors.general || errors.name || errors.email || errors.password) {
-      const timer = setTimeout(() => {
-        setErrors({ name: "", email: "", password: "", general: "" });
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [errors]);
-
+  // Auto-clear messages
   useEffect(() => {
     if (success) {
-      const timer = setTimeout(() => setSuccess(""), 4000);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setSuccess(""), 4000);
+      return () => clearTimeout(t);
     }
   }, [success]);
 
-  // Motion variants (unchanged)
+  useEffect(() => {
+    if (errors.general || errors.name || errors.email || errors.password) {
+      const t = setTimeout(
+        () => setErrors({ name: "", email: "", password: "", general: "" }),
+        4000
+      );
+      return () => clearTimeout(t);
+    }
+  }, [errors]);
+
+  // Motion variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -280,14 +268,12 @@ export default function Register() {
   };
 
   return (
-    <div className=" relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
-      {/* Animated Background */}
+    <div className="relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ opacity: 0.7 }}
       />
-
       {/* Gradient Orbs */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>

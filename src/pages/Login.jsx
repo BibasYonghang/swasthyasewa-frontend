@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,8 +15,43 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+/* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/env.js";
+
+// ✅ Particle class moved outside the component
+class Particle {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
+    this.alpha = Math.random() * 0.6 + 0.2;
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x > this.canvas.width) this.x = 0;
+    else if (this.x < 0) this.x = this.canvas.width;
+    if (this.y > this.canvas.height) this.y = 0;
+    else if (this.y < 0) this.y = this.canvas.height;
+  }
+
+  draw() {
+    this.ctx.save();
+    this.ctx.globalAlpha = this.alpha;
+    this.ctx.fillStyle = this.color;
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    this.ctx.fill();
+    this.ctx.restore();
+  }
+}
 
 export default function Login() {
   const navigate = useNavigate();
@@ -30,7 +64,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
 
-  // Features updated for HealthConnect
   const features = [
     {
       icon: Users,
@@ -62,10 +95,11 @@ export default function Login() {
     },
   ];
 
-  // Animated background particles (unchanged)
+  // Animated background particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -73,37 +107,8 @@ export default function Login() {
     const particles = [];
     const particleCount = window.innerWidth < 768 ? 30 : 80;
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
-        this.alpha = Math.random() * 0.6 + 0.2;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width) this.x = 0;
-        else if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        else if (this.y < 0) this.y = canvas.height;
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
     for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+      particles.push(new Particle(canvas));
     }
 
     function animate() {
@@ -132,6 +137,17 @@ export default function Login() {
     return () => clearInterval(interval);
   }, [features.length]);
 
+  // Clear error/success after timeout
+  useEffect(() => {
+    if (error || success) {
+      const timer = setTimeout(() => {
+        setError("");
+        setSuccess("");
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, success]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
@@ -146,7 +162,6 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
       });
 
-      // Save token and user
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       dispatch(setUser(res.data.user));
@@ -161,16 +176,7 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    if (error || success) {
-      const timer = setTimeout(() => {
-        setError("");
-        setSuccess("");
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [error, success]);
-
+  // Motion variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -330,6 +336,7 @@ export default function Login() {
                 className="space-y-6"
                 variants={containerVariants}
               >
+                {/* Email */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Email Address
@@ -351,6 +358,7 @@ export default function Login() {
                   </motion.div>
                 </motion.div>
 
+                {/* Password */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Password
@@ -381,6 +389,7 @@ export default function Login() {
                   </motion.div>
                 </motion.div>
 
+                {/* Submit */}
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"
