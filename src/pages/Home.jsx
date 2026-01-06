@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useSelector } from "react-redux"; // ✅ Import Redux hook
+import { useSelector } from "react-redux";
 import { fetchPosts, sendReaction } from "../config/api/posts.js";
 import HomeTop from "../Components/Home/HomeTop.jsx";
 import PostCard from "../Components/Home/PostCard.jsx";
@@ -11,19 +11,21 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // ✅ Get the logged-in user from Redux
   const loggedInUser = useSelector((state) => state.auth.user);
+  const hasFetched = useRef(false);
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     const data = await fetchPosts(page);
     setPosts((prev) => [...prev, ...(data.posts || [])]);
-    setPage(page + 1);
+    setPage((prev) => prev + 1);
     setHasMore(data.hasMore);
-  };
+  }, [page]);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
     getPosts();
-  }, []);
+  }, [getPosts]);
 
   const updatePost = async (postId, reaction) => {
     const res = await sendReaction(postId, reaction);
@@ -39,7 +41,6 @@ export default function Home() {
   return (
     <div className="flex justify-center min-h-screen mt-2 relative">
       <div className="lg:w-md xl:w-xl w-[96vw]">
-        {/* ✅ Pass logged-in user to HomeTop */}
         <HomeTop currentUser={loggedInUser} />
         <StorySection />
         <InfiniteScroll

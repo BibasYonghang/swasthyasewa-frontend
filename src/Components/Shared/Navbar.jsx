@@ -30,13 +30,13 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+
   const profileRef = useRef(null);
   const notificationsRef = useRef(null);
+
   const currentUser = useSelector((state) => state.auth.user);
 
-  if (!currentUser || !currentUser._id) return null;
-
-  // Close dropdowns when clicking outside
+  // ✅ Hooks must ALWAYS run
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -53,6 +53,11 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // ✅ Early return AFTER hooks
+  if (!currentUser || !currentUser._id) {
+    return null;
+  }
 
   // Facebook-like notifications data
   const notifications = [

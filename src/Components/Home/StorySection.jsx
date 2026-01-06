@@ -35,7 +35,6 @@ export default function StorySection() {
   const [stories, setStories] = useState(initialStories);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
-  const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showAddStoryModal, setShowAddStoryModal] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
@@ -58,7 +57,6 @@ export default function StorySection() {
         ...prev,
         currentStoryIndex: nextIndex,
       }));
-      setProgress(0);
       setIsPlaying(true);
     } else {
       setShowStoryViewer(false);
@@ -76,7 +74,6 @@ export default function StorySection() {
         ...prev,
         currentStoryIndex: prevIndex,
       }));
-      setProgress(0);
       setIsPlaying(true);
     }
   }, [currentStory]);
@@ -97,25 +94,18 @@ export default function StorySection() {
 
   useEffect(() => {
     if (!showStoryViewer || !currentStory || !isPlaying) {
-      clearInterval(progressInterval.current);
+      clearTimeout(progressInterval.current);
       return;
     }
 
     const { duration = 5000 } =
       currentStory.stories[currentStory.currentStoryIndex];
 
-    progressInterval.current = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval.current);
-          nextStory();
-          return 0;
-        }
-        return prev + 100 / (duration / 100);
-      });
-    }, 100);
+    progressInterval.current = setTimeout(() => {
+      nextStory();
+    }, duration);
 
-    return () => clearInterval(progressInterval.current);
+    return () => clearTimeout(progressInterval.current);
   }, [showStoryViewer, currentStory, isPlaying, nextStory]);
 
   useEffect(() => {
@@ -152,7 +142,6 @@ export default function StorySection() {
       currentStoryIndex: 0,
     });
     setShowStoryViewer(true);
-    setProgress(0);
     setIsPlaying(true);
   };
 
