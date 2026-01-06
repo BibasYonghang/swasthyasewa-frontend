@@ -199,7 +199,7 @@ export default function PostCard({ post, updatePost }) {
               onClick={() => setSelectedImageIndex(index)}
             >
               <img
-                src={image}
+                src={image[selectedImageIndex]}
                 alt={`Post image ${index + 1}`}
                 className={`w-full h-full object-cover ${
                   hasMultipleImages ? "aspect-square" : "max-h-96"
@@ -233,7 +233,7 @@ export default function PostCard({ post, updatePost }) {
         >
           <button
             onClick={handleLikeClick}
-            className={`w-full flex items-center justify-center font-semibold text-md p-2 rounded-md hover:bg-gray-100 transition-colors ${
+            className={`w-full flex hover:cursor-pointer items-center justify-center font-semibold text-md p-2 rounded-md hover:bg-gray-100 transition-colors ${
               post?.userReaction
                 ? `text-${getReactionObj(post.userReaction)?.color}-600`
                 : "text-gray-600"
@@ -260,7 +260,7 @@ export default function PostCard({ post, updatePost }) {
         {/* Comment Button */}
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 flex items-center justify-center font-semibold text-md text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors"
+          className="flex-1 flex items-center justify-center font-semibold text-md text-gray-600 p-2 rounded-md hover:cursor-pointer hover:bg-gray-100 transition-colors"
         >
           <MessageCircle size={20} />
           <span className="pl-1">Comment</span>
@@ -269,7 +269,7 @@ export default function PostCard({ post, updatePost }) {
         {/* Share Button */}
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 flex items-center justify-center font-semibold text-md text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors"
+          className="flex-1 flex items-center justify-center  hover:cursor-pointer font-semibold text-md text-gray-600 p-2 rounded-md hover:bg-gray-100 transition-colors"
         >
           <CornerUpRight size={20} />
           <span className="pl-1">Share</span>

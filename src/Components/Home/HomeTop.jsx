@@ -25,7 +25,7 @@ export default function HomeTop() {
     <div className="h-16 rounded-xl bg-white mb-2 gap-1 flex items-center px-3">
       <Link
         to={`/profile/${currentUser._id}`}
-        className="bg-gray-200 w-10 h-10 rounded-full overflow-hidden"
+        className="bg-gray-200 w-10 sm:w-12 md:w-14 lg:w-18 xl:w-22 h-10 rounded-full overflow-hidden"
       >
         <img
           src={
@@ -40,7 +40,7 @@ export default function HomeTop() {
       <input
         type="text"
         placeholder="What's on your mind?"
-        className="bg-gray-200 p-2 pl-4 w-[65vw] outline-none sm:w-[75vw] md:w-[60vw] lg:w-[42vw] rounded-full cursor-pointer"
+        className="bg-gray-200 p-2 pl-4 w-[65vw] outline-none rounded-full cursor-pointer"
         onClick={handleInputClick}
         readOnly
       />

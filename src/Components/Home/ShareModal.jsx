@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { shareToTimeline } from "../../api/posts";
+import { shareToTimeline } from "../../config/api/posts.js";
 
 export default function ShareModal({ post, close }) {
   const [shareComment, setShareComment] = useState("");
@@ -12,7 +12,7 @@ export default function ShareModal({ post, close }) {
       alert("Shared to your timeline!");
       close();
     } catch (error) {
-      alert("Failed to share. Try again!");
+      alert(`Erros Says: ${error}`);
     } finally {
       setIsSharing(false);
     }

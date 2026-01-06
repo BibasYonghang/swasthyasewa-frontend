@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useSelector } from "react-redux"; // ✅ Import Redux hook
-import { fetchPosts, sendReaction } from "../api/posts";
+import { useSelector } from "react-redux";
+import { fetchPosts, sendReaction } from "../config/api/posts.js";
 import HomeTop from "../Components/Home/HomeTop.jsx";
 import PostCard from "../Components/Home/PostCard.jsx";
+import StorySection from "../Components/Home/StorySection.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // ✅ Get the logged-in user from Redux
   const loggedInUser = useSelector((state) => state.auth.user);
 
-  const getPosts = async () => {
+  const getPosts = useCallback(async () => {
     const data = await fetchPosts(page);
-    setPosts((prev) => [...prev, ...(data.posts || [])]);
-    setPage(page + 1);
-    setHasMore(data.hasMore);
-  };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
+    setPosts((prev) => [...prev, ...(data.posts || [])]);
+    setPage((prev) => prev + 1);
+    setHasMore(data.hasMore);
+  }, [page]);
 
   const updatePost = async (postId, reaction) => {
     const res = await sendReaction(postId, reaction);
@@ -36,10 +33,11 @@ export default function Home() {
   };
 
   return (
-    <div className="flex justify-center min-h-screen mt-16 relative">
-      <div className="w-full max-w-lg">
-        {/* ✅ Pass logged-in user to HomeTop */}
+    <div className="flex justify-center min-h-screen mt-2 relative">
+      <div className="lg:w-md xl:w-xl w-[96vw]">
         <HomeTop currentUser={loggedInUser} />
+        <StorySection />
+
         <InfiniteScroll
           dataLength={posts.length}
           next={getPosts}
@@ -47,9 +45,16 @@ export default function Home() {
           loader={<h4 className="text-center mt-4">Loading...</h4>}
         >
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} updatePost={updatePost} />
+            <PostCard
+              key={post._id}
+              post={post}
+              updatePost={updatePost}
+            />
           ))}
         </InfiniteScroll>
+
+        {/* 👇 trigger initial load once */}
+        {posts.length === 0 && hasMore && getPosts()}
       </div>
     </div>
   );

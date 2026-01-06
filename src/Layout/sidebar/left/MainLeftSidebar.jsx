@@ -18,64 +18,46 @@ import {
 
 const menuItems = [
   {
-    name: "Home",
+    name: "Dashboard",
     icon: <Home size={24} />,
-    path: "/home",
+    path: "/dashboard",
     classname: "text-blue-500",
   },
   {
-    name: "Ask AI",
-    icon: <Sparkles size={24} />,
-    path: "https://chud-ai.vercel.app/",
-    classname: "text-blue-500",
-  },
-  {
-    name: "Create Post",
-    icon: <PlusCircle size={24} />,
-    path: "/create-post",
-    classname: "text-indigo-700",
-  },
-  {
-    name: "Alerts",
-    icon: <Bell size={24} />,
-    path: "/alerts",
-    classname: "text-blue-700",
-  },
-  {
-    name: "Messages",
-    icon: <MessageSquare size={24} />,
-    path: "/message",
-    classname: "text-sky-700",
-  },
-  {
-    name: "Nearby Helpers",
-    icon: <Users size={24} />,
-    path: "/helpers",
-    classname: "text-blue-700",
-  },
-  {
-    name: "Settings",
-    icon: <Settings size={24} />,
-    path: "/settings",
-    classname: "text-blue-700",
-  },
-  {
-    name: "My Requests",
+    name: "Health Tests",
     icon: <List size={24} />,
-    path: "/my-requests",
-    classname: "text-blue-700",
+    path: "/health-test",
+    classname: "text-green-500",
   },
   {
-    name: "Saved",
+    name: "My Reports",
     icon: <Bookmark size={24} />,
-    path: "/saved",
-    classname: "text-blue-700",
+    path: "/my-reports",
+    classname: "text-yellow-500",
+  },
+  {
+    name: "Doctor Consultations",
+    icon: <Users size={24} />,
+    path: "/doctor-consultations",
+    classname: "text-purple-500",
+  },
+  {
+    name: "Personal Plans",
+    icon: <PlusCircle size={24} />,
+    path: "/personal-plans",
+    classname: "text-indigo-700",
   },
   {
     name: "Wallet",
     icon: <Wallet size={24} />,
     path: "/wallet",
-    classname: "text-blue-700",
+    classname: "text-orange-500",
+  },
+  {
+    name: "Settings",
+    icon: <Settings size={24} />,
+    path: "/settings",
+    classname: "text-gray-700",
   },
   {
     name: "Support",
@@ -89,7 +71,7 @@ export default function LeftSidebar() {
   const user = useSelector((state) => state.auth.user); // <-- FIXED
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 h-screen sticky left-0 top-16 bg-whiter rounded-2xl border-gray-200 p-4">
+    <aside className="hidden lg:flex flex-col w-64 bg-white h-screen sticky left-0 top-16 bg-whiter rounded-2xl border-gray-200 p-4">
       {/* User Profile */}
       <div className="mb-4 px-2 flex items-center gap-3">
         <img
@@ -109,7 +91,7 @@ export default function LeftSidebar() {
               href={item.path}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-200 text-gray-700 transition-all"
+              className="flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700 transition-all"
             >
               <span className={item.classname}>{item.icon}</span>
               <span className="text-md font-semibold">{item.name}</span>
@@ -119,7 +101,7 @@ export default function LeftSidebar() {
               key={item.name}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-200 text-gray-700 transition-all ${
+                `flex items-center gap-3 px-2 py-2 rounded-md hover:bg-gray-100 text-gray-700 transition-all ${
                   isActive ? "font-bold text-indigo-600" : ""
                 }`
               }

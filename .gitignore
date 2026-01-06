@@ -1,6 +1,10 @@
+*.env
 .env.development
 .env.production
 
+branchMerging.md
+learning.md
+githubCommitType.md
 
 # Logs
 logs

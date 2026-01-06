@@ -16,16 +16,49 @@ import {
   Shield,
   Globe,
 } from "lucide-react";
+/* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
+import { BACKEND_URL } from "../config/env.js";
+
+// ✅ Particle class moved outside component
+class Particle {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
+    this.alpha = Math.random() * 0.6 + 0.2;
+  }
+
+  update(canvas) {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x > canvas.width) this.x = 0;
+    else if (this.x < 0) this.x = canvas.width;
+    if (this.y > canvas.height) this.y = 0;
+    else if (this.y < 0) this.y = canvas.height;
+  }
+
+  draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
 
 export default function Register() {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({
     name: "",
     email: "",
@@ -38,42 +71,39 @@ export default function Register() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const API = import.meta.env.VITE_API_BASE;
-
+  // Features for HealthConnect
   const features = [
     {
       icon: Users,
-      title: "Join Our Community",
+      title: "Connect with Verified Doctors",
       description:
-        "Connect with thousands of helpers and problem-solvers worldwide",
+        "Schedule video calls, chat, and follow up with trusted medical professionals worldwide.",
       color: "from-blue-400 to-cyan-500",
     },
     {
       icon: Rocket,
-      title: "Instant Access",
-      description: "Start getting help and providing assistance immediately",
+      title: "Track Your Health Progress",
+      description:
+        "Monitor fitness, sleep, diet, and chronic condition metrics, all in one app.",
       color: "from-purple-400 to-pink-500",
     },
     {
       icon: Shield,
-      title: "Secure Platform",
-      description: "Your data is protected with enterprise-grade security",
+      title: "Secure & Private",
+      description:
+        "End-to-end encryption for personal health records, lab results, and consultations.",
       color: "from-green-400 to-emerald-500",
     },
     {
       icon: Globe,
-      title: "Global Reach",
-      description: "Access help anytime, anywhere across the globe",
+      title: "Global Health Platform",
+      description:
+        "Access health support anytime, anywhere, with wearable & telemedicine integration.",
       color: "from-orange-400 to-red-500",
     },
   ];
 
-  // Password strength calculator
-  useEffect(() => {
-    const strength = calculatePasswordStrength(form.password);
-    setPasswordStrength(strength);
-  }, [form.password]);
-
+  // Password strength calculation
   const calculatePasswordStrength = (password) => {
     let strength = 0;
     if (password.length >= 6) strength += 25;
@@ -90,75 +120,42 @@ export default function Register() {
     return "bg-green-500";
   };
 
+  useEffect(() => {
+    setPasswordStrength(calculatePasswordStrength(form.password));
+  }, [form.password]);
+
   // Animated background particles
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles = [];
     const particleCount = window.innerWidth < 768 ? 30 : 80;
+    const particles = [];
+    for (let i = 0; i < particleCount; i++)
+      particles.push(new Particle(canvas));
 
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.5 - 0.25;
-        this.speedY = Math.random() * 0.5 - 0.25;
-        this.color = `hsl(${Math.random() * 60 + 210}, 70%, 60%)`;
-        this.alpha = Math.random() * 0.6 + 0.2;
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x > canvas.width) this.x = 0;
-        else if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        else if (this.y < 0) this.y = canvas.height;
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
-
-    function animate() {
+    const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((particle) => {
-        particle.update();
-        particle.draw();
+      particles.forEach((p) => {
+        p.update(canvas);
+        p.draw(ctx);
       });
       requestAnimationFrame(animate);
-    }
-
+    };
     animate();
 
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
-
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Feature carousel
+  // Carousel auto change
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentFeature((prev) => (prev + 1) % features.length);
@@ -166,6 +163,7 @@ export default function Register() {
     return () => clearInterval(interval);
   }, [features.length]);
 
+  // Form handlers
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -176,109 +174,84 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      await axios.post(`${API}/register`, form, {
+      await axios.post(`${BACKEND_URL}/api/register`, form, {
         headers: { "Content-Type": "application/json" },
       });
-
-      setSuccess("🎉 Account created successfully! Welcome to our community!");
+      setSuccess("🎉 Account created successfully! Welcome to HealthConnect!");
       setForm({ name: "", email: "", password: "" });
-
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
       const message =
         error.response?.data?.message ||
         "Something went wrong. Please try again.";
-
-      if (message.toLowerCase().includes("email")) {
+      if (message.toLowerCase().includes("email"))
         setErrors((prev) => ({ ...prev, email: message }));
-      } else if (message.toLowerCase().includes("password")) {
+      else if (message.toLowerCase().includes("password"))
         setErrors((prev) => ({ ...prev, password: message }));
-      } else if (message.toLowerCase().includes("name")) {
+      else if (message.toLowerCase().includes("name"))
         setErrors((prev) => ({ ...prev, name: message }));
-      } else {
-        setErrors((prev) => ({ ...prev, general: message }));
-      }
-
+      else setErrors((prev) => ({ ...prev, general: message }));
       setForm((prev) => ({ ...prev, password: "" }));
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (errors.general || errors.name || errors.email || errors.password) {
-      const timer = setTimeout(() => {
-        setErrors({ name: "", email: "", password: "", general: "" });
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [errors]);
-
+  // Auto-clear messages
   useEffect(() => {
     if (success) {
-      const timer = setTimeout(() => setSuccess(""), 4000);
-      return () => clearTimeout(timer);
+      const t = setTimeout(() => setSuccess(""), 4000);
+      return () => clearTimeout(t);
     }
   }, [success]);
 
+  useEffect(() => {
+    if (errors.general || errors.name || errors.email || errors.password) {
+      const t = setTimeout(
+        () => setErrors({ name: "", email: "", password: "", general: "" }),
+        4000
+      );
+      return () => clearTimeout(t);
+    }
+  }, [errors]);
+
+  // Motion variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
+      transition: { delayChildren: 0.3, staggerChildren: 0.2 },
     },
   };
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 10,
-      },
+      transition: { type: "spring", stiffness: 100, damping: 10 },
     },
   };
-
   const cardVariants = {
     hidden: { scale: 0.9, opacity: 0, rotateX: 10 },
     visible: {
       scale: 1,
       opacity: 1,
       rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        delay: 0.2,
-      },
+      transition: { type: "spring", stiffness: 100, delay: 0.2 },
     },
     hover: {
       y: -5,
       scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-      },
+      transition: { type: "spring", stiffness: 400 },
     },
   };
-
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: {
-      scale: 1.05,
-      boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)",
-    },
+    hover: { scale: 1.05, boxShadow: "0 10px 25px rgba(99, 102, 241, 0.3)" },
     tap: { scale: 0.95 },
     loading: { scale: 0.98 },
   };
-
   const inputVariants = {
     focus: {
       scale: 1.02,
@@ -286,7 +259,6 @@ export default function Register() {
       transition: { type: "spring", stiffness: 400 },
     },
   };
-
   const progressVariants = {
     initial: { width: 0 },
     animate: {
@@ -296,14 +268,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
-      {/* Animated Background */}
+    <div className="relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
         style={{ opacity: 0.7 }}
       />
-
       {/* Gradient Orbs */}
       <div className="absolute top-20 right-10 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-20 left-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
@@ -329,7 +299,7 @@ export default function Register() {
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
-              Neighborly
+              HealthConnect
             </h1>
           </motion.div>
 
@@ -366,10 +336,10 @@ export default function Register() {
           {/* Benefits List */}
           <motion.div className="space-y-4 mt-8" variants={itemVariants}>
             {[
-              "Instant access to global helper network",
-              "24/7 real-time assistance",
-              "Secure and private communication",
-              "Multi-platform support",
+              "Personalized health insights and reports",
+              "Track progress with wearables integration",
+              "Secure communication with doctors",
+              "Real-time consultation & follow-ups",
             ].map((benefit, index) => (
               <motion.div
                 key={index}
@@ -413,11 +383,8 @@ export default function Register() {
                   <UserPlus className="text-white" size={22} />
                 </motion.div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Join Our Community
+                  Start Your Health Journey
                 </h2>
-                <p className="text-gray-600 text-lg">
-                  Start your journey with us today
-                </p>
               </motion.div>
 
               {/* Messages */}
@@ -447,7 +414,7 @@ export default function Register() {
               {/* Form */}
               <motion.form
                 onSubmit={handleSubmit}
-                className="space-y-6"
+                className="space-y-4"
                 variants={containerVariants}
               >
                 {/* Name Field */}
@@ -589,10 +556,10 @@ export default function Register() {
                     className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                     variants={buttonVariants}
                     initial="initial"
-                    whileHover={isLoading ? "loading" : "hover"}
+                    whileHover="loading"
                     whileTap="tap"
                   >
-                    <div className="relative z-10 flex items-center justify-center gap-3">
+                    <div className="relative hover:cursor-pointer z-10 flex items-center justify-center gap-3">
                       {isLoading ? (
                         <motion.div
                           animate={{ rotate: 360 }}
@@ -633,7 +600,7 @@ export default function Register() {
 
               {/* Footer */}
               <motion.div
-                className="text-center mt-8 pt-6 border-t border-gray-200/50"
+                className="text-center mt-4 border-gray-200/50"
                 variants={itemVariants}
               >
                 <p className="text-gray-600 text-sm">
@@ -647,7 +614,7 @@ export default function Register() {
                       className="text-purple-600 font-semibold hover:text-purple-700 transition-colors relative"
                     >
                       <span className="relative">
-                        Sign In
+                        Log In
                         <motion.span
                           className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600"
                           initial={{ scaleX: 0 }}
@@ -659,26 +626,26 @@ export default function Register() {
                   </motion.div>
                 </p>
               </motion.div>
-            </motion.div>
 
-            {/* Mobile Feature Indicator */}
-            <motion.div
-              className="lg:hidden flex justify-center mt-6 space-x-2"
-              variants={itemVariants}
-            >
-              {features.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentFeature
-                      ? "bg-purple-600 w-6"
-                      : "bg-gray-300"
-                  }`}
-                  onClick={() => setCurrentFeature(index)}
-                  type="button"
-                  aria-label={`Show feature ${index + 1}`}
-                />
-              ))}
+              {/* Mobile Feature Indicator */}
+              <motion.div
+                className="lg:hidden flex justify-center mt-6 space-x-2"
+                variants={itemVariants}
+              >
+                {features.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentFeature
+                        ? "bg-purple-600 w-6"
+                        : "bg-gray-300"
+                    }`}
+                    onClick={() => setCurrentFeature(index)}
+                    type="button"
+                    aria-label={`Show feature ${index + 1}`}
+                  />
+                ))}
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>
@@ -687,22 +654,12 @@ export default function Register() {
       {/* Floating Elements */}
       <motion.div
         className="absolute top-20 left-20 w-3 h-3 bg-purple-400 rounded-full opacity-60 hidden lg:block"
-        animate={{
-          y: [0, -30, 0],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        animate={{ y: [0, -30, 0], opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-32 right-32 w-4 h-4 bg-pink-400 rounded-full opacity-40 hidden lg:block"
-        animate={{
-          y: [0, 20, 0],
-          opacity: [0.4, 0.8, 0.4],
-        }}
+        animate={{ y: [0, 20, 0], opacity: [0.4, 0.8, 0.4] }}
         transition={{
           duration: 3,
           repeat: Infinity,
