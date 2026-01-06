@@ -12,7 +12,7 @@ export default function ShareModal({ post, close }) {
       alert("Shared to your timeline!");
       close();
     } catch (error) {
-      alert("Failed to share. Try again!");
+      alert(`Erros Says: ${error}`);
     } finally {
       setIsSharing(false);
     }

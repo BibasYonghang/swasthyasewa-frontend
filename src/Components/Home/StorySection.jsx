@@ -99,7 +99,6 @@ const YOUR_USER_ID = "current-user"; // This would come from auth context
 
 export default function StorySection() {
   const [stories, setStories] = useState(initialStories);
-  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [currentUserStories, setCurrentUserStories] = useState([]);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
