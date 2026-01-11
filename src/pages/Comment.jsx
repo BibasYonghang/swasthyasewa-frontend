@@ -29,7 +29,7 @@ const post = {
     {
       id: 1,
       user: {
-        name: "John Doe",
+        name: "Bibas Yonghang",
         profilePicture: "/default-profile.png",
       },
       content: "This comment section looks exactly like Facebook!",

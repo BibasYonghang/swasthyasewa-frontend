@@ -31,8 +31,8 @@ export default function Settings() {
   });
   const [darkMode, setDarkMode] = useState(false);
   const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: 'Bibas Yonghang',
+    email: 'bibas.yonghang@example.com',
     phone: '+1 (555) 123-4567',
     dateOfBirth: '1990-01-01',
     gender: 'male',

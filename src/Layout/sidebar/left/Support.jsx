@@ -329,7 +329,7 @@ export default function Support() {
                   <div className="p-4 bg-green-50 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle className="text-green-600" size={16} />
-                      <span className="font-medium text-green-800">John lost 15kg in 3 months</span>
+                      <span className="font-medium text-green-800">Bibas lost 15kg in 3 months</span>
                     </div>
                     <p className="text-sm text-green-700">"Using HealthConnect transformed my health journey..."</p>
                   </div>

@@ -169,14 +169,12 @@ export default function PostCard({ post, updatePost }) {
           </div>
         </div>
       </div>
-
       {/* -------------------- Post Content -------------------- */}
       <div className="mb-4">
         <p className="text-gray-800 whitespace-pre-line leading-relaxed text-[15px]">
           {post?.content || post?.sharedFrom?.content}
         </p>
       </div>
-
       {/* -------------------- Images -------------------- */}
       {images.length > 0 && (
         <div
@@ -191,6 +189,7 @@ export default function PostCard({ post, updatePost }) {
           }`}
         >
           {images.map((image, index) => (
+             
             <div
               key={index}
               className={`relative cursor-pointer transition-transform hover:opacity-95 ${
@@ -199,18 +198,23 @@ export default function PostCard({ post, updatePost }) {
               onClick={() => setSelectedImageIndex(index)}
             >
               <img
-                src={image[selectedImageIndex]}
-                alt={`Post image ${index + 1}`}
+                src={image}
+                alt={`Post Image ${index + 1}`}
                 className={`w-full h-full object-cover ${
                   hasMultipleImages ? "aspect-square" : "max-h-96"
                 }`}
                 loading="lazy"
               />
+              
             </div>
+            
+            
           ))}
+          
         </div>
+        
       )}
-
+    
       {/* -------------------- Stats -------------------- */}
       <div className="py-2 flex items-center justify-between text-sm text-gray-500 border-b border-gray-100">
         <div className="flex items-center gap-1">
@@ -223,7 +227,6 @@ export default function PostCard({ post, updatePost }) {
           <span>{post.comments.length} comments</span>
         )}
       </div>
-
       {/* -------------------- Action Buttons -------------------- */}
       <div className="h-10 w-full mt-2 flex justify-between relative">
         {/* Like Button */}
@@ -275,15 +278,14 @@ export default function PostCard({ post, updatePost }) {
           <span className="pl-1">Share</span>
         </button>
       </div>
-
       {/* -------------------- Modals -------------------- */}
       {commentModalOpen && (
         <CommentModal post={post} close={() => setCommentModalOpen(false)} />
       )}
-
       {sharePost && (
         <ShareModal post={post} close={() => setSharePost(false)} />
       )}
     </div>
+    
   );
 }
