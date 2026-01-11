@@ -34,7 +34,10 @@ export default function Home() {
 
   useEffect(() => {
     if (posts.length === 0 && hasMore) {
-      getPosts();
+      const fetchInitialPosts = async () => {
+        await getPosts();
+      };
+      fetchInitialPosts();
     }
   }, [getPosts, hasMore, posts.length]);
 
