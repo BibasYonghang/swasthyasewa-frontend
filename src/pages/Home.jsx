@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { fetchPosts, sendReaction } from "../config/api/posts.js";
@@ -32,6 +32,12 @@ export default function Home() {
     );
   };
 
+  useEffect(() => {
+    if (posts.length === 0 && hasMore) {
+      getPosts();
+    }
+  }, [getPosts, hasMore, posts.length]);
+
   return (
     <div className="flex justify-center min-h-screen mt-2 relative">
       <div className="lg:w-md xl:w-xl w-[96vw]">
@@ -44,17 +50,14 @@ export default function Home() {
           hasMore={hasMore}
           loader={<h4 className="text-center mt-4">Loading...</h4>}
         >
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <PostCard
-              key={post._id}
+              key={`${post._id}-${index}`}
               post={post}
               updatePost={updatePost}
             />
           ))}
         </InfiniteScroll>
-
-        {/* 👇 trigger initial load once */}
-        {posts.length === 0 && hasMore && getPosts()}
       </div>
     </div>
   );
