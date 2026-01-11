@@ -1,11 +1,9 @@
-// src/pages/Welcome.jsx
 import React, { useEffect, useRef } from "react";
 import { Sparkles, ArrowRight, Zap, Users, Globe, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 /* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion } from "framer-motion";
 
-// ✅ Particle class moved outside component
 class Particle {
   constructor(canvas) {
     this.canvas = canvas;

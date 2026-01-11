@@ -120,13 +120,13 @@ export default function RightSidebar() {
           Nearby Clinics / Labs
         </h2>
         <div className="space-y-3">
-          {nearbyClinics.map((clinic, idx) => (
+          {nearbyClinics.map((clinic, id) => (
             <div
-              key={idx}
+              key={id}
               className="flex items-center gap-3 p-3 bg-white shadow-sm border rounded-lg hover:bg-gray-50 cursor-pointer transition"
             >
               <img
-                src={`https://i.pravatar.cc/150?img=${clinic.img}`}
+                src={`https://i.pravatar.cc/100?img=${(id % 70) + 1}`}
                 alt={clinic.name}
                 className="w-10 h-10 rounded-full"
               />
@@ -146,7 +146,7 @@ export default function RightSidebar() {
           {onlineDoctors.map((id) => (
             <div key={id} className="relative">
               <img
-                src={`https://i.pravatar.cc/100?img=${id}`}
+                src={`https://i.pravatar.cc/100?img=${(id % 70) + 1}`}
                 className="w-12 h-12 rounded-full"
                 alt="Doctor"
               />
