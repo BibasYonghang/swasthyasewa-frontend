@@ -11,25 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #  Checkout your code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      #  Install Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      #  Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      #  Run lint
       - name: Run lint
         run: npm run lint
 
-      # Build production version
       - name: Build app
         run: npm run build
