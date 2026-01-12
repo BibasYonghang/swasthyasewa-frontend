@@ -16,7 +16,6 @@ import Wallet from "./pages/wallet/Wallet.jsx";
 import CreatePost from "./pages/createPost/CreatePost.jsx";
 import Profile from "./pages/Profile.jsx";
 import Comment from "./pages/Comment.jsx";
-import NavbarLayout from "./Layout/NavbarLayout.jsx";
 import DashboardLayout from "./Layout/DashboardLayout.jsx";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import DoctorConsultationsLayout from "./Layout/DoctorConsultationsLayout.jsx";
@@ -31,6 +30,7 @@ import Support from "./pages/support/Support.jsx";
 import HealthTestLayout from "./Layout/HealthTestLayout.jsx";
 import HealthTest from "./pages/healthTest/HealthTest.jsx";
 import PostsLayout from "./Layout/PostsLayout.jsx";
+import ProfileLayout from "./Layout/ProfileLayout.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ function AppContent() {
           <Route path="/comment" element={<Comment />} />
         </Route>
 
-        <Route element={<NavbarLayout />}>
+        <Route element={<ProfileLayout />}>
           <Route path="/profile/:id" element={<Profile />} />
         </Route>
 
@@ -73,7 +73,10 @@ function AppContent() {
         </Route>
 
         <Route element={<DoctorConsultationsLayout />}>
-          <Route path="/doctor-consultations" element={<DoctorConsultation />} />
+          <Route
+            path="/doctor-consultations"
+            element={<DoctorConsultation />}
+          />
         </Route>
 
         <Route element={<MyReportsLayout />}>

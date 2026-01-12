@@ -176,10 +176,13 @@ export default function PostCard({ post, updatePost }) {
 
       {/* Actions */}
       <div className="flex mt-2 h-10">
-        <div ref={reactionContainerRef} className="flex-1 relative">
+        <div
+          ref={reactionContainerRef}
+          className="flex-1 relative justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+        >
           <button
             onClick={handleLikeClick}
-            className="w-full flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+            className="w-full h-full flex  hover:cursor-pointer justify-center items-center  gap-1 hover:bg-gray-100 rounded-md"
           >
             {post?.userReaction ? (
               getReactionObj(post.userReaction)?.emoji
@@ -198,7 +201,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex justify-center hover:cursor-pointer  items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <MessageCircle size={20} />
           Comment
@@ -206,7 +209,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex justify-center hover:cursor-pointer  items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <CornerUpRight size={20} />
           Share

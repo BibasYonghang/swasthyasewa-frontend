@@ -202,7 +202,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 text-black">
+    <div className="flex-col items-center justify-center w-full bg-gray-100 text-black">
       {/* Cover Photo */}
       <div className="relative w-full h-60 bg-gray-300">
         <img
@@ -232,9 +232,9 @@ export default function Profile() {
       </div>
 
       {/* Profile Info */}
-      <div className="max-w-5xl mx-auto px-4 -mt-20">
+      <div className="max-w-5xl mx-auto px-4 -mt-15">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
-          <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-200">
+          <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-100 bg-gray-300">
             <img
               src={user.profilePicture || "/default-profile.png"}
               alt={user.name || "User"}
@@ -262,7 +262,7 @@ export default function Profile() {
           </div>
 
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="sm:text-3xl text-2xl font-bold text-gray-900">
               {user.name || "Unknown User"}
             </h1>
             <p className="text-gray-600 mt-1">
@@ -291,15 +291,15 @@ export default function Profile() {
         </div>
 
         {/* Tabs */}
-        <div className="mt-6 border-b border-gray-300 flex gap-8 text-gray-700 font-medium">
+        <div className="mt-6 border-b border-gray-300 flex text-gray-500 font-medium">
           {["Posts", "About", "Friends", "Photos"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-3 px-1 transition-colors ${
+              className={`py-2 px-4 sm:px-6 hover:cursor-pointer transition-colors ${
                 activeTab === tab
                   ? "border-b-2 border-blue-500 text-blue-600 font-semibold"
-                  : "hover:text-gray-900"
+                  : "hover:text-gray-800 hover:bg-gray-200 rounded-md"
               }`}
             >
               {tab}

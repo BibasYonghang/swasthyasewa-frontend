@@ -118,17 +118,17 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex items-center justify-center lg:ml-[3vw]  xl:ml-[9vw]">
-            <div className="flex items-center h-full space-x-1">
+            <div className="flex items-center h-full space-x-7">
               <Link
                 to="/home"
-                className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
+                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
               >
                 <Home size={24} className="text-gray-600" />
               </Link>
 
               <Link
                 to="/nearby-clinics"
-                className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
+                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
               >
                 <MapPinned size={24} className="text-gray-600" />
               </Link>
@@ -136,21 +136,21 @@ export default function Navbar() {
                 href="https://chud-ai.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-purple-500"
+                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-purple-500"
               >
                 <Sparkles size={24} className="text-gray-600" />
               </a>
 
               <Link
                 to="/alerts"
-                className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
+                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
               >
                 <AlertCircle size={24} className="text-gray-600" />
               </Link>
 
               <Link
                 to="/video-consult"
-                className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-green-500"
+                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-green-500"
               >
                 <Video size={24} className="text-gray-600" />
               </Link>
@@ -167,20 +167,16 @@ export default function Navbar() {
               <Search size={22} />
             </button>
 
-            {/* Health AI Button - Mobile/Tablet */}
-            <a
-              href="https://chud-ai.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="lg:hidden flex items-center gap-1 bg-purple-600 text-white px-3 py-2 rounded-full hover:bg-purple-700 transition"
+            <Link
+              to="/home"
+              className="flex lg:hidden items-center justify-center h-10 px-3 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
             >
-              <Sparkles size={18} />
-            </a>
+              <Home size={24} className="text-gray-600" />
+            </Link>
 
-            {/* Messenger - Desktop */}
             <Link
               to="/messages"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative"
+              className="flex items-center relative justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-sky-500"
               aria-label="Messages"
             >
               <MessageCircle size={22} className="text-gray-600" />
@@ -193,7 +189,7 @@ export default function Navbar() {
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="flex items-center justify-center w-10 h-10 hover:cursor-pointer rounded-full bg-gray-100 hover:bg-gray-200 transition-colors relative"
+                className="flex items-center justify-center h-10 px-3 hover:cursor-pointer rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
                 aria-label="Notifications"
               >
                 <Bell size={22} className="text-gray-600" />
@@ -267,7 +263,9 @@ export default function Navbar() {
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                   <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">Bibas Yonghang</p>
+                    <p className="font-semibold text-gray-800">
+                      Bibas Yonghang
+                    </p>
                     <p className="text-sm text-gray-500">Patient ID: HC-7890</p>
                   </div>
 
@@ -359,13 +357,10 @@ export default function Navbar() {
       {/* Mobile Side Menu (Facebook-style) */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-white bg-opacity-50"
             onClick={() => setMobileMenuOpen(false)}
           />
-
-          {/* Menu Panel */}
           <div className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl">
             {/* Header */}
             <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
