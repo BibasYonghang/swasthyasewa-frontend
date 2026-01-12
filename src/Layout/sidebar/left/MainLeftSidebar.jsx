@@ -71,7 +71,7 @@ export default function LeftSidebar() {
   const user = useSelector((state) => state.auth.user); // <-- FIXED
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 bg-white h-screen sticky left-0 top-16 bg-whiter rounded-2xl border-gray-200 p-4">
+    <aside className="hidden lg:flex flex-col w-64 bg-white h-screen sticky left-0 bg-whiter rounded-2xl border-gray-200 p-4">
       {/* User Profile */}
       <div className="mb-4 px-2 flex items-center gap-3">
         <img

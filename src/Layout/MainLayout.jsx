@@ -10,7 +10,7 @@ export default function MainLayout() {
       <Navbar />
       <ScrollToTop />
 
-      <div className="flex">
+      <div className="flex ">
         <MainLeftSidebar />
 
         <main className="flex-1">
