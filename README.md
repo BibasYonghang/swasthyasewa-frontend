@@ -42,7 +42,7 @@ VITE_API_BASE_URL=http://localhost:3000
 
 ## 🛠️ Installation & Setup
 # Clone the repository
-git clone https://github.com/your-username/swasthyasewa-frontend.git
+git clone https://github.com/BibasYonghang/swasthyasewa-frontend.git
 # Install dependencies
 npm install
 # Start development server
