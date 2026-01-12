@@ -36,7 +36,6 @@ export default function Navbar() {
 
   const currentUser = useSelector((state) => state.auth.user);
 
-  // ✅ Hooks must ALWAYS run
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -54,12 +53,10 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ✅ Early return AFTER hooks
   if (!currentUser || !currentUser._id) {
     return null;
   }
 
-  // Facebook-like notifications data
   const notifications = [
     {
       id: 1,
@@ -89,12 +86,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Facebook-style Top Navigation Bar */}
       <nav className="fixed top-0 z-50 w-full bg-white shadow-sm border-b border-gray-200 px-3 xl:px-0 py-2 h-14">
         <div className="flex items-center justify-between h-full max-w-7xl mx-auto">
-          {/* LEFT: Logo & Search */}
           <div className="flex items-center gap-3">
-            {/* Logo */}
             <button
               onClick={scrollToTop}
               type="button"
@@ -108,7 +102,6 @@ export default function Navbar() {
               />
             </button>
 
-            {/* Search Bar - Desktop */}
             <div className="hidden lg:flex items-center max-w-md">
               <div className="relative w-full">
                 <Search
@@ -124,10 +117,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* CENTER: Navigation Icons - Desktop */}
           <div className="hidden lg:flex items-center justify-center lg:ml-[3vw]  xl:ml-[9vw]">
             <div className="flex items-center h-full space-x-1">
-              {/* Home */}
               <Link
                 to="/home"
                 className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
@@ -135,15 +126,12 @@ export default function Navbar() {
                 <Home size={24} className="text-gray-600" />
               </Link>
 
-              {/* Nearby Clinics */}
               <Link
                 to="/nearby-clinics"
                 className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
               >
                 <MapPinned size={24} className="text-gray-600" />
               </Link>
-
-              {/* Health AI */}
               <a
                 href="https://chud-ai.vercel.app/"
                 target="_blank"
@@ -153,7 +141,6 @@ export default function Navbar() {
                 <Sparkles size={24} className="text-gray-600" />
               </a>
 
-              {/* Alerts */}
               <Link
                 to="/alerts"
                 className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
@@ -161,7 +148,6 @@ export default function Navbar() {
                 <AlertCircle size={24} className="text-gray-600" />
               </Link>
 
-              {/* Telemedicine */}
               <Link
                 to="/video-consult"
                 className="flex items-center justify-center h-14 px-6 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-green-500"
@@ -171,7 +157,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* RIGHT: Action Icons & Profile */}
           <div className="flex items-center justify-end gap-2 flex-1">
             {/* Mobile Search Button */}
             <button
@@ -282,7 +267,7 @@ export default function Navbar() {
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                   <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">John Doe</p>
+                    <p className="font-semibold text-gray-800">Bibas Yonghang</p>
                     <p className="text-sm text-gray-500">Patient ID: HC-7890</p>
                   </div>
 
@@ -390,7 +375,7 @@ export default function Navbar() {
                     <User size={24} className="text-white" />
                   </div>
                   <div>
-                    <p className="font-bold text-gray-900">John Doe</p>
+                    <p className="font-bold text-gray-900">Bibas Yonghang</p>
                     <p className="text-sm text-gray-600">
                       Patient • Premium Member
                     </p>
@@ -423,7 +408,6 @@ export default function Navbar() {
 
             {/* Main Navigation Section */}
             <div className="overflow-y-auto h-[calc(100%-180px)] pb-20">
-              {/* Health Navigation - Like Facebook's main nav but vertical */}
               <div className="py-3">
                 <h3 className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Health Navigation
