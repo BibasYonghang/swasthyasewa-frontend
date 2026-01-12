@@ -109,7 +109,6 @@ export default function FacebookStorySection() {
   const progressInterval = useRef(null);
   const videoRef = useRef(null);
   const fileInputRef = useRef(null);
-  const progressRef = useRef(null);
 
   const nextStory = useCallback(() => {
     if (!currentStory) return;
@@ -318,11 +317,11 @@ export default function FacebookStorySection() {
       <div className="bg-white rounded-lg p-4 mb-2 border border-gray-200">
         <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
           <div
-            className="flex-shrink-0 w-32 cursor-pointer"
+            className="shrink-0 w-32 cursor-pointer"
             onClick={() => setShowAddStoryModal(true)}
           >
             <div className="relative bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-              <div className="h-40 bg-gradient-to-b from-gray-100 to-gray-50 flex flex-col items-center pt-4">
+              <div className="h-40 bg-linear-to-b from-gray-100 to-gray-50 flex flex-col items-center pt-4">
                 <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mb-2">
                   <Plus className="w-4 h-4 text-white" />
                 </div>
@@ -344,7 +343,7 @@ export default function FacebookStorySection() {
             return (
               <div
                 key={user.id}
-                className="flex-shrink-0 w-32 cursor-pointer"
+                className="shrink-0 w-32 cursor-pointer"
                 onClick={() => viewStory(user)}
               >
                 <div className="relative rounded-lg overflow-hidden shadow-md border-2 hover:shadow-lg transition-shadow">
@@ -360,7 +359,7 @@ export default function FacebookStorySection() {
                       alt="story"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
                   </div>
                   <div className="absolute top-2 left-2 w-10 h-10 rounded-full overflow-hidden border-2 border-white">
                     <img
@@ -586,15 +585,7 @@ export default function FacebookStorySection() {
         </div>
       )}
 
-      <style jsx>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+ <style> {` .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .hide-scrollbar::-webkit-scrollbar { display: none; } `} </style>
     </div>
   );
 }
