@@ -1,18 +1,36 @@
-// src/auth/AuthSlice.jsx
 import { createSlice } from "@reduxjs/toolkit";
+import { BACKEND_URL } from "../../config/env.js";
 
-// Check if we have a token and user in localStorage
 const token = localStorage.getItem("token");
 const userFromStorage = localStorage.getItem("user");
 
+const normalizeUser = (user) => {
+  if (!user) return user;
+
+  return {
+    ...user,
+    profilePicture: user.profilePicture
+      ? user.profilePicture.startsWith("http")
+        ? user.profilePicture
+        : `${BACKEND_URL}/${user.profilePicture}`
+      : "",
+    coverPicture: user.coverPicture
+      ? user.coverPicture.startsWith("http")
+        ? user.coverPicture
+        : `${BACKEND_URL}/${user.coverPicture}`
+      : "",
+  };
+};
+
 const initialState = {
   user: userFromStorage
-    ? JSON.parse(userFromStorage)
+    ? normalizeUser(JSON.parse(userFromStorage))
     : {
         _id: null,
         name: "",
         email: "",
-        profilePic: "",
+        profilePicture: "",
+        coverPicture: "",
       },
   token: token || null,
   isAuthenticated: !!token,
@@ -23,31 +41,31 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.user = {
-        _id: action.payload._id,
-        name: action.payload.name,
-        email: action.payload.email,
-        profilePic:
-          action.payload.profilePic || action.payload.profilePicture || "",
-      };
+      const payload = action.payload.user ?? action.payload;
+      state.user = normalizeUser({
+        ...state.user,
+        ...payload,
+      });
+
       state.isAuthenticated = true;
-      // Save to localStorage for persistence
       localStorage.setItem("user", JSON.stringify(state.user));
     },
+
     setToken(state, action) {
       state.token = action.payload;
       localStorage.setItem("token", action.payload);
     },
+
     logout(state) {
       state.user = {
         _id: null,
         name: "",
         email: "",
-        profilePic: "",
+        profilePicture: "",
+        coverPicture: "",
       };
       state.token = null;
       state.isAuthenticated = false;
-      // Clear localStorage
       localStorage.removeItem("token");
       localStorage.removeItem("user");
     },

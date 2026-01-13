@@ -2,17 +2,19 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
 import PostCard from "../Components/Home/PostCard";
 import { BACKEND_URL } from "../config/env.js";
+import { setUser } from "../redux/auth/AuthSlice.jsx";
 
 export default function Profile() {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.user);
 
-  const [user, setUser] = useState(null);
+  const [user, setUserState] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("Posts");
@@ -20,64 +22,41 @@ export default function Profile() {
   const [uploadingProfile, setUploadingProfile] = useState(false);
 
   useEffect(() => {
-    console.log("Profile useEffect - Route ID:", routeId);
-    console.log("Profile useEffect - Logged in user:", loggedInUser);
-
-    // If we have a route ID, use that
-    if (routeId) {
-      console.log("Using route ID:", routeId);
-      fetchProfileData(routeId);
-      return;
-    }
-
-    // If no route ID, check if we have a valid logged-in user
-    if (loggedInUser && loggedInUser._id) {
-      console.log("Using logged in user ID:", loggedInUser._id);
-      fetchProfileData(loggedInUser._id);
-      return;
-    }
-
-    // If we get here, we have no valid ID
-    console.log("No valid ID available");
-    setLoading(false);
-  }, [routeId, loggedInUser]);
-
-  const fetchProfileData = async (profileId) => {
+    const profileId = routeId || loggedInUser?._id;
     if (!profileId) {
-      console.error("No profile ID provided to fetchProfileData");
       setLoading(false);
       return;
     }
+    fetchProfileData(profileId);
+  }, [routeId, loggedInUser]);
+
+  const fetchProfileData = async (profileId) => {
+    if (!profileId) return;
 
     try {
       setLoading(true);
-      console.log("Fetching data for profile ID:", profileId);
 
       // Fetch user info
       const userRes = await axios.get(`${BACKEND_URL}/api/users/${profileId}`);
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
-      setUser(userData);
+      setUserState(userData);
 
-      // Fetch posts for this user
+      // Fetch posts
       const postsRes = await axios.get(
         `${BACKEND_URL}/api/posts?userId=${profileId}`
       );
       const allPosts = postsRes.data?.posts || [];
-
       const userPosts = allPosts.filter(
         (post) =>
           post.user?._id === profileId ||
           post.sharedFrom?.user?._id === profileId
       );
-
       userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setPosts(userPosts);
-
-      console.log("Data fetched successfully");
     } catch (err) {
       console.error("Error fetching profile data:", err);
-      setUser(null);
+      setUserState(null);
     } finally {
       setLoading(false);
     }
@@ -89,9 +68,8 @@ export default function Profile() {
         `${BACKEND_URL}/api/posts/${postId}/reaction`,
         { reaction }
       );
-
-      setPosts((prevPosts) =>
-        prevPosts.map((p) =>
+      setPosts((prev) =>
+        prev.map((p) =>
           p._id === postId
             ? {
                 ...p,
@@ -109,49 +87,42 @@ export default function Profile() {
   const handleFileUpload = async (e, type) => {
     const file = e.target.files[0];
     const profileId = routeId || loggedInUser?._id;
-
     if (!file || !profileId) return;
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      if (type === "cover") {
-        setUploadingCover(true);
-      } else {
-        setUploadingProfile(true);
-      }
+      if (type === "cover") setUploadingCover(true);
+      else setUploadingProfile(true);
 
-      const res = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/users/${profileId}/upload-${type}`,
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      setUser((prev) => ({
-        ...prev,
-        [type === "cover" ? "coverPicture" : "profilePicture"]: res.data.url,
-      }));
+      // 🔥 REFRESH USER FROM BACKEND
+      const refreshedUser = await axios.get(
+        `${BACKEND_URL}/api/users/${profileId}`
+      );
+
+      setUserState(refreshedUser.data);
+
+      // 🔥 UPDATE REDUX WITH FULL USER
+      if (!routeId || routeId === loggedInUser?._id) {
+        dispatch(setUser(refreshedUser.data));
+      }
     } catch (err) {
       console.error(`Error uploading ${type}:`, err);
     } finally {
-      if (type === "cover") {
-        setUploadingCover(false);
-      } else {
-        setUploadingProfile(false);
-      }
+      if (type === "cover") setUploadingCover(false);
+      else setUploadingProfile(false);
     }
   };
 
-  // Determine current profile ID for rendering
-  const currentProfileId =
-    routeId || (loggedInUser?._id ? loggedInUser._id : null);
+  const currentProfileId = routeId || loggedInUser?._id;
 
-  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -163,15 +134,11 @@ export default function Profile() {
     );
   }
 
-  // No ID state - user not logged in and no route ID
   if (!currentProfileId) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center text-gray-600">
           <p className="text-lg">Please log in to view profiles</p>
-          <p className="text-sm mt-2">
-            You need to be logged in to access profiles
-          </p>
           <button
             onClick={() => navigate("/login")}
             className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
@@ -183,13 +150,11 @@ export default function Profile() {
     );
   }
 
-  // User not found state
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center text-gray-600">
           <p className="text-lg">Profile not found</p>
-          <p className="text-sm mt-2">The user profile could not be loaded</p>
           <button
             onClick={() => navigate("/")}
             className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
@@ -204,14 +169,12 @@ export default function Profile() {
   return (
     <div className="flex-col items-center justify-center w-full bg-gray-100 text-black">
       {/* Cover Photo */}
-      <div className="relative w-full h-60 bg-gray-300">
+      <div className="relative mx-auto rounded-md max-w-5xl h-60 bg-gray-300">
         <img
           src={user.coverPicture || "/default-cover.jpg"}
           alt="Cover"
           className="w-full h-full object-cover"
-          onError={(e) => {
-            e.target.src = "/default-cover.jpg";
-          }}
+          onError={(e) => (e.target.src = "/default-cover.jpg")}
         />
         {loggedInUser?._id === currentProfileId && (
           <label className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
@@ -239,9 +202,7 @@ export default function Profile() {
               src={user.profilePicture || "/default-profile.png"}
               alt={user.name || "User"}
               className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = "/default-profile.png";
-              }}
+              onError={(e) => (e.target.src = "/default-profile.png")}
             />
             {loggedInUser?._id === currentProfileId && (
               <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
@@ -308,7 +269,7 @@ export default function Profile() {
         </div>
 
         {/* Tab Content */}
-        {activeTab === "Posts" && (
+        {activeTab === "Posts" ? (
           <div className="mt-6 space-y-4">
             {posts.length > 0 ? (
               posts.map((post) => (
@@ -328,9 +289,7 @@ export default function Profile() {
               </div>
             )}
           </div>
-        )}
-
-        {activeTab !== "Posts" && (
+        ) : (
           <div className="mt-6 text-center py-12">
             <p className="text-gray-500">
               {activeTab} content will be shown here.

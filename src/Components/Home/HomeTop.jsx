@@ -22,17 +22,13 @@ export default function HomeTop() {
   };
 
   return (
-    <div className="h-16 rounded-xl bg-white mb-2 gap-1 flex items-center px-3">
+    <div className="h-16 rounded-xl bg-white mb-2 gap-2 flex items-center px-3">
       <Link
         to={`/profile/${currentUser._id}`}
-        className="bg-gray-200 w-10 sm:w-12 md:w-14 lg:w-18 xl:w-22 h-10 rounded-full overflow-hidden"
+        className="  bg-gray-200  w-10 sm:w-10 lg:w-20 aspect-square  rounded-full  overflow-hidden  flex items-center justify-center"
       >
         <img
-          src={
-            currentUser.profilePicture ||
-            currentUser.profilePic ||
-            "/default-user.png"
-          }
+          src={currentUser.profilePicture || "/default-user.png"}
           alt={currentUser.name || "User"}
           className="w-full h-full object-cover"
         />
