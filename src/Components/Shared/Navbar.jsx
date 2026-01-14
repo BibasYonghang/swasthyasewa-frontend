@@ -354,7 +354,7 @@ export default function Navbar() {
         )}
       </nav>
 
-      {/* Mobile Side Menu (Facebook-style) */}
+      {/* Mobile Side Menu  */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div

@@ -1,5 +1,3 @@
-// src/Components/Layout/RightSidebar.lear
-// sx
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -12,7 +10,6 @@ import {
   Heart,
 } from "lucide-react";
 
-// Quick Actions for HealthConnect
 const quickActions = [
   {
     label: "Log Health Data",
@@ -37,13 +34,11 @@ const quickActions = [
   },
 ];
 
-// Upcoming Appointments
 const upcomingAppointments = [
   { doctor: "Dr. Sita Sharma", time: "Tomorrow, 10:00 AM", type: "Video Call" },
   { doctor: "Dr. Ramesh Thapa", time: "Dec 31, 2:00 PM", type: "In-Clinic" },
 ];
 
-// Recent Health Reports
 const recentReports = [
   { title: "Blood Test Report", date: "Dec 28, 2025" },
   { title: "BMI & Fitness Analysis", date: "Dec 27, 2025" },

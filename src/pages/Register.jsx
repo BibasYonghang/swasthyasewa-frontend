@@ -1,4 +1,3 @@
-// src/pages/Register.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,7 +19,6 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/env.js";
 
-// ✅ Particle class moved outside component
 class Particle {
   constructor(canvas) {
     this.canvas = canvas;
@@ -287,7 +285,6 @@ export default function Register() {
           initial="hidden"
           animate="visible"
         >
-          {/* Logo */}
           <motion.div
             className="flex items-center gap-3 mb-8"
             variants={itemVariants}
@@ -373,7 +370,6 @@ export default function Register() {
               className="bg-white/40 backdrop-blur-xl my-5 p-8 rounded-3xl shadow-2xl border border-white/20"
               whileHover={{ boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
             >
-              {/* Header */}
               <motion.div className="text-center mb-4" variants={itemVariants}>
                 <motion.div
                   className="w-15 h-15 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
@@ -386,8 +382,6 @@ export default function Register() {
                   Start Your Health Journey
                 </h2>
               </motion.div>
-
-              {/* Messages */}
               <AnimatePresence>
                 {errors.general && (
                   <motion.div
@@ -417,7 +411,6 @@ export default function Register() {
                 className="space-y-4"
                 variants={containerVariants}
               >
-                {/* Name Field */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Full Name
@@ -448,8 +441,6 @@ export default function Register() {
                     </motion.p>
                   )}
                 </motion.div>
-
-                {/* Email Field */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Email Address
@@ -480,8 +471,6 @@ export default function Register() {
                     </motion.p>
                   )}
                 </motion.div>
-
-                {/* Password Field */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Password
@@ -547,8 +536,6 @@ export default function Register() {
                     </motion.p>
                   )}
                 </motion.div>
-
-                {/* Submit Button */}
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"
@@ -586,8 +573,6 @@ export default function Register() {
                         </motion.div>
                       )}
                     </div>
-
-                    {/* Button Shine Effect */}
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                       initial={{ x: "-100%" }}

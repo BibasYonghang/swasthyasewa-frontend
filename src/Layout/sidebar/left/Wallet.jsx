@@ -212,7 +212,6 @@ export default function Wallet() {
       {/* Content based on active tab */}
       {activeTab === 'transactions' && (
         <>
-          {/* Transactions Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold text-gray-900">Recent Transactions</h2>
             <div className="flex gap-2">

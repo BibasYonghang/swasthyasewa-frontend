@@ -49,12 +49,10 @@ function AppContent() {
   return (
     <Router>
       <Routes>
-        {/* Public pages (no navbar) */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Welcome />} />
 
-        {/* User layout */}
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/comment" element={<Comment />} />
@@ -103,7 +101,6 @@ function AppContent() {
           <Route path="/health-test" element={<HealthTest />} />
         </Route>
 
-        {/* Admin layout */}
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<AdminDashboard />} />
         </Route>

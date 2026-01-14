@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { REACTIONS } from "../Components/reactions";
 
-// Sample data for demonstration (replace with API data in real case)
+// Sample data for demonstration
 const post = {
   user: { name: "Bibas Yonghang", profilePicture: "/default-profile.png" },
   createdAt: "2 hours ago",
@@ -60,7 +60,6 @@ const post = {
 };
 
 function ReactionIcons({ reactions }) {
-  // Facebook groups reactions icons with overlap
   const topReactions = Object.entries(reactions)
     .filter(([, count]) => count > 0)
     .sort((a, b) => b[1] - a[1])
@@ -146,7 +145,6 @@ export default function Comment() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-2xl mx-auto mt-6">
-        {/* Post Card */}
         <div className="bg-white shadow rounded-xl p-4">
           <div className="flex items-start gap-3">
             <img
@@ -190,8 +188,6 @@ export default function Comment() {
             </div>
           </div>
           <div className="border-t mt-2 mb-2" />
-
-          {/* Action Buttons */}
           <div className="flex items-center text-sm font-semibold text-gray-700 select-none divide-x divide-gray-200">
             <button
               className={`flex-1 flex items-center justify-center gap-2 py-2 hover:bg-gray-100 rounded-lg transition`}

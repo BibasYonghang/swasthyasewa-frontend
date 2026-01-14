@@ -6,6 +6,8 @@ const getAuthHeaders = () => {
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
+//JSDoc Comments
+
 /**
  * Fetch posts with pagination
  * @param {number} page - Page number

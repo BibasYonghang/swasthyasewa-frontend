@@ -112,7 +112,6 @@ export default function Support() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6">
-      {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Help & Support</h1>
         <p className="text-gray-600 mt-2">Get help with your health journey and platform usage</p>
@@ -178,7 +177,6 @@ export default function Support() {
       {/* FAQ Section */}
       {activeTab === 'faq' && (
         <div className="space-y-6">
-          {/* Categories */}
           <div className="overflow-x-auto">
             <div className="flex space-x-2 pb-2">
               {faqCategories.map((category) => (

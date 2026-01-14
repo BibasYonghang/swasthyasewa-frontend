@@ -1,4 +1,3 @@
-// src/Components/Home/HomeTop.jsx
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

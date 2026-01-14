@@ -19,7 +19,6 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../config/env.js";
 
-// ✅ Particle class moved outside the component
 class Particle {
   constructor(canvas) {
     this.canvas = canvas;
@@ -303,7 +302,6 @@ export default function Login() {
               className="bg-white/95 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20"
               whileHover={{ boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
             >
-              {/* Header */}
               <motion.div className="text-center mb-8" variants={itemVariants}>
                 <motion.div
                   className="w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
@@ -329,14 +327,11 @@ export default function Login() {
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              {/* Form */}
               <motion.form
                 onSubmit={handleSubmit}
                 className="space-y-6"
                 variants={containerVariants}
               >
-                {/* Email */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Email Address
@@ -357,8 +352,6 @@ export default function Login() {
                     />
                   </motion.div>
                 </motion.div>
-
-                {/* Password */}
                 <motion.div variants={itemVariants}>
                   <label className="text-gray-700 font-medium text-sm mb-2 block">
                     Password
@@ -388,8 +381,6 @@ export default function Login() {
                     </motion.button>
                   </motion.div>
                 </motion.div>
-
-                {/* Submit */}
                 <motion.div variants={itemVariants}>
                   <motion.button
                     type="submit"

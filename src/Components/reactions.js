@@ -1,6 +1,3 @@
-// src/components/reactions.js
-
-// Array of Facebook-style reactions
 export const REACTIONS = [
     { id: "like", emoji: "👍", label: "Like", color: "text-blue-600" },
     { id: "love", emoji: "❤️", label: "Love", color: "text-red-500" },

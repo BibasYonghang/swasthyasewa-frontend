@@ -91,7 +91,7 @@ export default function CreatePostPage() {
     try {
       setLoading(true);
 
-      const authToken = localStorage.getItem("token"); // ✅ FIX ADDED HERE
+      const authToken = localStorage.getItem("token");
 
       const formData = new FormData();
       formData.append("content", postText);
@@ -116,15 +116,12 @@ export default function CreatePostPage() {
   return (
     <div className="bg-gray-50 py-8">
       <div className="w-[90vw] sm:w-[70vw] mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* Header */}
         <div className="border-b border-gray-200 px-6 py-4">
           <h1 className="text-2xl font-bold text-gray-800">Create Post</h1>
           <p className="text-gray-600 text-sm mt-1">
             Share what's on your mind
           </p>
         </div>
-
-        {/* User info and input area */}
         <div className="p-6">
           <div className="flex items-start gap-4">
             <img
@@ -135,8 +132,6 @@ export default function CreatePostPage() {
 
             <div className="flex-1">
               <div className="font-semibold text-gray-800">You</div>
-
-              {/* Feeling and Location tags */}
               <div className="flex flex-wrap gap-2 mb-3">
                 {selectedFeeling && (
                   <div className="flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
@@ -223,9 +218,7 @@ export default function CreatePostPage() {
 
         {/* Action buttons */}
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          {/* Left side action buttons */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {/* Photo upload */}
             <button
               onClick={() => fileInputRef.current?.click()}
               className="flex items-center justify-center hover:cursor-pointer gap-2 px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 shadow-sm"

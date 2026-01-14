@@ -1,4 +1,3 @@
-// src/components/ReactionPopup.jsx
 import React from "react";
 import { REACTIONS } from "../reactions";
 
