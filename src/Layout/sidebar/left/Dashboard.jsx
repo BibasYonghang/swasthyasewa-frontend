@@ -66,7 +66,6 @@ export default function Dashboard() {
     }
   ];
 
-  // Activity chart data
   const activityData = {
     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     datasets: [
@@ -80,7 +79,6 @@ export default function Dashboard() {
     ]
   };
 
-  // Health score data
   const healthScoreData = {
     labels: ['Fitness', 'Nutrition', 'Sleep', 'Mental'],
     datasets: [
@@ -96,7 +94,6 @@ export default function Dashboard() {
     ]
   };
 
-  // Recent activities
   const recentActivities = [
     { time: '2 hours ago', activity: 'Completed morning workout', type: 'fitness' },
     { time: 'Yesterday', activity: 'Had consultation with Dr. Smith', type: 'consultation' },
@@ -134,7 +131,6 @@ export default function Dashboard() {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {/* Activity Chart */}
         <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-200">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-lg font-semibold text-gray-900">Weekly Activity</h2>
@@ -180,7 +176,6 @@ export default function Dashboard() {
 
       {/* Recent Activities and Quick Actions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activities */}
         <div className="lg:col-span-2 bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h2>
           <div className="space-y-4">

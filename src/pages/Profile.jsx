@@ -1,4 +1,3 @@
-// src/pages/Profile.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -35,14 +34,10 @@ export default function Profile() {
   const fetchProfileData = async (profileId) => {
     try {
       setLoading(true);
-
-      // Fetch user info
       const userRes = await axios.get(`${BACKEND_URL}/api/users/${profileId}`);
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
       setUserState(userData);
-
-      // Fetch posts
       const postsRes = await axios.get(
         `${BACKEND_URL}/api/posts?userId=${profileId}`
       );
@@ -108,7 +103,6 @@ export default function Profile() {
 
   return (
     <div className="flex-col items-center justify-center w-full bg-gray-100 text-black">
-      {/* Cover Photo */}
       <div className="relative mx-auto rounded-md max-w-5xl h-60 bg-gray-300">
         <img
           src={user.coverPicture || "/default-cover.jpg"}
@@ -206,7 +200,6 @@ export default function Profile() {
           ))}
         </div>
 
-        {/* Tab Content */}
         {activeTab === "Posts" ? (
           <div className="mt-6 space-y-4">
             {posts.length > 0 ? (

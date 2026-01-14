@@ -78,18 +78,15 @@ export default function Settings() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
     alert('Settings saved successfully!');
   };
 
   const exportData = () => {
-    // Handle data export
     alert('Data export initiated. You will receive an email shortly.');
   };
 
   const deleteAccount = () => {
     if (window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-      // Handle account deletion
       alert('Account deletion requested. We will email you confirmation.');
     }
   };
@@ -131,7 +128,6 @@ export default function Settings() {
           {/* Main Content */}
           <div className="flex-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              {/* Profile Section */}
               {activeSection === 'profile' && (
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-6">

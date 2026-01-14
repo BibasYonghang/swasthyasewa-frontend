@@ -1,4 +1,3 @@
-// src/Components/Home/PostCard.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -155,8 +154,6 @@ export default function PostCard({ post, updatePost }) {
       <p className="mb-4 text-gray-800 whitespace-pre-line">
         {post?.content || post?.sharedFrom?.content}
       </p>
-
-      {/* Images */}
       {images.length > 0 && (
         <div
           className={`mb-4 grid gap-1 rounded-xl overflow-hidden ${

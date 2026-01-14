@@ -30,7 +30,6 @@ export default function PostsLayout() {
 
       {/* Main content */}
       <main className=" p-4">
-        {/* Mobile hamburger button */}
         <div className="md:hidden mb-4">
           <button
             onClick={() => setMobileSidebarOpen(true)}

@@ -25,7 +25,6 @@ export default function ShareModal({ post, close }) {
 
       {/* Modal card */}
       <div className="relative bg-white rounded-2xl shadow-lg w-full max-w-md max-h-[80vh] overflow-y-auto p-5">
-        {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">Share Post</h3>
           <button
