@@ -1,3 +1,4 @@
+// src/Components/Home/PostCard.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -7,11 +8,63 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 import ReactionPopup from "./ReactionPopup";
 import ShareModal from "./ShareModal";
 import CommentModal from "./CommentModal";
 import { getReactionObj } from "../reactions";
+import { BACKEND_URL } from "../../config/env";
+
+// Avatar Component
+const UserAvatar = ({ user, size = 48, fallbackToRedux = true }) => {
+  const authUser = useSelector((state) => state.auth.user);
+
+  // If fallbackToRedux and the user is logged in, always use the latest profile picture
+  const isCurrentUser = fallbackToRedux && authUser?._id === user?._id;
+  const profilePicture = isCurrentUser
+    ? authUser.profilePicture
+    : user?.profilePicture;
+
+  if (profilePicture && profilePicture !== "null") {
+    const pic = profilePicture.startsWith("http")
+      ? profilePicture
+      : `${BACKEND_URL}/${profilePicture}`;
+    return (
+      <img
+        src={pic}
+        alt={user?.name || "User"}
+        className={`w-${size} h-${size} rounded-full object-cover`}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "/default-user.png";
+        }}
+      />
+    );
+  }
+
+  // Default avatar with first letter
+  const initial = (user?.name || "U").charAt(0).toUpperCase();
+  const colors = [
+    "bg-blue-500",
+    "bg-red-500",
+    "bg-green-500",
+    "bg-yellow-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-teal-500",
+  ];
+  const index = user?._id ? user._id.charCodeAt(0) % colors.length : 0;
+
+  return (
+    <div
+      className={`w-${size} h-${size} rounded-full ${colors[index]} flex items-center justify-center text-white font-semibold text-lg`}
+    >
+      {initial}
+    </div>
+  );
+};
 
 export default function PostCard({ post, updatePost }) {
   const [reactingPost, setReactingPost] = useState(false);
@@ -23,7 +76,6 @@ export default function PostCard({ post, updatePost }) {
   const handleReaction = (reactionType) => {
     const newReaction =
       reactionType === post.userReaction ? null : reactionType;
-
     updatePost(post._id, newReaction);
     setReactingPost(false);
   };
@@ -35,6 +87,7 @@ export default function PostCard({ post, updatePost }) {
       : setReactingPost(true);
   };
 
+  // Close popup if clicked outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -45,7 +98,6 @@ export default function PostCard({ post, updatePost }) {
         setReactingPost(false);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, [reactingPost]);
@@ -68,39 +120,6 @@ export default function PostCard({ post, updatePost }) {
     return [];
   };
 
-  const hasProfilePicture = () =>
-    post?.user?.profilePicture &&
-    post.user.profilePicture.trim() !== "" &&
-    post.user.profilePicture !== "null" &&
-    !post.user.profilePicture.includes("default-user.png");
-
-  const getDefaultAvatar = () => {
-    const name = post?.user?.name || "User";
-    const initial = name.charAt(0).toUpperCase();
-    const colors = [
-      "bg-blue-500",
-      "bg-red-500",
-      "bg-green-500",
-      "bg-yellow-500",
-      "bg-purple-500",
-      "bg-pink-500",
-      "bg-indigo-500",
-      "bg-teal-500",
-    ];
-
-    const index = post?.user?._id
-      ? post.user._id.charCodeAt(0) % colors.length
-      : name.charCodeAt(0) % colors.length;
-
-    return (
-      <div
-        className={`w-12 h-12 rounded-full ${colors[index]} flex items-center justify-center text-white font-semibold text-lg`}
-      >
-        {initial}
-      </div>
-    );
-  };
-
   const images = getPostImages();
 
   return (
@@ -108,17 +127,8 @@ export default function PostCard({ post, updatePost }) {
       {/* User Info */}
       <div className="flex items-start gap-3 mb-3">
         <Link to={`/profile/${post?.user?._id}`}>
-          {hasProfilePicture() ? (
-            <img
-              src={post.user.profilePicture}
-              alt={post?.user?.name}
-              className="w-12 h-12 rounded-full object-cover"
-            />
-          ) : (
-            getDefaultAvatar()
-          )}
+          <UserAvatar user={post.user} size={12} />
         </Link>
-
         <div className="flex-1">
           <Link
             to={`/profile/${post?.user?._id}`}
@@ -182,7 +192,7 @@ export default function PostCard({ post, updatePost }) {
         >
           <button
             onClick={handleLikeClick}
-            className="w-full h-full flex  hover:cursor-pointer justify-center items-center  gap-1 hover:bg-gray-100 rounded-md"
+            className="w-full h-full hover:cursor-pointer flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
           >
             {post?.userReaction ? (
               getReactionObj(post.userReaction)?.emoji
@@ -195,13 +205,12 @@ export default function PostCard({ post, updatePost }) {
                 : "Like"}
             </span>
           </button>
-
           {reactingPost && <ReactionPopup handleReaction={handleReaction} />}
         </div>
 
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 flex justify-center hover:cursor-pointer  items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <MessageCircle size={20} />
           Comment
@@ -209,7 +218,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 flex justify-center hover:cursor-pointer  items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <CornerUpRight size={20} />
           Share

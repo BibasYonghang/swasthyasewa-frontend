@@ -157,7 +157,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-2 flex-1">
+          <div className="flex items-center justify-end sm:gap-2  flex-1">
             {/* Mobile Search Button */}
             <button
               className="lg:hidden p-2 rounded-full bg-gray-100 hover:bg-gray-200 hover:cursor-pointer"

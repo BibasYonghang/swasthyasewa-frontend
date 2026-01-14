@@ -1,8 +1,8 @@
 // src/Components/Home/HomeTop.jsx
-import { Image } from "lucide-react";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { Image } from "lucide-react";
 
 export default function HomeTop() {
   const fileInputRef = useRef(null);
@@ -22,17 +22,20 @@ export default function HomeTop() {
   };
 
   return (
-    <div className="h-16 rounded-xl bg-white mb-2 gap-2 flex items-center px-3">
+    <div className="h-16 rounded-xl bg-white mb-2 flex items-center px-3 gap-2">
+      {/* Profile Avatar */}
       <Link
         to={`/profile/${currentUser._id}`}
-        className="  bg-gray-200  w-10 sm:w-10 lg:w-20 aspect-square  rounded-full  overflow-hidden  flex items-center justify-center"
+        className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0"
       >
         <img
           src={currentUser.profilePicture || "/default-user.png"}
           alt={currentUser.name || "User"}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-full"
         />
       </Link>
+
+      {/* Post Input */}
       <input
         type="text"
         placeholder="What's on your mind?"
@@ -40,6 +43,8 @@ export default function HomeTop() {
         onClick={handleInputClick}
         readOnly
       />
+
+      {/* Image Upload */}
       <input
         type="file"
         ref={fileInputRef}
@@ -48,6 +53,7 @@ export default function HomeTop() {
         multiple
         onChange={handleFileChange}
       />
+
       <button className="hover:cursor-pointer mx-2" onClick={handleImageClick}>
         <Image size={30} className="text-green-500" />
       </button>
