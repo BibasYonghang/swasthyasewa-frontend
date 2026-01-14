@@ -42,7 +42,7 @@ export default function Home() {
   }, [getPosts, hasMore, posts.length]);
 
   return (
-    <div className="flex justify-center min-h-screen relative">
+    <div className="flex justify-center overflow-y-auto min-h-screen relative">
       <div className="lg:w-md xl:w-xl w-[96vw]">
         <HomeTop currentUser={loggedInUser} />
         <StorySection />

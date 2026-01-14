@@ -1,16 +1,16 @@
 // src/pages/Profile.jsx
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
+
 import PostCard from "../Components/Home/PostCard";
 import { BACKEND_URL } from "../config/env.js";
 import { setUser } from "../redux/auth/AuthSlice.jsx";
 
 export default function Profile() {
   const { id: routeId } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.user);
 
@@ -21,18 +21,18 @@ export default function Profile() {
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingProfile, setUploadingProfile] = useState(false);
 
+  const profileId = routeId || loggedInUser?._id;
+
   useEffect(() => {
-    const profileId = routeId || loggedInUser?._id;
     if (!profileId) {
       setLoading(false);
       return;
     }
+
     fetchProfileData(profileId);
-  }, [routeId, loggedInUser]);
+  }, [profileId]);
 
   const fetchProfileData = async (profileId) => {
-    if (!profileId) return;
-
     try {
       setLoading(true);
 
@@ -62,31 +62,8 @@ export default function Profile() {
     }
   };
 
-  const handleUpdatePost = async (postId, reaction) => {
-    try {
-      const res = await axios.post(
-        `${BACKEND_URL}/api/posts/${postId}/reaction`,
-        { reaction }
-      );
-      setPosts((prev) =>
-        prev.map((p) =>
-          p._id === postId
-            ? {
-                ...p,
-                reactions: res.data.reactions,
-                userReaction: res.data.userReaction,
-              }
-            : p
-        )
-      );
-    } catch (err) {
-      console.error("Error updating reaction:", err);
-    }
-  };
-
   const handleFileUpload = async (e, type) => {
     const file = e.target.files[0];
-    const profileId = routeId || loggedInUser?._id;
     if (!file || !profileId) return;
 
     const formData = new FormData();
@@ -102,16 +79,15 @@ export default function Profile() {
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      // 🔥 REFRESH USER FROM BACKEND
-      const refreshedUser = await axios.get(
-        `${BACKEND_URL}/api/users/${profileId}`
-      );
+      // Refetch updated user
+      const refreshedUser = (
+        await axios.get(`${BACKEND_URL}/api/users/${profileId}`)
+      ).data;
+      setUserState(refreshedUser);
 
-      setUserState(refreshedUser.data);
-
-      // 🔥 UPDATE REDUX WITH FULL USER
-      if (!routeId || routeId === loggedInUser?._id) {
-        dispatch(setUser(refreshedUser.data));
+      // Update Redux if this is the logged-in user
+      if (loggedInUser?._id === profileId) {
+        dispatch(setUser(refreshedUser));
       }
     } catch (err) {
       console.error(`Error uploading ${type}:`, err);
@@ -121,50 +97,14 @@ export default function Profile() {
     }
   };
 
-  const currentProfileId = routeId || loggedInUser?._id;
-
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading profile...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
       </div>
     );
-  }
-
-  if (!currentProfileId) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center text-gray-600">
-          <p className="text-lg">Please log in to view profiles</p>
-          <button
-            onClick={() => navigate("/login")}
-            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Go to Login
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center text-gray-600">
-          <p className="text-lg">Profile not found</p>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Go Home
-          </button>
-        </div>
-      </div>
-    );
-  }
+  if (!profileId) return <div>Please login</div>;
+  if (!user) return <div>Profile not found</div>;
 
   return (
     <div className="flex-col items-center justify-center w-full bg-gray-100 text-black">
@@ -174,10 +114,9 @@ export default function Profile() {
           src={user.coverPicture || "/default-cover.jpg"}
           alt="Cover"
           className="w-full h-full object-cover"
-          onError={(e) => (e.target.src = "/default-cover.jpg")}
         />
-        {loggedInUser?._id === currentProfileId && (
-          <label className="absolute bottom-4 right-4 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
+        {loggedInUser?._id === profileId && (
+          <label className="absolute bottom-4 right-4 bg-white p-2 rounded-full cursor-pointer">
             {uploadingCover ? (
               <span className="text-xs">Uploading...</span>
             ) : (
@@ -202,10 +141,9 @@ export default function Profile() {
               src={user.profilePicture || "/default-profile.png"}
               alt={user.name || "User"}
               className="w-full h-full object-cover"
-              onError={(e) => (e.target.src = "/default-profile.png")}
             />
-            {loggedInUser?._id === currentProfileId && (
-              <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition-colors">
+            {loggedInUser?._id === profileId && (
+              <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full cursor-pointer">
                 {uploadingProfile ? (
                   <span className="text-xs">...</span>
                 ) : (
@@ -273,27 +211,15 @@ export default function Profile() {
           <div className="mt-6 space-y-4">
             {posts.length > 0 ? (
               posts.map((post) => (
-                <PostCard
-                  key={post._id}
-                  post={post}
-                  updatePost={handleUpdatePost}
-                />
+                <PostCard key={post._id} post={post} updatePost={() => {}} />
               ))
             ) : (
-              <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No posts yet.</p>
-                <p className="text-gray-400 text-sm mt-2">
-                  When {user.name || "this user"} posts something, it will
-                  appear here.
-                </p>
-              </div>
+              <div className="text-center py-12">No posts yet.</div>
             )}
           </div>
         ) : (
           <div className="mt-6 text-center py-12">
-            <p className="text-gray-500">
-              {activeTab} content will be shown here.
-            </p>
+            {activeTab} content will be shown here.
           </div>
         )}
       </div>
