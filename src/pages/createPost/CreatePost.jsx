@@ -258,7 +258,7 @@ export default function CreatePostPage() {
               className={`flex items-center gap-2 justify-center px-6 py-2 rounded-full font-semibold transition-all duration-200 ${
                 loading || (!postText.trim() && selectedImages.length === 0)
                   ? "bg-gray-400 cursor-not-allowed text-white"
-                  : "bg-gradient-to-r from-blue-600 hover:cursor-pointer to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  : "bg-linear-to-r from-blue-600 hover:cursor-pointer to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               }`}
             >
               {loading ? (

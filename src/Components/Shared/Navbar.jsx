@@ -250,7 +250,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 p-1 hover:cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
                 aria-label="Profile menu"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                   <User size={18} className="text-white" />
                 </div>
                 <ChevronDown
@@ -363,10 +363,10 @@ export default function Navbar() {
           />
           <div className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-white">
+            <div className="p-4 border-b border-gray-200 bg-linear-to-r from-blue-50 to-white">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                     <User size={24} className="text-white" />
                   </div>
                   <div>

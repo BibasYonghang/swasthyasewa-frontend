@@ -220,7 +220,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center bg-linear-to- from-slate-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       {/* Animated Background */}
       <canvas
         ref={canvasRef}
@@ -251,7 +251,7 @@ export default function Login() {
             >
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-linear-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
               HealthConnect
             </h1>
           </motion.div>
@@ -267,7 +267,7 @@ export default function Login() {
                 transition={{ type: "spring", stiffness: 100 }}
               >
                 <motion.div
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${features[currentFeature].color} flex items-center justify-center mb-6 shadow-lg`}
+                  className={`w-16 h-16 rounded-2xl bg-linear-to-r ${features[currentFeature].color} flex items-center justify-center mb-6 shadow-lg`}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
                   {React.createElement(features[currentFeature].icon, {
@@ -304,7 +304,7 @@ export default function Login() {
             >
               <motion.div className="text-center mb-8" variants={itemVariants}>
                 <motion.div
-                  className="w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                  className="w-20 h-20 bg-linear-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -385,7 +385,7 @@ export default function Login() {
                   <motion.button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                    className="w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
                     variants={buttonVariants}
                     initial="initial"
                     whileHover="loading"
@@ -408,7 +408,7 @@ export default function Login() {
                       {isLoading ? "Logging In..." : "Log In"}
                     </div>
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
                       initial={{ x: "-100%" }}
                       whileHover={{ x: "100%" }}
                       transition={{ duration: 0.6 }}

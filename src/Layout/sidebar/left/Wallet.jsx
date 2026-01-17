@@ -138,7 +138,7 @@ export default function Wallet() {
 
       {/* Balance Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
+        <div className="bg-linear-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-indigo-200">Available Balance</p>
@@ -443,7 +443,7 @@ export default function Wallet() {
       )}
 
       {/* Promo Section */}
-      <div className="mt-8 bg-gradient-to-r from-green-50 to-emerald-100 rounded-xl p-6">
+      <div className="mt-8 bg-linear-to-r from-green-50 to-emerald-100 rounded-xl p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h3 className="text-xl font-bold text-gray-900">Get 20% Off Your First Annual Plan</h3>
