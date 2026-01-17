@@ -266,7 +266,7 @@ export default function Register() {
   };
 
   return (
-    <div className="relative flex items-center justify-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
+    <div className="relative flex items-center justify-center bg-linear-to-br from-purple-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 pointer-events-none"
@@ -295,7 +295,7 @@ export default function Register() {
             >
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold bg-linear-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
               HealthConnect
             </h1>
           </motion.div>
@@ -312,7 +312,7 @@ export default function Register() {
                 transition={{ type: "spring", stiffness: 100 }}
               >
                 <motion.div
-                  className={`w-16 h-16 rounded-2xl bg-gradient-to-r ${features[currentFeature].color} flex items-center justify-center mb-6 shadow-lg`}
+                  className={`w-16 h-16 rounded-2xl bg-linear-to-r ${features[currentFeature].color} flex items-center justify-center mb-6 shadow-lg`}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
                   {React.createElement(features[currentFeature].icon, {
@@ -344,10 +344,7 @@ export default function Register() {
                 whileHover={{ x: 5 }}
                 transition={{ type: "spring", stiffness: 400 }}
               >
-                <CheckCircle
-                  className="text-green-500 flex-shrink-0"
-                  size={20}
-                />
+                <CheckCircle className="text-green-500 shrink-0" size={20} />
                 <span className="text-sm">{benefit}</span>
               </motion.div>
             ))}
@@ -372,7 +369,7 @@ export default function Register() {
             >
               <motion.div className="text-center mb-4" variants={itemVariants}>
                 <motion.div
-                  className="w-15 h-15 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                  className="w-15 h-15 bg-linear-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -540,7 +537,7 @@ export default function Register() {
                   <motion.button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+                    className="w-full bg-linear-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                     variants={buttonVariants}
                     initial="initial"
                     whileHover="loading"
@@ -574,7 +571,7 @@ export default function Register() {
                       )}
                     </div>
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
                       initial={{ x: "-100%" }}
                       whileHover={{ x: "100%" }}
                       transition={{ duration: 0.6 }}

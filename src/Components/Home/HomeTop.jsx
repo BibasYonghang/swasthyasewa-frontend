@@ -25,7 +25,7 @@ export default function HomeTop() {
       {/* Profile Avatar */}
       <Link
         to={`/profile/${currentUser._id}`}
-        className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0"
+        className="w-12 h-12 rounded-full overflow-hidden shrink-0"
       >
         <img
           src={currentUser.profilePicture || "/default-user.png"}

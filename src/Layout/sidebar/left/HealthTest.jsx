@@ -224,7 +224,7 @@ export default function HealthTests() {
       </div>
 
       {/* Recommended Section */}
-      <div className="mt-8 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6">
+      <div className="mt-8 bg-linear-to-r from-indigo-50 to-blue-50 rounded-xl p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
