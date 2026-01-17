@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 
 import {
   Home,
@@ -15,6 +15,7 @@ import {
   LifeBuoy,
   Sparkles,
 } from "lucide-react";
+import UserAvatar from "../../../Components/Shared/UserAvatar";
 
 const menuItems = [
   {
@@ -68,18 +69,16 @@ const menuItems = [
 ];
 
 export default function LeftSidebar() {
-  const user = useSelector((state) => state.auth.user); // <-- FIXED
+  const loggedInUser = useSelector(state => state.auth.user);
 
   return (
     <aside className="hidden lg:flex h-screen flex-col w-64 bg-white sticky left-0 bg-whiter rounded-2xl border-gray-200 p-4">
       {/* User Profile */}
       <div className="mb-4 px-2 flex items-center gap-3">
-        <img
-          src={user?.profilePic}
-          alt="profile"
-          className="w-6 h-6 rounded-full object-cover bg-gray-100"
-        />
-        <h1 className="text-lg font-semibold text-indigo-600">{user?.name}</h1>
+        <UserAvatar user={loggedInUser} size={12} />
+        <h1 className="text-lg font-semibold text-indigo-600">
+          {loggedInUser?.name || "Guest"}
+        </h1>
       </div>
 
       {/* Sidebar Menu */}
