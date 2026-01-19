@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { scrollToTop } from "../../utils/scrollToTop.js";
 import { useSelector } from "react-redux";
+import UserAvatar from "./UserAvatar.jsx";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -251,7 +252,11 @@ export default function Navbar() {
                 aria-label="Profile menu"
               >
                 <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                  <User size={18} className="text-white" />
+                  <UserAvatar
+                    user={currentUser}
+                    size={18}
+                    className="text-white"
+                  />
                 </div>
                 <ChevronDown
                   size={16}

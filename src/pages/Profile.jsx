@@ -7,6 +7,7 @@ import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
 import PostCard from "../Components/Home/PostCard";
 import { BACKEND_URL } from "../config/env.js";
 import { setUser } from "../redux/auth/AuthSlice.jsx";
+import UserAvatar from "../Components/Shared/UserAvatar.jsx";
 
 export default function Profile() {
   const { id: routeId } = useParams();
@@ -131,10 +132,10 @@ export default function Profile() {
       <div className="max-w-5xl mx-auto px-4 -mt-15">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-100 bg-gray-300">
-            <img
-              src={user.profilePicture || "/default-profile.png"}
-              alt={user.name || "User"}
-              className="w-full h-full object-cover"
+            <UserAvatar
+              user={user} 
+              size={40}
+              fallbackToRedux={true} 
             />
             {loggedInUser?._id === profileId && (
               <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full cursor-pointer">
