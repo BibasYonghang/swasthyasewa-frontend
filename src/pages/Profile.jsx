@@ -39,14 +39,15 @@ export default function Profile() {
       const userData = userRes.data || {};
       userData.followers = userData.followers || [];
       setUserState(userData);
+
       const postsRes = await axios.get(
-        `${BACKEND_URL}/api/posts?userId=${profileId}`
+        `${BACKEND_URL}/api/posts?userId=${profileId}`,
       );
       const allPosts = postsRes.data?.posts || [];
       const userPosts = allPosts.filter(
         (post) =>
           post.user?._id === profileId ||
-          post.sharedFrom?.user?._id === profileId
+          post.sharedFrom?.user?._id === profileId,
       );
       userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setPosts(userPosts);
@@ -72,7 +73,7 @@ export default function Profile() {
       await axios.post(
         `${BACKEND_URL}/api/users/${profileId}/upload-${type}`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
 
       // Refetch updated user
@@ -104,6 +105,7 @@ export default function Profile() {
 
   return (
     <div className="flex-col items-center justify-center w-full bg-gray-100 text-black">
+      {/* Cover */}
       <div className="relative mx-auto rounded-md max-w-5xl h-60 bg-gray-300">
         <img
           src={user.coverPicture || "/default-cover.jpg"}
@@ -132,17 +134,14 @@ export default function Profile() {
       <div className="max-w-5xl mx-auto px-4 -mt-15">
         <div className="flex flex-col md:flex-row md:items-end gap-4">
           <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-100 bg-gray-300">
-            <UserAvatar
-              user={user} 
-              size={40}
-              fallbackToRedux={true} 
-            />
+            {/* ✅ Fixed: Show only the profile picture of the user, no Redux fallback */}
+            <UserAvatar user={user} size={40} fallbackToRedux={false} />
             {loggedInUser?._id === profileId && (
-              <label className="absolute bottom-2 right-2 bg-white p-1 rounded-full cursor-pointer">
+              <label className="absolute bottom-6 right-6 bg-white p-1 rounded-full cursor-pointer">
                 {uploadingProfile ? (
                   <span className="text-xs">...</span>
                 ) : (
-                  <Camera size={18} />
+                  <Camera size={25} />
                 )}
                 <input
                   type="file"
