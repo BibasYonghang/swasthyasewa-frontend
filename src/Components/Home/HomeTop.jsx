@@ -1,12 +1,36 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Image } from "lucide-react";
+import axios from "axios";
+import { BACKEND_URL } from "../../config/env.js";
+import { setUser } from "../../redux/auth/AuthSlice.jsx";
 
 export default function HomeTop() {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+
+  const loggedInUser = useSelector((state) => state.auth.user);
+  const [currentUser, setCurrentUser] = useState(loggedInUser || null);
+
+  // Fetch latest user data when component mounts
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!loggedInUser?._id) return;
+      try {
+        const res = await axios.get(
+          `${BACKEND_URL}/api/users/${loggedInUser._id}`,
+        );
+        setCurrentUser(res.data);
+        dispatch(setUser(res.data)); // Update Redux too
+      } catch (err) {
+        console.error("Error fetching logged-in user:", err);
+      }
+    };
+
+    fetchUser();
+  }, [loggedInUser?._id, dispatch]);
 
   if (!currentUser || !currentUser._id) return null;
 
