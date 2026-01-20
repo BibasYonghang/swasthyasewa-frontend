@@ -29,7 +29,7 @@ export default function Home() {
       const newFetchedPosts = (data.posts || []).filter(
         (p) =>
           !posts.some((existing) => existing._id === p._id) &&
-          !newPosts.some((existing) => existing._id === p._id)
+          !newPosts.some((existing) => existing._id === p._id),
       );
 
       setPosts((prevPosts) => [...prevPosts, ...newFetchedPosts]);
@@ -54,15 +54,15 @@ export default function Home() {
         prev.map((p) =>
           p._id === postId
             ? { ...p, reactions: res.reactions, userReaction: res.userReaction }
-            : p
-        )
+            : p,
+        ),
       );
       setPosts((prev) =>
         prev.map((p) =>
           p._id === postId
             ? { ...p, reactions: res.reactions, userReaction: res.userReaction }
-            : p
-        )
+            : p,
+        ),
       );
     } catch (error) {
       console.error("Error sending reaction:", error);
@@ -91,7 +91,10 @@ export default function Home() {
   // Not required for immediate feed display
 
   return (
-    <div className="flex justify-center overflow-y-auto min-h-screen relative bg-gray-50">
+    <div
+      id="home-scroll-container"
+      className="flex justify-center overflow-y-auto noscroll-bar h-[calc(100vh-56px)]   bg-gray-50"
+    >
       <div className="lg:w-md xl:w-xl w-[96vw]">
         {/* Top section */}
         <HomeTop currentUser={loggedInUser} addNewPost={addNewPost} />
@@ -114,7 +117,7 @@ export default function Home() {
           next={getPosts}
           hasMore={hasMore}
           loader={<h4 className="text-center mt-4">Loading...</h4>}
-          scrollableTarget="scrollableDiv"
+          scrollableTarget="home-scroll-container"
         >
           {posts.map((post, index) => (
             <PostCard

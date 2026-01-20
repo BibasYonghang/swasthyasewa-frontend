@@ -1,5 +1,44 @@
+/* index.css or global.css */
 @import "tailwindcss";
 
+/* Default body/background */
 html {
     background-color: rgb(243, 244, 246);
+}
+
+/* Hover-only scrollbar */
+.noscroll-bar {
+    scrollbar-width: thin;
+    /* Firefox: make space for scrollbar */
+    scrollbar-color: transparent transparent;
+    /* Initially invisible thumb & track */
+}
+
+/* Show scrollbar thumb on hover */
+.noscroll-bar:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    /* Thumb visible, track stays transparent */
+}
+
+/* Chrome, Edge, Safari */
+.noscroll-bar::-webkit-scrollbar {
+    width: 8px;
+    /* reserve space so layout won't shift */
+}
+
+.noscroll-bar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    /* invisible by default */
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.noscroll-bar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* visible on hover */
+}
+
+/* Optional: track can stay transparent */
+.noscroll-bar::-webkit-scrollbar-track {
+    background: transparent;
 }

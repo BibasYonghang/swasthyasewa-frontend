@@ -57,7 +57,7 @@ const onlineDoctors = [201, 202, 203, 204, 205];
 
 export default function RightSidebar() {
   return (
-    <aside className="hidden lg:block w-80 h-screen sticky pl-4 py-4 bg-white rounded-2xl shadow-sm">
+    <aside className="hidden  noscroll-bar  overflow-y-auto  lg:block w-80 h-screen sticky pl-4 py-4 bg-white rounded-2xl shadow-sm">
       {/* QUICK ACTIONS */}
       <section className="space-y-3 mb-6">
         <h2 className="font-semibold text-gray-700">Quick Actions</h2>

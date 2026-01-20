@@ -72,10 +72,10 @@ export default function LeftSidebar() {
   const loggedInUser = useSelector(state => state.auth.user);
 
   return (
-    <aside className="hidden lg:flex h-screen flex-col w-64 bg-white sticky left-0 bg-whiter rounded-2xl border-gray-200 p-4">
+    <aside className="hidden lg:flex noscroll-bar  overflow-y-auto    h-screen flex-col w-64 bg-white sticky left-0 bg-whiter rounded-2xl border-gray-200 py-2 px-4">
       {/* User Profile */}
       <div className="mb-4 px-2 flex items-center gap-3">
-        <UserAvatar user={loggedInUser} size={12} />
+        <UserAvatar user={loggedInUser} size={10} />
         <h1 className="text-lg font-semibold text-indigo-600">
           {loggedInUser?.name || "Guest"}
         </h1>
