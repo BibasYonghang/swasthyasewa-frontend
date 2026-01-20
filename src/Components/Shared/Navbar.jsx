@@ -122,6 +122,7 @@ export default function Navbar() {
             <div className="flex items-center h-full space-x-7">
               <Link
                 to="/home"
+                onClick={scrollToTop}
                 className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
               >
                 <Home size={24} className="text-gray-600" />
@@ -170,6 +171,7 @@ export default function Navbar() {
 
             <Link
               to="/home"
+              onClick={scrollToTop}
               className="flex lg:hidden items-center justify-center h-10 px-3 rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-blue-500"
             >
               <Home size={24} className="text-gray-600" />
@@ -415,6 +417,7 @@ export default function Navbar() {
                 <div className="space-y-1">
                   <Link
                     to="/home"
+                    onClick={scrollToTop}
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-blue-600"
                   >
                     <Home size={22} />

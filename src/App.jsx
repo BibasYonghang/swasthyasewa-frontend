@@ -31,6 +31,7 @@ import HealthTestLayout from "./Layout/HealthTestLayout.jsx";
 import HealthTest from "./pages/healthTest/HealthTest.jsx";
 import PostsLayout from "./Layout/PostsLayout.jsx";
 import ProfileLayout from "./Layout/ProfileLayout.jsx";
+import ScrollToTop from "./Components/Shared/ScrollToTop.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function AppContent() {
 
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

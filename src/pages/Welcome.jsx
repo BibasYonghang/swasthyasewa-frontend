@@ -115,7 +115,7 @@ export default function WelcomePage() {
 
   return (
     <div
-      className="min-h-screen relative flex flex-col items-center justify-center bg-gradient-to-b from-slate-50 via-blue-50 to-indigo-100 p-3 md:p-6 overflow-x-hidden overflow-y-auto"
+      className="min-h-screen relative flex flex-col items-center justify-center bg-linear-to-b from-slate-50 via-blue-50 to-indigo-100 p-3 md:p-6 overflow-x-hidden overflow-y-auto"
       style={{ minHeight: "100dvh" }}
     >
       {/* Canvas Background */}
@@ -137,7 +137,7 @@ export default function WelcomePage() {
 
       {/* Main Content */}
       <motion.div
-        className="relative z-10 w-full flex flex-col md:flex-row md:justify-center md:items-stretch gap-10 max-w-screen-xl"
+        className="relative z-10 w-full flex flex-col md:flex-row md:justify-center md:items-stretch gap-10 max-w-7xl"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -159,7 +159,7 @@ export default function WelcomePage() {
               >
                 <Sparkles className="text-indigo-600" size={32} />
               </motion.div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent select-none">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-linear-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent select-none">
                 SwasthyaSewa
               </h1>
             </motion.div>
@@ -233,7 +233,7 @@ export default function WelcomePage() {
 
         {/* Right Side Card */}
         <motion.div
-          className="bg-white/90 backdrop-blur-lg p-4 xs:p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 mx-auto w-full max-w-[22rem] xs:max-w-md lg:max-w-md md:self-center flex flex-col justify-between"
+          className="bg-white/90 backdrop-blur-lg p-4 xs:p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 mx-auto w-full max-w-88 xs:max-w-md lg:max-w-md md:self-center flex flex-col justify-between"
           variants={cardVariants}
           whileHover="hover"
         >
@@ -243,7 +243,7 @@ export default function WelcomePage() {
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, delay: 0.7 }}
           >
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+            <div className="w-12 h-12 md:w-16 md:h-16 bg-linear-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
               <Sparkles className="text-white" size={22} />
             </div>
             <h2 className="text-xl md:text-2xl font-bold text-gray-800">
@@ -260,7 +260,7 @@ export default function WelcomePage() {
             <motion.div variants={buttonVariants} whileTap="tap">
               <Link
                 to="/login"
-                className="block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                className="block w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
               >
                 Sign In to Your Account
               </Link>
@@ -268,7 +268,7 @@ export default function WelcomePage() {
             <motion.div variants={buttonVariants} whileTap="tap">
               <Link
                 to="/register"
-                className="w-full bg-gradient-to-r from-gray-900 to-black text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1 md:gap-3 group text-base md:text-lg"
+                className="w-full bg-linear-to-r from-gray-900 to-black text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1 md:gap-3 group text-base md:text-lg"
               >
                 Register Your Account
                 <motion.div
