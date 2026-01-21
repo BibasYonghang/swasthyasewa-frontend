@@ -13,8 +13,6 @@ export default function CreateStory() {
   const [textStory, setTextStory] = useState("");
   const [isTextUploading, setIsTextUploading] = useState(false);
 
-  const [stories, setStories] = useState([]);
-
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -36,23 +34,8 @@ export default function CreateStory() {
 
     await new Promise((r) => setTimeout(r, 1000));
 
-    setStories((prev) => [
-      {
-        id: 0,
-        stories: [
-          {
-            id: Date.now(),
-            type: mediaType,
-            url: selectedMedia.url,
-          },
-        ],
-      },
-      ...prev,
-    ]);
-
     setSelectedMedia(null);
     setIsUploading(false);
-    setShowAddStoryModal(false);
   };
 
   const uploadTextStory = async () => {
@@ -61,23 +44,8 @@ export default function CreateStory() {
 
     await new Promise((r) => setTimeout(r, 1000));
 
-    setStories((prev) => [
-      {
-        id: 0,
-        stories: [
-          {
-            id: Date.now(),
-            type: "text",
-            text: textStory,
-          },
-        ],
-      },
-      ...prev,
-    ]);
-
     setTextStory("");
     setIsTextUploading(false);
-    setShowAddStoryModal(false);
   };
 
   return (
@@ -87,7 +55,10 @@ export default function CreateStory() {
           {/* HEADER */}
           <div className="p-4 border-b flex justify-between items-center">
             <h2 className="text-xl font-bold">Create story</h2>
-            <Link to="/home" className="hover:cursor-pointer hover:bg-gray-100 rounded-full p-2">
+            <Link
+              to="/home"
+              className="hover:cursor-pointer hover:bg-gray-100 rounded-full p-2"
+            >
               <X />
             </Link>
           </div>

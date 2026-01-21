@@ -97,7 +97,7 @@ const initialStories = [
 ];
 
 export default function StorySection() {
-  const [stories, setStories] = useState(initialStories);
+  const [stories] = useState(initialStories);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -105,7 +105,6 @@ export default function StorySection() {
 
   const progressInterval = useRef(null);
   const videoRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   const nextStory = useCallback(() => {
     if (!currentStory) return;

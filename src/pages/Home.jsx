@@ -72,7 +72,7 @@ export default function Home() {
     if (posts.length === 0 && hasMore) {
       getPosts();
     }
-  }, []);
+  }, [getPosts, hasMore, posts.length]);
 
   const addNewPost = (newPost) => {
     setNewPosts((prev) => {
