@@ -136,7 +136,7 @@ export default function RightSidebar() {
       </section>
 
       {/* DOCTORS ONLINE NOW */}
-      <section className="mb-8">
+      <section className="mb-14">
         <h2 className="font-semibold text-gray-700 mb-3">Doctors Online</h2>
         <div className="flex flex-wrap gap-3">
           {onlineDoctors.map((id) => (

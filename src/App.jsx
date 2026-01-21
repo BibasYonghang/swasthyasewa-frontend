@@ -32,6 +32,7 @@ import HealthTest from "./pages/healthTest/HealthTest.jsx";
 import PostsLayout from "./Layout/PostsLayout.jsx";
 import ProfileLayout from "./Layout/ProfileLayout.jsx";
 import ScrollToTop from "./Components/Shared/ScrollToTop.jsx";
+import CreateStory from "./pages/CreateStory.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Welcome />} />
+        <Route path="/create-story" element={<CreateStory />} />
 
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />

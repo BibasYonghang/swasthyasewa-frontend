@@ -23,7 +23,7 @@ export default function HomeTop() {
           `${BACKEND_URL}/api/users/${loggedInUser._id}`,
         );
         setCurrentUser(res.data);
-        dispatch(setUser(res.data)); // Update Redux too
+        dispatch(setUser(res.data));
       } catch (err) {
         console.error("Error fetching logged-in user:", err);
       }
