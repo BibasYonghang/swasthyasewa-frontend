@@ -84,6 +84,7 @@ export default function Navbar() {
       unread: false,
     },
   ];
+  const loggedInUser = useSelector((state) => state.auth.user);
 
   return (
     <>
@@ -270,9 +271,9 @@ export default function Navbar() {
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-56 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                   <div className="px-4 py-3 border-b border-gray-100">
-                    <p className="font-semibold text-gray-800">
-                      Bibas Yonghang
-                    </p>
+                    <h1 className="font-semibold text-gray-800">
+                      {loggedInUser?.name || "Guest"}
+                    </h1>
                     <p className="text-sm text-gray-500">Patient ID: HC-7890</p>
                   </div>
 

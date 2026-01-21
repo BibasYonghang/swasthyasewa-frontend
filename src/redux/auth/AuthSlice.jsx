@@ -23,6 +23,7 @@ const normalizeUser = (user) => {
 };
 
 const initialState = {
+  //if userFromStorage exis we use normalizeuser object if not then default empty User obejct
   user: userFromStorage
     ? normalizeUser(JSON.parse(userFromStorage))
     : {
@@ -33,7 +34,7 @@ const initialState = {
         coverPicture: "",
       },
   token: token || null,
-  isAuthenticated: !!token,
+  isAuthenticated: !!token, //converts the token value to true/false:
 };
 
 const authSlice = createSlice({

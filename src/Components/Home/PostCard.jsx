@@ -14,7 +14,6 @@ import CommentModal from "./CommentModal";
 import { getReactionObj } from "../reactions";
 import UserAvatar from "../Shared/UserAvatar";
 
-
 export default function PostCard({ post, updatePost }) {
   const [reactingPost, setReactingPost] = useState(false);
   const [sharePost, setSharePost] = useState(false);
@@ -76,7 +75,7 @@ export default function PostCard({ post, updatePost }) {
       {/* User Info */}
       <div className="flex items-start gap-3 mb-3">
         <Link to={`/profile/${post?.user?._id}`}>
-          <UserAvatar user={post.user} size={12} />
+          <UserAvatar user={post.user} size={12} fallbackToRedux={false} />
         </Link>
         <div className="flex-1">
           <Link

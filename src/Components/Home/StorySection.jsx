@@ -9,6 +9,7 @@ import {
   Pause,
   User,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const initialStories = [
   {
@@ -95,15 +96,11 @@ const initialStories = [
   },
 ];
 
-export default function FacebookStorySection() {
+export default function StorySection() {
   const [stories, setStories] = useState(initialStories);
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [showAddStoryModal, setShowAddStoryModal] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState(null);
-  const [mediaType, setMediaType] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const progressInterval = useRef(null);
@@ -125,7 +122,7 @@ export default function FacebookStorySection() {
       setIsPlaying(true);
     } else {
       const currentUserIndex = stories.findIndex(
-        (user) => user.id === currentStory.user.id
+        (user) => user.id === currentStory.user.id,
       );
 
       if (currentUserIndex < stories.length - 1) {
@@ -158,7 +155,7 @@ export default function FacebookStorySection() {
       setIsPlaying(true);
     } else {
       const currentUserIndex = stories.findIndex(
-        (user) => user.id === currentStory.user.id
+        (user) => user.id === currentStory.user.id,
       );
 
       if (currentUserIndex > 0) {
@@ -268,58 +265,11 @@ export default function FacebookStorySection() {
     setProgress(0);
   };
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setSelectedMedia({
-        file,
-        url: reader.result,
-        type: file.type.startsWith("video") ? "video" : "image",
-      });
-      setMediaType(file.type.startsWith("video") ? "video" : "image");
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const uploadStory = async () => {
-    if (!selectedMedia) return;
-    setIsUploading(true);
-
-    await new Promise((r) => setTimeout(r, 1000));
-
-    const newStory = {
-      id: Date.now(),
-      type: mediaType,
-      url: selectedMedia.url,
-      viewed: false,
-      duration: mediaType === "video" ? 8000 : 5000,
-    };
-
-    const userStory = {
-      id: 0,
-      username: "You",
-      userImage: "",
-      stories: [newStory],
-      createdAt: "Just now",
-    };
-
-    setStories((prev) => [userStory, ...prev]);
-    setShowAddStoryModal(false);
-    setSelectedMedia(null);
-    setIsUploading(false);
-  };
-
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white rounded-lg p-4 mb-2 border border-gray-200">
         <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
-          <div
-            className="shrink-0 w-32 cursor-pointer"
-            onClick={() => setShowAddStoryModal(true)}
-          >
+          <Link className="shrink-0 w-32 cursor-pointer" to="/create-story">
             <div className="relative bg-white rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
               <div className="h-40 bg-linear-to-b from-gray-100 to-gray-50 flex flex-col items-center pt-4">
                 <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mb-2">
@@ -336,7 +286,7 @@ export default function FacebookStorySection() {
                 </div>
               </div>
             </div>
-          </div>
+          </Link>
 
           {stories.map((user) => {
             const hasUnviewed = user.stories.some((story) => !story.viewed);
@@ -393,16 +343,16 @@ export default function FacebookStorySection() {
                     index === currentStory.currentStoryIndex
                       ? "bg-white"
                       : index < currentStory.currentStoryIndex
-                      ? "bg-white"
-                      : "bg-gray-600"
+                        ? "bg-white"
+                        : "bg-gray-600"
                   }`}
                   style={{
                     width:
                       index === currentStory.currentStoryIndex
                         ? `${progress}%`
                         : index < currentStory.currentStoryIndex
-                        ? "100%"
-                        : "0%",
+                          ? "100%"
+                          : "0%",
                   }}
                 />
               </div>
@@ -483,109 +433,10 @@ export default function FacebookStorySection() {
         </div>
       )}
 
-      {showAddStoryModal && (
-        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden">
-            <div className="p-4 border-b border-gray-200">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-900">
-                  Create story
-                </h2>
-                <button
-                  onClick={() => setShowAddStoryModal(false)}
-                  className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6">
-              {selectedMedia ? (
-                <div className="mb-6">
-                  <div className="relative h-64 rounded-lg overflow-hidden mb-4">
-                    {mediaType === "image" ? (
-                      <img
-                        src={selectedMedia.url}
-                        alt="preview"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <video
-                        src={selectedMedia.url}
-                        controls
-                        className="w-full h-full object-contain bg-black"
-                      />
-                    )}
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setSelectedMedia(null)}
-                      className="flex-1 py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
-                    >
-                      Change
-                    </button>
-                    <button
-                      onClick={uploadStory}
-                      disabled={isUploading}
-                      className="flex-1 py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isUploading ? "Uploading..." : "Share to Story"}
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-blue-500 transition-colors"
-                  onClick={() => fileInputRef.current.click()}
-                >
-                  <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-700 font-medium mb-1">
-                    Select photos or videos
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    Photos and videos will be added to your story
-                  </p>
-                </div>
-              )}
-
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileSelect}
-                accept="image/*,video/*"
-                className="hidden"
-              />
-
-              <div className="mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Your recent stories
-                </h3>
-                <div className="grid grid-cols-3 gap-2">
-                  {stories
-                    .filter((user) => user.id === 0)
-                    .map((user) =>
-                      user.stories.map((story) => (
-                        <div
-                          key={story.id}
-                          className="aspect-square rounded-lg overflow-hidden"
-                        >
-                          <img
-                            src={story.url}
-                            alt="story"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ))
-                    )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
- <style> {` .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .hide-scrollbar::-webkit-scrollbar { display: none; } `} </style>
+      <style>
+        {" "}
+        {` .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .hide-scrollbar::-webkit-scrollbar { display: none; } `}{" "}
+      </style>
     </div>
   );
 }
