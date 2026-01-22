@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Camera, X, Type, Film, ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useStories } from "../context/StoryContext";
+import { useStories } from "../context/useStories";
 
 export default function CreateStory() {
   const fileInputRef = useRef(null);
@@ -19,7 +19,7 @@ export default function CreateStory() {
   const [mediaType, setMediaType] = useState("");
   const [textStory, setTextStory] = useState("");
   const [activeTab, setActiveTab] = useState("create");
-  const [selectedBackground, setSelectedBackground] = useState(0);
+  const [selectedBackground] = useState(0);
 
   const backgrounds = [
     "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -58,7 +58,7 @@ export default function CreateStory() {
     // Create story object
     const newStory = {
       user: {
-        _id: currentUser._id, // must be MongoDB ObjectId from logged-in user
+        _id: currentUser._id,
         username: currentUser.username,
         userImage: currentUser.userImage,
       },

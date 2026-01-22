@@ -1,8 +1,6 @@
-import { createContext, useContext, useState, useEffect } from "react";
-
-const StoryContext = createContext();
-
-const EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours
+import { useState, useEffect } from "react";
+import { EXPIRY_TIME } from "./constants";
+import { StoryContext } from "./StoryContextCreate";
 
 export function StoryProvider({ children }) {
   const [stories, setStories] = useState(() => {
@@ -39,5 +37,3 @@ export function StoryProvider({ children }) {
     </StoryContext.Provider>
   );
 }
-
-export const useStories = () => useContext(StoryContext);

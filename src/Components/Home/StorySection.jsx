@@ -10,8 +10,7 @@ import {
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useStories } from "../../context/StoryContext";
-import { useSelector } from "react-redux";
+import { useStories } from "../../context/useStories";
 
 export default function StorySection() {
   const { stories } = useStories();
