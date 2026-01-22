@@ -10,99 +10,14 @@ import {
   User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const initialStories = [
-  {
-    id: 1,
-    username: "Bibas Yonghang",
-    userImage: "https://randomuser.me/api/portraits/men/1.jpg",
-    stories: [
-      {
-        id: 101,
-        type: "image",
-        url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-        viewed: false,
-        duration: 5000,
-      },
-      {
-        id: 102,
-        type: "video",
-        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        viewed: false,
-        duration: 8000,
-      },
-    ],
-    createdAt: "2 hours ago",
-  },
-  {
-    id: 2,
-    username: "Sushma Nepali",
-    userImage: "https://randomuser.me/api/portraits/women/2.jpg",
-    stories: [
-      {
-        id: 201,
-        type: "image",
-        url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800",
-        viewed: true,
-        duration: 5000,
-      },
-    ],
-    createdAt: "5 hours ago",
-  },
-  {
-    id: 3,
-    username: "Alex Nepali",
-    userImage: "https://randomuser.me/api/portraits/men/3.jpg",
-    stories: [
-      {
-        id: 301,
-        type: "image",
-        url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800",
-        viewed: false,
-        duration: 5000,
-      },
-    ],
-    createdAt: "1 day ago",
-  },
-  {
-    id: 4,
-    username: "Sarah Rai",
-    userImage: "https://randomuser.me/api/portraits/women/4.jpg",
-    stories: [
-      {
-        id: 401,
-        type: "image",
-        url: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800",
-        viewed: true,
-        duration: 5000,
-      },
-    ],
-    createdAt: "2 days ago",
-  },
-  {
-    id: 5,
-    username: "Mike Tyson",
-    userImage: "https://randomuser.me/api/portraits/men/5.jpg",
-    stories: [
-      {
-        id: 501,
-        type: "image",
-        url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800",
-        viewed: false,
-        duration: 5000,
-      },
-    ],
-    createdAt: "3 days ago",
-  },
-];
+import { useStories } from "../../context/useStories";
 
 export default function StorySection() {
-  const [stories] = useState(initialStories);
+  const { stories } = useStories();
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
-
   const progressInterval = useRef(null);
   const videoRef = useRef(null);
 
@@ -264,6 +179,12 @@ export default function StorySection() {
     setProgress(0);
   };
 
+  const validStories = stories.filter((user) =>
+    user.stories.some(
+      (story) => Date.now() - story.createdAt < 24 * 60 * 60 * 1000,
+    ),
+  );
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <div className="bg-white rounded-lg p-4 mb-2 border border-gray-200">
@@ -287,7 +208,7 @@ export default function StorySection() {
             </div>
           </Link>
 
-          {stories.map((user) => {
+          {validStories.map((user) => {
             const hasUnviewed = user.stories.some((story) => !story.viewed);
             return (
               <div
@@ -361,11 +282,15 @@ export default function StorySection() {
           <div className="absolute top-8 left-0 right-0 z-10 p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                <img
-                  src={currentStory.user.userImage}
-                  alt={currentStory.user.username}
-                  className="w-full h-full object-cover"
-                />
+                <Link
+                  to={`/profile/${currentStory.user.id || currentStory.user._id}`}
+                >
+                  <img
+                    src={currentStory.user.userImage}
+                    alt={currentStory.user.username}
+                    className="w-full hover:cursor-pointer h-full object-cover"
+                  />
+                </Link>
               </div>
               <div>
                 <p className="text-white font-semibold">
@@ -378,7 +303,7 @@ export default function StorySection() {
             </div>
             <button
               onClick={() => setShowStoryViewer(false)}
-              className="text-white hover:bg-white/20 p-2 rounded-full"
+              className="text-white hover:bg-white/20 hover:cursor-pointer p-2 rounded-full"
             >
               <X className="w-6 h-6" />
             </button>
@@ -390,7 +315,7 @@ export default function StorySection() {
               <img
                 src={currentStory.stories[currentStory.currentStoryIndex].url}
                 alt="story"
-                className="max-w-full max-h-full object-contain"
+                className="md:w-[95vw] w-[90vw] h-[90vh] object-contain"
               />
             ) : (
               <video
@@ -404,13 +329,13 @@ export default function StorySection() {
 
             <button
               onClick={prevStory}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 p-3 rounded-full"
+              className="absolute hover:cursor-pointer left-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 p-3 rounded-full"
             >
               <ChevronLeft className="w-8 h-8" />
             </button>
             <button
               onClick={nextStory}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 p-3 rounded-full"
+              className="absolute right-4 hover:cursor-pointer top-1/2 transform -translate-y-1/2 text-white hover:bg-white/20 p-3 rounded-full"
             >
               <ChevronRight className="w-8 h-8" />
             </button>

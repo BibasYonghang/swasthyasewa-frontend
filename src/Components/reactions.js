@@ -7,8 +7,3 @@ export const REACTIONS = [
     { id: "angry", emoji: "😡", label: "Angry", color: "text-red-700" },
   ];
   
-  // Utility function to find reaction object by ID
-  export function getReactionObj(reactionId) {
-    return REACTIONS.find((reaction) => reaction.id === reactionId) || null;
-  }
-  

@@ -11,7 +11,7 @@ import {
 import ReactionPopup from "./ReactionPopup";
 import ShareModal from "./ShareModal";
 import CommentModal from "./CommentModal";
-import { getReactionObj } from "../reactions";
+import { getReactionObj } from "../../utils/reactionUtils";
 import UserAvatar from "../Shared/UserAvatar";
 
 export default function PostCard({ post, updatePost }) {
