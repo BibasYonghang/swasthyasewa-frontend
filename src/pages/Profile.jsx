@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { Camera, MapPin, Users, CalendarDays } from "lucide-react";
+import { Camera, MapPin, Users, CalendarDays, Plus, Edit } from "lucide-react";
 
 import PostCard from "../Components/Home/PostCard";
 import { BACKEND_URL } from "../config/env.js";
@@ -20,15 +20,16 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("Posts");
   const [uploadingCover, setUploadingCover] = useState(false);
   const [uploadingProfile, setUploadingProfile] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const profileId = routeId || loggedInUser?._id;
 
+  // Fetch user and posts
   useEffect(() => {
     if (!profileId) {
       setLoading(false);
       return;
     }
-
     fetchProfileData(profileId);
   }, [profileId]);
 
@@ -59,6 +60,7 @@ export default function Profile() {
     }
   };
 
+  // Upload profile or cover image
   const handleFileUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file || !profileId) return;
@@ -76,13 +78,11 @@ export default function Profile() {
         { headers: { "Content-Type": "multipart/form-data" } },
       );
 
-      // Refetch updated user
+      // Refresh user after upload
       const refreshedUser = (
         await axios.get(`${BACKEND_URL}/api/users/${profileId}`)
       ).data;
       setUserState(refreshedUser);
-
-      // Update Redux if this is the logged-in user
       if (loggedInUser?._id === profileId) {
         dispatch(setUser(refreshedUser));
       }
@@ -91,6 +91,30 @@ export default function Profile() {
     } finally {
       if (type === "cover") setUploadingCover(false);
       else setUploadingProfile(false);
+    }
+  };
+
+  const handleProfileUpdate = async (e) => {
+    e.preventDefault();
+    if (!profileId) return;
+
+    try {
+      const updated = await axios.put(`${BACKEND_URL}/api/users/${profileId}`, {
+        name: user.name,
+        username: user.username,
+        bio: user.bio,
+        location: user.location,
+      });
+
+      setUserState(updated.data);
+
+      if (loggedInUser?._id === profileId) {
+        dispatch(setUser(updated.data));
+      }
+
+      setIsEditOpen(false);
+    } catch (err) {
+      console.error("Error updating profile:", err);
     }
   };
 
@@ -131,10 +155,9 @@ export default function Profile() {
       </div>
 
       {/* Profile Info */}
-      <div className="max-w-5xl mx-auto px-4 -mt-15">
-        <div className="flex flex-col md:flex-row md:items-end gap-4">
+      <div className="max-w-5xl mx-auto px-4 -mt-5">
+        <div className="flex flex-col lg:flex-row lg:items-end gap-4">
           <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gray-100 bg-gray-300">
-            {/* ✅ Fixed: Show only the profile picture of the user, no Redux fallback */}
             <UserAvatar user={user} size={40} fallbackToRedux={false} />
             {loggedInUser?._id === profileId && (
               <label className="absolute bottom-6 right-6 bg-white p-1 rounded-full cursor-pointer">
@@ -181,6 +204,25 @@ export default function Profile() {
               </span>
             </div>
           </div>
+
+          <div className="flex-2 flex gap-4">
+            <Link
+              to="/create-story"
+              className="lg:py-2 py-1 hover:cursor-pointer hover:bg-sky-700 px-4 bg-sky-600 text-white rounded-md font-semibold"
+            >
+              <Plus size={18} className="inline mb-1" /> Add To Story{" "}
+            </Link>
+
+            {/* EDIT PROFILE BUTTON */}
+            {loggedInUser?._id === profileId && (
+              <button
+                onClick={() => setIsEditOpen(true)}
+                className="lg:py-2 py-1 hover:cursor-pointer hover:bg-gray-400 px-4 bg-gray-300 text-black rounded-md font-semibold flex items-center gap-1"
+              >
+                <Edit size={18} /> Edit profile
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Tabs */}
@@ -210,12 +252,93 @@ export default function Profile() {
               <div className="text-center py-12">No posts yet.</div>
             )}
           </div>
+        ) : activeTab === "About" ? (
+          <div className="mt-6 text-left p-4 bg-white rounded shadow">
+            <p>
+              <strong>Name:</strong> {user.name}
+            </p>
+            <p>
+              <strong>Username:</strong> {user.username}
+            </p>
+            {user.bio && (
+              <p>
+                <strong>Bio:</strong> {user.bio}
+              </p>
+            )}
+            {user.location && (
+              <p>
+                <strong>Location:</strong> {user.location}
+              </p>
+            )}
+          </div>
         ) : (
           <div className="mt-6 text-center py-12">
             {activeTab} content will be shown here.
           </div>
         )}
       </div>
+
+      {/* EDIT PROFILE MODAL */}
+      {isEditOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-lg relative">
+            <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
+
+            <button
+              className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+              onClick={() => setIsEditOpen(false)}
+            >
+              ✕
+            </button>
+
+            <form
+              onSubmit={handleProfileUpdate}
+              className="flex flex-col gap-4"
+            >
+              <input
+                type="text"
+                placeholder="Name"
+                value={user.name}
+                onChange={(e) =>
+                  setUserState({ ...user, name: e.target.value })
+                }
+                className="border p-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Username"
+                value={user.username}
+                onChange={(e) =>
+                  setUserState({ ...user, username: e.target.value })
+                }
+                className="border p-2 rounded"
+              />
+              <textarea
+                placeholder="Bio"
+                value={user.bio || ""}
+                onChange={(e) => setUserState({ ...user, bio: e.target.value })}
+                className="border p-2 rounded"
+              />
+              <input
+                type="text"
+                placeholder="Location"
+                value={user.location || ""}
+                onChange={(e) =>
+                  setUserState({ ...user, location: e.target.value })
+                }
+                className="border p-2 rounded"
+              />
+
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+              >
+                Save Changes
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

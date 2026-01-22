@@ -6,7 +6,7 @@ import axios from "axios";
 import { BACKEND_URL } from "../../config/env.js";
 import { setUser } from "../../redux/auth/AuthSlice.jsx";
 
-export default function HomeTop() {
+export default function CreatePostBar() {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();

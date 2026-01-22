@@ -2,9 +2,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useSelector } from "react-redux";
 import { fetchPosts, sendReaction } from "../config/api/posts.js";
-import HomeTop from "../Components/Home/HomeTop.jsx";
 import PostCard from "../Components/Home/PostCard.jsx";
 import StorySection from "../Components/Home/StorySection.jsx";
+import CreatePostBar from "../Components/Shared/CreatePostBar.jsx";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -87,7 +87,7 @@ export default function Home() {
       className="flex justify-center overflow-y-auto noscroll-bar h-[calc(100vh-56px)]   bg-gray-50"
     >
       <div className="lg:w-md xl:w-xl w-[96vw]">
-        <HomeTop currentUser={loggedInUser} addNewPost={addNewPost} />
+        <CreatePostBar currentUser={loggedInUser} addNewPost={addNewPost} />
         <StorySection />
 
         {newPosts.map((post) => (
