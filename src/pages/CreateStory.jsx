@@ -9,11 +9,30 @@ export default function CreateStory() {
   const navigate = useNavigate();
   const { addStory } = useStories();
 
-  const currentUser = JSON.parse(localStorage.getItem("user")) || {
+  // Get raw localStorage first
+  const rawUserJson = localStorage.getItem("user");
+  console.log("=== RAW localStorage.getItem('user') ===");
+  console.log("Raw JSON string:", rawUserJson);
+  
+  const parsedUser = rawUserJson ? JSON.parse(rawUserJson) : null;
+  console.log("After JSON.parse:", parsedUser);
+  console.log("parsedUser._id:", parsedUser?._id);
+  console.log("parsedUser.name:", parsedUser?.name);
+  console.log("parsedUser.profilePicture:", parsedUser?.profilePicture);
+
+  const currentUser = parsedUser || {
     _id: "default_id",
     username: "Anonymous",
     userImage: "https://randomuser.me/api/portraits/lego/1.jpg",
   };
+
+  console.log("=== CreateStory currentUser Final ===");
+  console.log("currentUser object:", currentUser);
+  console.log("currentUser._id:", currentUser._id);
+  console.log("currentUser.name:", currentUser.name);
+  console.log("currentUser.username:", currentUser.username);
+  console.log("currentUser.profilePicture:", currentUser.profilePicture);
+  console.log("currentUser.userImage:", currentUser.userImage);
 
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [mediaType, setMediaType] = useState("");
@@ -55,12 +74,16 @@ export default function CreateStory() {
   const uploadStory = async () => {
     if (!selectedMedia) return;
 
+    console.log("=== uploadStory called ===");
+    console.log("currentUser at uploadStory time:", currentUser);
+    console.log("currentUser._id at uploadStory time:", currentUser._id);
+
     // Create story object
     const newStory = {
       user: {
         _id: currentUser._id,
-        username: currentUser.username,
-        userImage: currentUser.userImage,
+        username: currentUser.username || currentUser.name || "Anonymous",
+        userImage: currentUser.userImage || currentUser.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
       },
       stories: [
         {
@@ -74,6 +97,12 @@ export default function CreateStory() {
       ],
     };
 
+    console.log("=== Story object created ===");
+    console.log("newStory:", newStory);
+    console.log("newStory.user:", newStory.user);
+    console.log("newStory.user._id:", newStory.user._id);
+    console.log("Calling addStory with:", newStory);
+    
     addStory(newStory); // Add story to context
     navigate("/home"); // Go back to home
   };
@@ -85,8 +114,8 @@ export default function CreateStory() {
     const newStory = {
       user: {
         _id: currentUser._id,
-        username: currentUser.username,
-        userImage: currentUser.userImage,
+        username: currentUser.username || currentUser.name || "Anonymous",
+        userImage: currentUser.userImage || currentUser.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
       },
       stories: [
         {

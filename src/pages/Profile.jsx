@@ -13,6 +13,7 @@ export default function Profile() {
   const { id: routeId } = useParams();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.user);
+  console.log(loggedInUser);
 
   const [user, setUserState] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -26,7 +27,8 @@ export default function Profile() {
 
   // Fetch user and posts
   useEffect(() => {
-    if (!profileId) {
+    if (!profileId || profileId === 'undefined') {
+      console.warn('Invalid profileId:', profileId);
       setLoading(false);
       return;
     }
