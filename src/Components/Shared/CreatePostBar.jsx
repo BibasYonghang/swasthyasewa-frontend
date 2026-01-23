@@ -35,7 +35,6 @@ export default function CreatePostBar() {
   if (!currentUser || !currentUser._id) return null;
 
   const handleInputClick = () => navigate("/create-post");
-  const handleImageClick = () => fileInputRef.current.click();
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -76,10 +75,6 @@ export default function CreatePostBar() {
         multiple
         onChange={handleFileChange}
       />
-
-      <button className="hover:cursor-pointer mx-2" onClick={handleImageClick}>
-        <Image size={30} className="text-green-500" />
-      </button>
     </div>
   );
 }

@@ -3,9 +3,8 @@ import { PlusCircle, Edit, HelpCircle } from "lucide-react";
 
 export default function Post() {
   const items = [
-    { name: "Create New", icon: <PlusCircle />, to: "/create" },
+    { name: "Create New", icon: <PlusCircle />, to: "/create-post" },
     { name: "My Posts", icon: <Edit />, to: "/post-help/my-posts" },
-    { name: "Help Topics", icon: <HelpCircle />, to: "/post-help/topics" },
   ];
 
   return (
