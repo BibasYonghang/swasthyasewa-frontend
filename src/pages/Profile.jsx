@@ -8,12 +8,12 @@ import PostCard from "../Components/Home/PostCard";
 import { BACKEND_URL } from "../config/env.js";
 import { setUser } from "../redux/auth/AuthSlice.jsx";
 import UserAvatar from "../Components/Shared/UserAvatar.jsx";
+import CreatePostBar from "../Components/Shared/CreatePostBar.jsx";
 
 export default function Profile() {
   const { id: routeId } = useParams();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.user);
-  console.log(loggedInUser);
 
   const [user, setUserState] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -27,8 +27,8 @@ export default function Profile() {
 
   // Fetch user and posts
   useEffect(() => {
-    if (!profileId || profileId === 'undefined') {
-      console.warn('Invalid profileId:', profileId);
+    if (!profileId || profileId === "undefined") {
+      console.warn("Invalid profileId:", profileId);
       setLoading(false);
       return;
     }
@@ -245,6 +245,7 @@ export default function Profile() {
             </button>
           ))}
         </div>
+        <CreatePostBar />
 
         {activeTab === "Posts" ? (
           <div className="mt-6 space-y-4">

@@ -7,9 +7,6 @@ const userFromStorage = localStorage.getItem("user");
 const normalizeUser = (user) => {
   if (!user) return user;
 
-  console.log("normalizeUser input:", user);
-  console.log("normalizeUser input._id:", user._id);
-  
   const normalized = {
     ...user,
     profilePicture: user.profilePicture
@@ -23,8 +20,7 @@ const normalizeUser = (user) => {
         : `${BACKEND_URL}/${user.coverPicture}`
       : "",
   };
-  
-  
+
   return normalized;
 };
 

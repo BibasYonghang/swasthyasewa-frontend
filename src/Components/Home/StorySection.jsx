@@ -14,8 +14,7 @@ import { useStories } from "../../context/useStories";
 
 export default function StorySection() {
   const { stories } = useStories();
-  console.log("=== StorySection: stories from context ===", stories);
-  
+
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStory, setCurrentStory] = useState(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -23,24 +22,11 @@ export default function StorySection() {
   const progressInterval = useRef(null);
   const videoRef = useRef(null);
 
-  // Debug log when story changes
-  useEffect(() => {
-    if (currentStory) {
-      console.log("=== currentStory changed ===");
-      console.log("Current Story Data:", currentStory);
-      console.log("currentStory.user:", currentStory.user);
-      console.log("User ID:", currentStory.user._id);
-      console.log("Full user object:", JSON.stringify(currentStory.user));
-    }
-  }, [currentStory]);
-
   const nextStory = useCallback(() => {
     if (!currentStory) return;
 
     const nextIndex = currentStory.currentStoryIndex + 1;
     const currentUserStories = currentStory.stories;
-
-    console.log(currentStory);
 
     if (nextIndex < currentUserStories.length) {
       setCurrentStory((prev) => ({
@@ -184,41 +170,30 @@ export default function StorySection() {
   }, [showStoryViewer, nextStory, prevStory, togglePlayPause]);
 
   const viewStory = (user) => {
-    console.log("=== viewStory called ===");
-    console.log("user passed to viewStory:", user);
-    console.log("user._id:", user._id);
-    console.log("user.id:", user.id);
-    console.log("user.stories:", user.stories);
-    
     // Validate MongoDB ID format (24 hex characters)
     const isValidMongoId = (id) => {
       return id && /^[a-f0-9]{24}$/.test(id);
     };
-    
-    // Only use _id if it's a valid MongoDB ID, reject timestamps
+
     let validId = null;
     if (isValidMongoId(user._id)) {
       validId = user._id;
     } else if (isValidMongoId(user.id)) {
       validId = user.id;
     }
-    
-    console.log("Valid MongoDB ID found:", validId);
-    
     if (!validId) {
-      console.warn("Story skipped - no valid MongoDB ID found. Old test story with timestamp ID:", user.id);
-      return; // Don't open invalid stories
+      console.warn(
+        "Story skipped - no valid MongoDB ID found. Old test story with timestamp ID:",
+        user.id,
+      );
+      return;
     }
-    
-    // Ensure _id is set with valid MongoDB ID
+
     const userWithId = {
       ...user,
       _id: validId,
     };
-    
-    console.log("userWithId after normalization:", userWithId);
-    console.log("userWithId._id:", userWithId._id);
-    
+
     setCurrentStory({
       user: userWithId,
       stories: userWithId.stories,
@@ -333,9 +308,7 @@ export default function StorySection() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
                 {currentStory.user._id ? (
-                  <Link
-                    to={`/profile/${currentStory.user._id}`}
-                  >
+                  <Link to={`/profile/${currentStory.user._id}`}>
                     <img
                       src={currentStory.user.userImage}
                       alt={currentStory.user.username}

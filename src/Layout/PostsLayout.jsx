@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PostHelpLeftSidebar from "./sidebar/left/Post.jsx";
+import Post from "./sidebar/left/Post.jsx";
 import { Outlet } from "react-router-dom";
 import { Menu } from "lucide-react";
 
@@ -10,7 +10,7 @@ export default function PostsLayout() {
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar for desktop */}
       <aside className="hidden md:block w-64 sticky top-16 h-screen">
-        <PostHelpLeftSidebar />
+        <Post />
       </aside>
 
       {/* Mobile sidebar overlay */}
@@ -23,7 +23,7 @@ export default function PostsLayout() {
             >
               Close
             </button>
-            <PostHelpLeftSidebar />
+            <Post />
           </div>
         </div>
       )}

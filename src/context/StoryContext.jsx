@@ -16,49 +16,50 @@ export function StoryProvider({ children }) {
             (story) => Date.now() - story.createdAt < EXPIRY_TIME,
           ),
         );
+
         localStorage.setItem("stories", JSON.stringify(filtered));
         return filtered;
       });
     }, 60000);
+
     return () => clearInterval(interval);
   }, []);
 
   const addStory = (newStory) => {
-    console.log("=== addStory called ===");
-    console.log("newStory object:", newStory);
-    console.log("newStory.user:", newStory.user);
-    console.log("newStory.user._id:", newStory.user._id);
-    console.log("newStory.user.username:", newStory.user.username);
-    console.log("newStory.user.userImage:", newStory.user.userImage);
-
     setStories((prev) => {
       const userId = newStory.user._id;
-      console.log("userId extracted:", userId);
 
       const existingUserIndex = prev.findIndex((u) => u._id === userId);
 
       let updated;
 
       if (existingUserIndex !== -1) {
-        // Append story to existing user
+        // Append to existing user
         updated = prev.map((u, index) =>
           index === existingUserIndex
-            ? { ...u, stories: [...newStory.stories, ...u.stories] }
+            ? {
+                ...u,
+                stories: Array.isArray(newStory.stories)
+                  ? [...newStory.stories, ...u.stories]
+                  : [newStory.stories, ...u.stories],
+              }
             : u,
         );
       } else {
-        // Create new user story group - ensure _id is always set
-        const userObject = {
-          _id: newStory.user._id,
-          username: newStory.user.username,
-          userImage: newStory.user.userImage,
-          stories: newStory.stories,
-        };
-        console.log("Creating new user story group:", userObject);
-        updated = [userObject, ...prev];
+        // Create new user story group
+        updated = [
+          {
+            _id: newStory.user._id,
+            username: newStory.user.username,
+            userImage: newStory.user.userImage,
+            stories: Array.isArray(newStory.stories)
+              ? newStory.stories
+              : [newStory.stories],
+          },
+          ...prev,
+        ];
       }
 
-      console.log("Updated stories:", updated);
       localStorage.setItem("stories", JSON.stringify(updated));
       return updated;
     });
