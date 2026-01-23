@@ -144,18 +144,73 @@ export default function Navbar() {
               </a>
 
               <Link
-                to="/alerts"
-                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
+                to="/messages"
+                className="flex items-center relative justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-sky-500"
+                aria-label="Messages"
               >
-                <AlertCircle size={24} className="text-gray-600" />
+                <MessageCircle size={22} className="text-gray-600" />
+                <span className="absolute hidden -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5  items-center justify-center rounded-full">
+                  2
+                </span>
               </Link>
 
-              <Link
-                to="/video-consult"
-                className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-green-500"
-              >
-                <Video size={24} className="text-gray-600" />
-              </Link>
+              {/* Notifications Dropdown */}
+              <div className="relative" ref={notificationsRef}>
+                <button
+                  onClick={() => setNotificationsOpen(!notificationsOpen)}
+                  className="flex items-center justify-center h-10 px-3 hover:cursor-pointer rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
+                  aria-label="Notifications"
+                >
+                  <Bell size={22} className="text-gray-600" />
+                  <span className="absolute hidden -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 items-center justify-center rounded-full">
+                    3
+                  </span>
+                </button>
+
+                {/* Notifications Dropdown Menu */}
+                {notificationsOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <h3 className="font-semibold text-gray-800">
+                        Notifications
+                      </h3>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notifications.map((notification) => (
+                        <Link
+                          key={notification.id}
+                          to="/notifications"
+                          className="flex items-start gap-3 px-4 py-3 hover:bg-gray-100 border-b border-gray-100 last:border-b-0"
+                        >
+                          <div
+                            className={`w-2 h-2 rounded-full mt-2 ${
+                              notification.unread
+                                ? "bg-blue-500"
+                                : "bg-transparent"
+                            }`}
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm text-gray-800">
+                              {notification.text}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              {notification.time}
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                    <div className="px-4 py-2 border-t border-gray-100">
+                      <Link
+                        to="/notifications"
+                        className="text-blue-600 text-sm font-medium hover:text-blue-800 block text-center"
+                      >
+                        See all notifications
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -179,24 +234,31 @@ export default function Navbar() {
 
             <Link
               to="/messages"
-              className="flex items-center relative justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-sky-500"
+              className="flex lg:hidden  items-center relative justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-sky-500"
               aria-label="Messages"
             >
               <MessageCircle size={22} className="text-gray-600" />
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+              <span className="absolute hidden -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5  items-center justify-center rounded-full">
                 2
               </span>
             </Link>
 
+            <Link
+              to="/video-consult"
+              className="flex items-center justify-center h-10 px-3  rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-green-500"
+            >
+              <Video size={24} className="text-gray-600" />
+            </Link>
+
             {/* Notifications Dropdown */}
-            <div className="relative" ref={notificationsRef}>
+            <div className="relative lg:hidden" ref={notificationsRef}>
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
                 className="flex items-center justify-center h-10 px-3 hover:cursor-pointer rounded-lg hover:bg-gray-100 transition-colors border-b-2 border-transparent hover:border-red-500"
                 aria-label="Notifications"
               >
                 <Bell size={22} className="text-gray-600" />
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                <span className="absolute  hidden -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5  items-center justify-center rounded-full">
                   3
                 </span>
               </button>

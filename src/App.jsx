@@ -33,6 +33,9 @@ import PostsLayout from "./Layout/PostsLayout.jsx";
 import ProfileLayout from "./Layout/ProfileLayout.jsx";
 import ScrollToTop from "./Components/Shared/ScrollToTop.jsx";
 import CreateStory from "./pages/CreateStory.jsx";
+import NearbyClinics from "./pages/NearbyClinics.jsx";
+import VideoConsult from "./pages/VideoConsult.jsx";
+import Messages from "./pages/Messages.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -56,6 +59,9 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Welcome />} />
         <Route path="/create-story" element={<CreateStory />} />
+        <Route path="/nearby-clinics" element={<NearbyClinics />} />
+        <Route path="/video-consult" element={<VideoConsult />} />
+        <Route path="/messages" element={<Messages />} />
 
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
