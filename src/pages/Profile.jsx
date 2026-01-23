@@ -208,13 +208,6 @@ export default function Profile() {
           </div>
 
           <div className="flex-2 flex gap-4">
-            <Link
-              to="/create-story"
-              className="lg:py-2 py-1 hover:cursor-pointer hover:bg-sky-700 px-4 bg-sky-600 text-white rounded-md font-semibold"
-            >
-              <Plus size={18} className="inline mb-1" /> Add To Story{" "}
-            </Link>
-
             {/* EDIT PROFILE BUTTON */}
             {loggedInUser?._id === profileId && (
               <button
@@ -223,6 +216,15 @@ export default function Profile() {
               >
                 <Edit size={18} /> Edit profile
               </button>
+            )}
+            {/* ADD TO STORY BUTTON - ONLY FOR OWN PROFILE */}
+            {loggedInUser?._id === profileId && (
+              <Link
+                to="/create-story"
+                className="lg:py-2 py-1 hover:cursor-pointer hover:bg-sky-700 px-4 bg-sky-600 text-white rounded-md font-semibold"
+              >
+                <Plus size={18} className="inline mb-1" /> Add To Story{" "}
+              </Link>
             )}
           </div>
         </div>

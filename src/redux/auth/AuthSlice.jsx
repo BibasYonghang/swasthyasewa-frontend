@@ -24,8 +24,6 @@ const normalizeUser = (user) => {
       : "",
   };
   
-  console.log("normalizeUser output:", normalized);
-  console.log("normalizeUser output._id:", normalized._id);
   
   return normalized;
 };
@@ -51,22 +49,14 @@ const authSlice = createSlice({
   reducers: {
     setUser(state, action) {
       const payload = action.payload.user ?? action.payload;
-      console.log("=== setUser Redux Action ===");
-      console.log("action.payload:", action.payload);
-      console.log("payload:", payload);
-      console.log("payload._id:", payload._id);
-      console.log("state.user before:", state.user);
-      
       state.user = normalizeUser({
         ...state.user,
         ...payload,
         _id: payload._id || state.user._id, // Ensure _id is never overwritten
       });
 
-      console.log("state.user after normalizeUser:", state.user);
       state.isAuthenticated = true;
       localStorage.setItem("user", JSON.stringify(state.user));
-      console.log("User saved to localStorage:", JSON.stringify(state.user));
     },
 
     setToken(state, action) {
