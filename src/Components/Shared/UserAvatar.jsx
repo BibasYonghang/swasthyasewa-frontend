@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { BACKEND_URL } from "../../config/env";
 
@@ -9,12 +9,12 @@ export default function UserAvatar({
 }) {
   const authUser = useSelector((state) => state.auth.user);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
 
   // If fallbackToRedux and the user is logged in, always use the latest profile picture
   const isCurrentUser = fallbackToRedux && authUser?._id === user?._id;
   
-  useEffect(() => {
+  // Memoize image URL calculation to avoid unnecessary recalculations
+  const imageUrl = useMemo(() => {
     // Check for profilePicture first, then profilePic (backend might use either)
     let profilePic = isCurrentUser
       ? (authUser?.profilePicture || authUser?.profilePic)
@@ -30,7 +30,6 @@ export default function UserAvatar({
         : (user?.image || user?.avatar || user?.photo);
     }
 
-    let newImageUrl = null;
     if (profilePic && 
         profilePic !== "null" && 
         profilePic.trim() !== "") {
@@ -44,17 +43,11 @@ export default function UserAvatar({
       }
 
       console.log("UserAvatar - Constructed URL:", finalUrl);
-      newImageUrl = finalUrl;
-    } else {
-      console.log("UserAvatar - No valid profile picture found");
+      return finalUrl;
     }
     
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    setImageUrl(newImageUrl);
-    if (!newImageUrl) {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      setImageLoaded(false);
-    }
+    console.log("UserAvatar - No valid profile picture found");
+    return null;
   }, [user, authUser, isCurrentUser]);
 
   const sizeInPixels = `${size * 4}px`; // size is in tailwind units (4px each)
