@@ -2,8 +2,11 @@ import React, { useState, useRef } from "react";
 import { Image, MapPin, Send, Smile, X, Loader } from "lucide-react";
 import { createNewPost } from "../../config/api/posts.js";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import UserAvatar from "../../Components/Shared/UserAvatar.jsx";
 
 export default function CreatePostPage() {
+  const loggedInUser = useSelector((state) => state.auth.user);
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -124,14 +127,10 @@ export default function CreatePostPage() {
         </div>
         <div className="p-6">
           <div className="flex items-start gap-4">
-            <img
-              src="/default-user.png"
-              alt="User"
-              className="w-12 h-12 rounded-full border-2 border-blue-500"
-            />
+            <UserAvatar user={loggedInUser} size={12} fallbackToRedux={true} />
 
             <div className="flex-1">
-              <div className="font-semibold text-gray-800">You</div>
+              <div className="font-semibold text-gray-800">{loggedInUser?.name || "You"}</div>
               <div className="flex flex-wrap gap-2 mb-3">
                 {selectedFeeling && (
                   <div className="flex items-center gap-1 bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
@@ -176,10 +175,10 @@ export default function CreatePostPage() {
                 selectedImages.length === 1
                   ? "grid-cols-1"
                   : selectedImages.length === 2
-                  ? "grid-cols-2"
-                  : selectedImages.length === 3
-                  ? "grid-cols-2"
-                  : "grid-cols-2"
+                    ? "grid-cols-2"
+                    : selectedImages.length === 3
+                      ? "grid-cols-2"
+                      : "grid-cols-2"
               }`}
             >
               {selectedImages.map((image, index) => (
