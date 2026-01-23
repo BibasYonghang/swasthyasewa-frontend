@@ -245,7 +245,8 @@ export default function Profile() {
             </button>
           ))}
         </div>
-        <CreatePostBar />
+
+        {loggedInUser?._id === user?._id && <CreatePostBar />}
 
         {activeTab === "Posts" ? (
           <div className="mt-6 space-y-4">
