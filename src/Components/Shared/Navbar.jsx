@@ -318,7 +318,7 @@ export default function Navbar() {
                 <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                   <UserAvatar
                     user={currentUser}
-                    size={18}
+                    size={8}
                     className="text-white"
                   />
                 </div>

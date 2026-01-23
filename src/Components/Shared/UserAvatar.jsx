@@ -11,13 +11,15 @@ export default function UserAvatar({
 
   // If fallbackToRedux and the user is logged in, always use the latest profile picture
   const isCurrentUser = fallbackToRedux && authUser?._id === user?._id;
+  
+  // Check for profilePicture first, then profilePic (backend might use either)
   const profilePicture = isCurrentUser
-    ? authUser.profilePicture
-    : user?.profilePicture;
+    ? (authUser?.profilePicture || authUser?.profilePic)
+    : (user?.profilePicture || user?.profilePic);
 
   const sizeInPixels = `${size * 4}px`; // size is in tailwind units (4px each)
 
-  if (profilePicture && profilePicture !== "null") {
+  if (profilePicture && profilePicture !== "null" && profilePicture.trim() !== "") {
     const pic = profilePicture.startsWith("http")
       ? profilePicture
       : `${BACKEND_URL}/${profilePicture}`;
