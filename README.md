@@ -21,7 +21,7 @@ This repository contains the **frontend** of the application, built with modern 
 * Secure API communication with backend
 * Mobile-friendly design
 
-
+```bash
 ## 📁 Project Structure
 src/
 ├── components/        # Reusable UI components
@@ -31,7 +31,7 @@ src/
 ├── assets/            # Images & static files
 ├── App.jsx            # Root component
 └── main.jsx           # Entry point
-
+```
 
 ## ⚙️ Environment Variables
 Create a `.env` file in the root directory:

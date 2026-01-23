@@ -15,6 +15,8 @@ export default function UserAvatar({
     ? authUser.profilePicture
     : user?.profilePicture;
 
+  const sizeInPixels = `${size * 4}px`; // size is in tailwind units (4px each)
+
   if (profilePicture && profilePicture !== "null") {
     const pic = profilePicture.startsWith("http")
       ? profilePicture
@@ -23,7 +25,11 @@ export default function UserAvatar({
       <img
         src={pic}
         alt={user?.name || "User"}
-        className={`w-${size} h-${size} rounded-full object-cover`}
+        style={{
+          width: sizeInPixels,
+          height: sizeInPixels,
+        }}
+        className="rounded-full object-cover"
         onError={(e) => {
           e.target.onerror = null;
           e.target.src = "/default-user.png";
@@ -47,7 +53,11 @@ export default function UserAvatar({
   const index = user?._id ? user._id.charCodeAt(0) % colors.length : 0;
   return (
     <div
-      className={`w-${size} h-${size} rounded-full ${colors[index]} flex items-center justify-center text-white font-semibold text-lg`}
+      style={{
+        width: sizeInPixels,
+        height: sizeInPixels,
+      }}
+      className={`rounded-full ${colors[index]} flex items-center justify-center text-white font-semibold text-lg`}
     >
       {initial}
     </div>
