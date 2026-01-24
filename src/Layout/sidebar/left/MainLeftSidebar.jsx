@@ -60,16 +60,10 @@ const menuItems = [
     path: "/settings",
     classname: "text-gray-700",
   },
-  {
-    name: "Support",
-    icon: <LifeBuoy size={24} />,
-    path: "/support",
-    classname: "text-blue-700",
-  },
 ];
 
 export default function LeftSidebar() {
-  const loggedInUser = useSelector(state => state.auth.user);
+  const loggedInUser = useSelector((state) => state.auth.user);
 
   return (
     <aside className="hidden lg:flex noscroll-bar  overflow-y-auto    h-screen flex-col w-64 bg-white sticky left-0 bg-whiter rounded-2xl border-gray-200 py-2 px-4">
@@ -108,7 +102,7 @@ export default function LeftSidebar() {
               <span className={item.classname}>{item.icon}</span>
               <span className="text-md font-semibold">{item.name}</span>
             </NavLink>
-          )
+          ),
         )}
       </nav>
     </aside>

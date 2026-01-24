@@ -169,7 +169,7 @@ export default function Navbar() {
 
                 {/* Notifications Dropdown Menu */}
                 {notificationsOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
+                  <div className="absolute mt-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                     <div className="px-4 py-2 border-b border-gray-100">
                       <h3 className="font-semibold text-gray-800">
                         Notifications
@@ -335,7 +335,6 @@ export default function Navbar() {
                     <h1 className="font-semibold text-gray-800">
                       {currentUser?.name || "Guest"}
                     </h1>
-                    <p className="text-sm text-gray-500">Patient ID: HC-7890</p>
                   </div>
 
                   <Link
@@ -345,25 +344,6 @@ export default function Navbar() {
                     <User size={18} className="text-gray-600" />
                     <span>My Profile</span>
                   </Link>
-
-                  <Link
-                    to="/appointments"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <Calendar size={18} className="text-blue-600" />
-                    <span>Appointments</span>
-                  </Link>
-
-                  <Link
-                    to="/medical-records"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <FileText size={18} className="text-green-600" />
-                    <span>Medical Records</span>
-                  </Link>
-
-                  <div className="border-t border-gray-100 my-2"></div>
-
                   <Link
                     to="/settings"
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
@@ -435,38 +415,28 @@ export default function Navbar() {
             <div className="p-4 border-b border-gray-200 bg-linear-to-r from-blue-50 to-white">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                    <User size={24} className="text-white" />
-                  </div>
+                  <Link
+                    to={`/profile/${currentUser._id}`}
+                    className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                  >
+                    <UserAvatar
+                      user={currentUser}
+                      size={12}
+                      fallbackToRedux={true}
+                    />
+                  </Link>
                   <div>
-                    <p className="font-bold text-gray-900">Bibas Yonghang</p>
-                    <p className="text-sm text-gray-600">
-                      Patient • Premium Member
+                    <p className="font-bold text-gray-900">
+                      {currentUser?.name || "You"}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-full hover:bg-gray-200"
+                  className="p-2 rounded-full hover:cursor-pointer hover:bg-gray-200"
                 >
                   <X size={24} className="text-gray-600" />
                 </button>
-              </div>
-
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <p className="font-bold text-blue-600">3</p>
-                  <p className="text-xs text-gray-600">Appointments</p>
-                </div>
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <p className="font-bold text-green-600">12</p>
-                  <p className="text-xs text-gray-600">Reports</p>
-                </div>
-                <div className="p-2 bg-white rounded-lg shadow-sm">
-                  <p className="font-bold text-purple-600">1</p>
-                  <p className="text-xs text-gray-600">Alerts</p>
-                </div>
               </div>
             </div>
 
@@ -505,17 +475,6 @@ export default function Navbar() {
                   </a>
 
                   <Link
-                    to="/alerts"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <AlertCircle size={22} className="text-red-500" />
-                    <span className="font-medium">Medical Alerts</span>
-                    <span className="ml-auto bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                      3
-                    </span>
-                  </Link>
-
-                  <Link
                     to="/video-consult"
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
@@ -551,22 +510,6 @@ export default function Navbar() {
                   </Link>
 
                   <Link
-                    to="/appointments"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <Calendar size={22} className="text-blue-600" />
-                    <span className="font-medium">Appointments</span>
-                  </Link>
-
-                  <Link
-                    to="/lab-reports"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <FileText size={22} className="text-green-600" />
-                    <span className="font-medium">Lab Reports</span>
-                  </Link>
-
-                  <Link
                     to="/medications"
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                   >
@@ -596,14 +539,6 @@ export default function Navbar() {
                   >
                     <Settings size={22} className="text-gray-600" />
                     <span className="font-medium">Settings</span>
-                  </Link>
-
-                  <Link
-                    to="/privacy"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <Shield size={22} className="text-gray-600" />
-                    <span className="font-medium">Privacy Center</span>
                   </Link>
 
                   <Link
