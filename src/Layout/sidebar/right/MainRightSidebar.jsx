@@ -12,13 +12,6 @@ import {
 
 const quickActions = [
   {
-    label: "Log Health Data",
-    icon: <Plus size={18} />,
-    to: "/log-health",
-    bg: "bg-green-600",
-    hover: "hover:bg-green-700",
-  },
-  {
     label: "Book Consultation",
     icon: <Users size={18} />,
     to: "/doctor-consultations",

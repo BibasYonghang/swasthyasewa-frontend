@@ -5,6 +5,7 @@ import { Image } from "lucide-react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config/env.js";
 import { setUser } from "../../redux/auth/AuthSlice.jsx";
+import UserAvatar from "./UserAvatar.jsx";
 
 export default function CreatePostBar() {
   const fileInputRef = useRef(null);
@@ -45,16 +46,11 @@ export default function CreatePostBar() {
 
   return (
     <div className="h-16 rounded-xl bg-white mb-2 flex items-center px-3 gap-2">
-      {/* Profile Avatar */}
       <Link
         to={`/profile/${currentUser._id}`}
-        className="w-12 h-12 rounded-full overflow-hidden shrink-0"
+        className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
       >
-        <img
-          src={currentUser.profilePicture || "/default-user.png"}
-          alt={currentUser.name || "User"}
-          className="w-full h-full object-cover rounded-full"
-        />
+        <UserAvatar user={currentUser} size={12} fallbackToRedux={true} />
       </Link>
 
       {/* Post Input */}

@@ -14,18 +14,20 @@ export default function UserAvatar({
 
   // If fallbackToRedux and the user is logged in, always use the latest profile picture
   const isCurrentUser = fallbackToRedux && authUser?._id === user?._id;
-  
+
   // Fetch user data if profile picture is missing
   useEffect(() => {
     const profilePic = isCurrentUser
-      ? (authUser?.profilePicture || authUser?.profilePic)
-      : (user?.profilePicture || user?.profilePic);
+      ? authUser?.profilePicture || authUser?.profilePic
+      : user?.profilePicture || user?.profilePic;
 
     // If we don't have profile picture and have a user ID, try to fetch full user data
     if (!profilePic && user?._id && !isCurrentUser) {
       const fetchUserProfile = async () => {
         try {
-          const response = await axios.get(`${BACKEND_URL}/api/users/${user._id}`);
+          const response = await axios.get(
+            `${BACKEND_URL}/api/users/${user._id}`,
+          );
           console.log("UserAvatar - Fetched user data:", response.data);
           setFetchedUserData(response.data);
         } catch (err) {
@@ -35,44 +37,35 @@ export default function UserAvatar({
       fetchUserProfile();
     }
   }, [user?._id, isCurrentUser, authUser, user]);
-  
+
   // Memoize image URL calculation to avoid unnecessary recalculations
   const imageUrl = useMemo(() => {
     // Use fetched data if available, otherwise use passed user data
     const userData = fetchedUserData || user;
-    
+
     // Check for profilePicture first, then profilePic (backend might use either)
     let profilePic = isCurrentUser
-      ? (authUser?.profilePicture || authUser?.profilePic)
-      : (userData?.profilePicture || userData?.profilePic);
+      ? authUser?.profilePicture || authUser?.profilePic
+      : userData?.profilePicture || userData?.profilePic;
 
-    console.log("UserAvatar - Full user data:", { user: userData, authUser, isCurrentUser, profilePic });
-
-    // If we don't have a profile picture, try to find any image field
     if (!profilePic) {
       // Check other possible field names
       profilePic = isCurrentUser
-        ? (authUser?.image || authUser?.avatar || authUser?.photo)
-        : (userData?.image || userData?.avatar || userData?.photo);
+        ? authUser?.image || authUser?.avatar || authUser?.photo
+        : userData?.image || userData?.avatar || userData?.photo;
     }
 
-    if (profilePic && 
-        profilePic !== "null" && 
-        profilePic.trim() !== "") {
-      
+    if (profilePic && profilePic !== "null" && profilePic.trim() !== "") {
       // Construct the full URL
       let finalUrl = profilePic;
-      
+
       if (!finalUrl.startsWith("http")) {
         // If it's a relative path, add the backend URL
-        finalUrl = `${BACKEND_URL}${finalUrl.startsWith('/') ? '' : '/'}${finalUrl}`;
+        finalUrl = `${BACKEND_URL}${finalUrl.startsWith("/") ? "" : "/"}${finalUrl}`;
       }
 
-      console.log("UserAvatar - Constructed URL:", finalUrl);
       return finalUrl;
     }
-    
-    console.log("UserAvatar - No valid profile picture found");
     return null;
   }, [user, authUser, isCurrentUser, fetchedUserData]);
 
@@ -88,9 +81,8 @@ export default function UserAvatar({
           width: sizeInPixels,
           height: sizeInPixels,
         }}
-        className="rounded-full object-cover"
+        className="rounded-full object-cover shrink-0"
         onLoad={() => {
-          console.log("UserAvatar - Image loaded successfully:", imageUrl);
           setImageLoaded(true);
         }}
         onError={(e) => {
@@ -145,7 +137,7 @@ export default function UserAvatar({
     "bg-teal-500",
   ];
   const index = user?._id ? user._id.charCodeAt(0) % colors.length : 0;
-  
+
   console.log("UserAvatar - Showing fallback initial:", {
     name: user?.name,
     initial,
