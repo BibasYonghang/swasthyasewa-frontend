@@ -169,7 +169,7 @@ export default function Navbar() {
 
                 {/* Notifications Dropdown Menu */}
                 {notificationsOpen && (
-                  <div className="absolute mt-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
+                  <div className="absolute right-0 ml-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                     <div className="px-4 py-2 border-b border-gray-100">
                       <h3 className="font-semibold text-gray-800">
                         Notifications
@@ -265,7 +265,7 @@ export default function Navbar() {
 
               {/* Notifications Dropdown Menu */}
               {notificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
+                <div className="absolute -right-20 w-80 bg-white shadow-lg rounded-lg border border-gray-200 py-2">
                   <div className="px-4 py-2 border-b border-gray-100">
                     <h3 className="font-semibold text-gray-800">
                       Notifications
@@ -407,13 +407,13 @@ export default function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-white bg-opacity-50"
+            className="absolute inset-0 bg-opacity-50"
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl">
             {/* Header */}
-            <div className="p-4 border-b border-gray-200 bg-linear-to-r from-blue-50 to-white">
-              <div className="flex items-center justify-between mb-4">
+            <div className="p-4 border-b flex items-center  border-gray-200 bg-linear-to-r from-blue-50 to-white">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Link
                     to={`/profile/${currentUser._id}`}
@@ -426,7 +426,7 @@ export default function Navbar() {
                     />
                   </Link>
                   <div>
-                    <p className="font-bold text-gray-900">
+                    <p className="font-bold w-48 text-gray-900">
                       {currentUser?.name || "You"}
                     </p>
                   </div>
@@ -441,7 +441,7 @@ export default function Navbar() {
             </div>
 
             {/* Main Navigation Section */}
-            <div className="overflow-y-auto h-[calc(100%-180px)] pb-20">
+            <div className="overflow-y-auto h-[calc(100%-180px)] ">
               <div className="py-3">
                 <h3 className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Health Navigation
@@ -552,7 +552,7 @@ export default function Navbar() {
               </div>
 
               {/* Logout */}
-              <div className="py-3 mt-4">
+              <div className="pt-3 border-t border-gray-200">
                 <Link
                   to="/login"
                   className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 text-red-600"
@@ -564,7 +564,7 @@ export default function Navbar() {
             </div>
 
             {/* Footer */}
-            <div className="absolute bottom-0 left-0 right-0 border-t border-gray-200 bg-gray-50 p-4">
+            <div className="absolute bottom-0 left-0 right-0 border-t border-gray-200 bg-gray-50 px-2 py-8">
               <div className="flex items-center justify-center space-x-4">
                 <Link
                   to="/privacy"
