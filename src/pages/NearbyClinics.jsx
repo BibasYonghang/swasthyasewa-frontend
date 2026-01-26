@@ -1,15 +1,207 @@
 import React, { useState, useEffect } from "react";
-import {
-  MapPin,
-  Phone,
-  Clock,
-  Star,
-  Search,
-  Filter,
-  Navigation,
-  ChevronRight,
-  X,
-} from "lucide-react";
+
+const MapPin = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+    />
+  </svg>
+);
+
+const Phone = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+    />
+  </svg>
+);
+
+const Clock = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+);
+
+const Star = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" stroke="currentColor">
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+    />
+  </svg>
+);
+
+const Search = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    />
+  </svg>
+);
+
+const Filter = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+    />
+  </svg>
+);
+
+const Navigation = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+    />
+  </svg>
+);
+
+const ChevronRight = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M9 5l7 7-7 7"
+    />
+  </svg>
+);
+
+const X = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
+const Users = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+    />
+  </svg>
+);
+
+const ChevronDown = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 9l-7 7-7-7"
+    />
+  </svg>
+);
+
+const Grid = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+    />
+  </svg>
+);
+
+const List = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M4 6h16M4 12h16M4 18h16"
+    />
+  </svg>
+);
 
 export default function NearbyClinics() {
   const [clinics, setClinics] = useState([]);
@@ -19,112 +211,8 @@ export default function NearbyClinics() {
   const [selectedClinic, setSelectedClinic] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState("distance");
-
-  // Mock clinic data with realistic information
-  const mockClinics = [
-    {
-      id: 1,
-      name: "City Medical Center",
-      address: "123 Health Street, Downtown",
-      distance: 0.5,
-      phone: "+977-1-4123456",
-      rating: 4.8,
-      reviews: 245,
-      openTime: "08:00",
-      closeTime: "20:00",
-      specialty: ["General", "Cardiology", "Orthopedics"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&h=200&fit=crop",
-      availability: "Open Now",
-      doctors: 12,
-      emergencyService: true,
-    },
-    {
-      id: 2,
-      name: "Heart Care Clinic",
-      address: "456 Medical Plaza, Midtown",
-      distance: 1.2,
-      phone: "+977-1-4234567",
-      rating: 4.6,
-      reviews: 189,
-      openTime: "09:00",
-      closeTime: "18:00",
-      specialty: ["Cardiology", "General"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1537368310025-700d6d9b0e32?w=300&h=200&fit=crop",
-      availability: "Open Now",
-      doctors: 8,
-      emergencyService: false,
-    },
-    {
-      id: 3,
-      name: "Bone & Joint Center",
-      address: "789 Wellness Way, Uptown",
-      distance: 1.8,
-      phone: "+977-1-4345678",
-      rating: 4.7,
-      reviews: 156,
-      openTime: "08:30",
-      closeTime: "19:30",
-      specialty: ["Orthopedics", "Physiotherapy"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1631217261294-c98c3c55dcda?w=300&h=200&fit=crop",
-      availability: "Open Now",
-      doctors: 10,
-      emergencyService: true,
-    },
-    {
-      id: 4,
-      name: "General Health Hub",
-      address: "321 Clinic Road, Suburban Area",
-      distance: 2.1,
-      phone: "+977-1-4456789",
-      rating: 4.5,
-      reviews: 120,
-      openTime: "07:00",
-      closeTime: "21:00",
-      specialty: ["General", "Pediatrics", "Dermatology"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1567532471141-a13e85dd4e98?w=300&h=200&fit=crop",
-      availability: "Open Now",
-      doctors: 15,
-      emergencyService: true,
-    },
-    {
-      id: 5,
-      name: "Eye Care Specialists",
-      address: "654 Vision Street, Downtown",
-      distance: 0.8,
-      phone: "+977-1-4567890",
-      rating: 4.9,
-      reviews: 312,
-      openTime: "09:00",
-      closeTime: "17:00",
-      specialty: ["Ophthalmology"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1576091160368-112cabee46c7?w=300&h=200&fit=crop",
-      availability: "Open Now",
-      doctors: 6,
-      emergencyService: false,
-    },
-    {
-      id: 6,
-      name: "Dental Excellence",
-      address: "987 Smile Avenue, Midtown",
-      distance: 1.5,
-      phone: "+977-1-4678901",
-      rating: 4.7,
-      reviews: 203,
-      openTime: "08:00",
-      closeTime: "18:00",
-      specialty: ["Dentistry"],
-      imageUrl:
-        "https://images.unsplash.com/photo-1600267185393-e158a98703de?w=300&h=200&fit=crop",
-      availability: "Closes in 2 hours",
-      doctors: 9,
-      emergencyService: false,
-    },
-  ];
+  const [viewMode, setViewMode] = useState("list");
+  const [showFilters, setShowFilters] = useState(false);
 
   const specialties = [
     "all",
@@ -136,30 +224,91 @@ export default function NearbyClinics() {
     "Pediatrics",
   ];
 
-  useEffect(() => {
-    // Simulate loading clinics
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setClinics(mockClinics);
-      setFilteredClinics(mockClinics);
-      setLoading(false);
-    }, 500);
+  const getUserLocation = () => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) reject("Geolocation not supported");
+      navigator.geolocation.getCurrentPosition(
+        (pos) =>
+          resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+        (err) => reject(err),
+        { enableHighAccuracy: true },
+      );
+    });
+  };
 
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+  };
+
+  const fetchNearbyClinics = async (lat, lon) => {
+    const query = `[out:json];(node["amenity"="hospital"](around:5000,${lat},${lon});node["amenity"="clinic"](around:5000,${lat},${lon});node["healthcare"="doctor"](around:5000,${lat},${lon}););out body;`;
+    const response = await fetch("https://overpass-api.de/api/interpreter", {
+      method: "POST",
+      body: query,
+    });
+    const data = await response.json();
+    return data.elements;
+  };
+
+  useEffect(() => {
+    const loadClinics = async () => {
+      try {
+        setLoading(true);
+        const location = await getUserLocation();
+        const results = await fetchNearbyClinics(location.lat, location.lon);
+        const formatted = results.map((place, i) => ({
+          id: place.id || i,
+          name: place.tags?.name || "Medical Center",
+          address:
+            place.tags?.["addr:street"] ||
+            place.tags?.["addr:city"] ||
+            "Nearby location",
+          distance: calculateDistance(
+            location.lat,
+            location.lon,
+            place.lat,
+            place.lon,
+          ).toFixed(2),
+          phone: place.tags?.phone || "Not available",
+          rating: (Math.random() * 1 + 4).toFixed(1),
+          reviews: Math.floor(Math.random() * 200),
+          openTime: "08:00",
+          closeTime: "20:00",
+          specialty: ["General"],
+          imageUrl:
+            "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=300&h=200&fit=crop",
+          availability: "Open Now",
+          doctors: Math.floor(Math.random() * 15) + 1,
+          emergencyService: place.tags?.amenity === "hospital",
+        }));
+        setClinics(formatted);
+        setFilteredClinics(formatted);
+      } catch (error) {
+        console.error(error);
+        alert("Please allow location access to find nearby clinics.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadClinics();
   }, []);
 
   useEffect(() => {
-    let filtered = clinics;
-
-    // Filter by specialty
+    let filtered = [...clinics];
     if (selectedSpecialty !== "all") {
       filtered = filtered.filter((clinic) =>
         clinic.specialty.includes(selectedSpecialty),
       );
     }
-
-    // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(
         (clinic) =>
@@ -167,322 +316,241 @@ export default function NearbyClinics() {
           clinic.address.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
-
-    // Sort
     if (sortBy === "distance") {
       filtered.sort((a, b) => a.distance - b.distance);
     } else if (sortBy === "rating") {
       filtered.sort((a, b) => b.rating - a.rating);
-    } else if (sortBy === "availability") {
-      filtered.sort((a, b) => a.distance - b.distance);
     }
-
     setFilteredClinics(filtered);
   }, [searchTerm, selectedSpecialty, sortBy, clinics]);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-blue-50 to-white">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Find Nearby Clinics
-          </h1>
+    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50">
+      <div className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              Find Nearby Clinics
+            </h1>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() =>
+                  setViewMode(viewMode === "list" ? "grid" : "list")
+                }
+                className="sm:hidden p-2 rounded-lg border border-gray-300 hover:bg-gray-50"
+              >
+                {viewMode === "list" ? (
+                  <Grid className="w-5 h-5" />
+                ) : (
+                  <List className="w-5 h-5" />
+                )}
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-linear-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 shadow-md hover:shadow-lg flex items-center gap-2 text-sm sm:text-base"
+              >
+                <Navigation className="w-4 h-4" />
+                <span className="hidden sm:inline">Near Me</span>
+              </button>
+            </div>
+          </div>
 
-          {/* Search Bar */}
-          <div className="flex gap-2 mb-4">
+          <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search clinic name or location..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center gap-2">
-              <Navigation className="w-4 h-4" />
-              Near Me
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="sm:hidden px-4 py-3 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 flex items-center justify-center gap-2"
+            >
+              <Filter className="w-4 h-4" />
+              Filters
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${showFilters ? "rotate-180" : ""}`}
+              />
             </button>
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {specialties.map((specialty) => (
-              <button
-                key={specialty}
-                onClick={() => setSelectedSpecialty(specialty)}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
-                  selectedSpecialty === specialty
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                {specialty.charAt(0).toUpperCase() + specialty.slice(1)}
-              </button>
-            ))}
-          </div>
-
-          {/* Sort Options */}
-          <div className="flex gap-2 mt-3">
-            <Filter className="w-5 h-5 text-gray-600 mt-1" />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="distance">Sort by Distance</option>
-              <option value="rating">Sort by Rating</option>
-              <option value="availability">Sort by Availability</option>
-            </select>
+          <div
+            className={`${showFilters ? "block" : "hidden"} sm:block space-y-3`}
+          >
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {specialties.map((specialty) => (
+                <button
+                  key={specialty}
+                  onClick={() => setSelectedSpecialty(specialty)}
+                  className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-medium ${
+                    selectedSpecialty === specialty
+                      ? "bg-linear-to-r from-blue-500 to-indigo-600 text-white shadow-md"
+                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {specialty.charAt(0).toUpperCase() + specialty.slice(1)}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="flex items-center gap-2">
+                <Filter className="w-5 h-5 text-gray-600" />
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                >
+                  <option value="distance">Sort by Distance</option>
+                  <option value="rating">Sort by Rating</option>
+                </select>
+              </div>
+              <div className="hidden sm:flex items-center gap-2 ml-auto">
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-lg ${viewMode === "list" ? "bg-blue-100" : "bg-white"} border border-gray-300`}
+                >
+                  <List className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-lg ${viewMode === "grid" ? "bg-blue-100" : "bg-white"} border border-gray-300`}
+                >
+                  <Grid className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-            <p className="text-gray-600 mt-4">Loading clinics...</p>
-          </div>
-        ) : filteredClinics.length === 0 ? (
-          <div className="text-center py-12">
-            <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No clinics found</p>
-            <p className="text-gray-400">Try adjusting your search filters</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Clinics List */}
-            <div className="lg:col-span-2">
-              <div className="space-y-4">
-                {filteredClinics.map((clinic) => (
-                  <div
-                    key={clinic.id}
-                    onClick={() => setSelectedClinic(clinic)}
-                    className={`bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all cursor-pointer border-l-4 ${
-                      selectedClinic?.id === clinic.id
-                        ? "border-blue-500 shadow-lg"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    <div className="flex gap-4 p-4">
-                      {/* Clinic Image */}
-                      <div className="w-24 h-24 shrink-0">
-                        <img
-                          src={clinic.imageUrl}
-                          alt={clinic.name}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      </div>
+      <div className="max-w-6xl mx-auto px-4 py-6 grid gap-4">
+        {loading && (
+          <p className="text-center text-gray-500">Loading clinics...</p>
+        )}
 
-                      {/* Clinic Info */}
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3 className="text-lg font-bold text-gray-800">
-                              {clinic.name}
-                            </h3>
-                            <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                              <MapPin className="w-4 h-4" />
-                              {clinic.address}
-                            </div>
-                          </div>
-                          <ChevronRight className="w-5 h-5 text-gray-400" />
-                        </div>
-
-                        {/* Rating and Distance */}
-                        <div className="flex items-center gap-4 mb-2">
-                          <div className="flex items-center gap-1">
-                            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                            <span className="text-sm font-semibold text-gray-700">
-                              {clinic.rating}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              ({clinic.reviews})
-                            </span>
-                          </div>
-                          <span className="text-sm font-semibold text-blue-600">
-                            {clinic.distance} km
-                          </span>
-                        </div>
-
-                        {/* Specialty Tags */}
-                        <div className="flex gap-2 flex-wrap mb-2">
-                          {clinic.specialty.slice(0, 2).map((spec, idx) => (
-                            <span
-                              key={idx}
-                              className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded"
-                            >
-                              {spec}
-                            </span>
-                          ))}
-                          {clinic.specialty.length > 2 && (
-                            <span className="text-xs text-gray-600">
-                              +{clinic.specialty.length - 2} more
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Status */}
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-green-600 font-semibold">
-                            ● {clinic.availability}
-                          </span>
-                          <span className="text-gray-600">
-                            {clinic.doctors} doctors available
-                          </span>
-                        </div>
-                      </div>
+        {filteredClinics.map((clinic) => (
+          <div key={clinic.id} className="space-y-3">
+            {/* ===== CLINIC CARD ===== */}
+            <div
+              onClick={() =>
+                setSelectedClinic(
+                  selectedClinic?.id === clinic.id ? null : clinic,
+                )
+              }
+              className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer border-2 ${
+                selectedClinic?.id === clinic.id
+                  ? "border-blue-500"
+                  : "border-transparent"
+              }`}
+            >
+              <div className="flex gap-4 p-4">
+                <img
+                  src={clinic.imageUrl}
+                  alt={clinic.name}
+                  className="w-24 h-24 object-cover rounded-xl"
+                />
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold text-gray-800">
+                    {clinic.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 flex items-center gap-1">
+                    <MapPin className="w-4 h-4" /> {clinic.address}
+                  </p>
+                  <div className="flex items-center gap-4 mt-2">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                      <span className="font-semibold">{clinic.rating}</span>
+                      <span className="text-xs text-gray-500">
+                        ({clinic.reviews})
+                      </span>
                     </div>
+                    <span className="font-semibold text-blue-600">
+                      {clinic.distance} km
+                    </span>
                   </div>
-                ))}
+                  <div className="flex justify-between text-sm mt-2">
+                    <span className="text-green-600 flex items-center gap-1">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      {clinic.availability}
+                    </span>
+                    <span className="flex items-center gap-1 text-gray-600">
+                      <Users className="w-4 h-4" /> {clinic.doctors} doctors
+                    </span>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
               </div>
             </div>
 
-            {/* Clinic Details Panel */}
-            <div className="lg:col-span-1">
-              {selectedClinic ? (
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden sticky top-24">
-                  <div className="relative">
-                    <img
-                      src={selectedClinic.imageUrl}
-                      alt={selectedClinic.name}
-                      className="w-full h-48 object-cover"
-                    />
-                    <button
-                      onClick={() => setSelectedClinic(null)}
-                      className="absolute top-2 right-2 bg-white rounded-full p-2 hover:bg-gray-100"
-                    >
-                      <X className="w-5 h-5" />
+            {selectedClinic?.id === clinic.id && (
+              <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div className="relative">
+                  <img
+                    src={selectedClinic.imageUrl}
+                    alt={selectedClinic.name}
+                    className="w-full h-56 object-cover"
+                  />
+                  <button
+                    onClick={() => setSelectedClinic(null)}
+                    className="absolute top-3 right-3 bg-white p-2 rounded-full shadow"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-4">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {selectedClinic.name}
+                  </h2>
+
+                  <div className="space-y-3">
+                    <div className="flex gap-3">
+                      <MapPin className="w-5 h-5 text-blue-600" />
+                      <span className="font-semibold">
+                        {selectedClinic.address}
+                      </span>
+                    </div>
+                    <div className="flex gap-3">
+                      <Phone className="w-5 h-5 text-blue-600" />
+                      <span className="font-semibold text-blue-600">
+                        {selectedClinic.phone}
+                      </span>
+                    </div>
+                    <div className="flex gap-3">
+                      <Clock className="w-5 h-5 text-blue-600" />
+                      <span className="font-semibold">
+                        {selectedClinic.openTime} - {selectedClinic.closeTime}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-blue-50 rounded-xl">
+                    <p className="text-xs text-gray-500">Distance</p>
+                    <p className="text-3xl font-bold text-blue-600">
+                      {selectedClinic.distance} km
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <button className="w-full py-3 rounded-xl bg-linear-to-r from-blue-500 to-indigo-600 text-white font-semibold">
+                      Book Appointment
+                    </button>
+                    <button className="w-full py-3 rounded-xl border-2 border-blue-500 text-blue-600 font-semibold">
+                      Call Clinic
+                    </button>
+                    <button className="w-full py-3 rounded-xl border-2 border-gray-300 font-semibold">
+                      Get Directions
                     </button>
                   </div>
-
-                  <div className="p-4">
-                    <h2 className="text-xl font-bold text-gray-800 mb-2">
-                      {selectedClinic.name}
-                    </h2>
-
-                    {/* Rating */}
-                    <div className="flex items-center gap-2 mb-4 pb-4 border-b">
-                      <div className="flex items-center">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < Math.floor(selectedClinic.rating)
-                                ? "text-yellow-400 fill-yellow-400"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-sm font-semibold">
-                        {selectedClinic.rating}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        ({selectedClinic.reviews} reviews)
-                      </span>
-                    </div>
-
-                    {/* Contact Info */}
-                    <div className="space-y-3 mb-4">
-                      <div className="flex items-start gap-3">
-                        <MapPin className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-sm text-gray-600">Address</p>
-                          <p className="text-sm font-semibold text-gray-800">
-                            {selectedClinic.address}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Phone className="w-5 h-5 text-blue-500 shrink-0" />
-                        <div>
-                          <p className="text-sm text-gray-600">Phone</p>
-                          <a
-                            href={`tel:${selectedClinic.phone}`}
-                            className="text-sm font-semibold text-blue-600 hover:underline"
-                          >
-                            {selectedClinic.phone}
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Clock className="w-5 h-5 text-blue-500 shrink-0" />
-                        <div>
-                          <p className="text-sm text-gray-600">Hours</p>
-                          <p className="text-sm font-semibold text-gray-800">
-                            {selectedClinic.openTime} -{" "}
-                            {selectedClinic.closeTime}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Distance */}
-                    <div className="mb-4 pb-4 border-b">
-                      <p className="text-sm text-gray-600 mb-1">Distance</p>
-                      <p className="text-2xl font-bold text-blue-600">
-                        {selectedClinic.distance} km
-                      </p>
-                    </div>
-
-                    {/* Services */}
-                    <div className="mb-4">
-                      <p className="text-sm font-semibold text-gray-800 mb-2">
-                        Specialties
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedClinic.specialty.map((spec, idx) => (
-                          <span
-                            key={idx}
-                            className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full"
-                          >
-                            {spec}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Emergency Service Badge */}
-                    {selectedClinic.emergencyService && (
-                      <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-xs font-semibold text-red-700">
-                          🚑 24/7 Emergency Service Available
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Action Buttons */}
-                    <div className="space-y-2">
-                      <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 font-semibold transition-colors">
-                        Book Appointment
-                      </button>
-                      <button className="w-full border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 font-semibold transition-colors">
-                        Call Clinic
-                      </button>
-                      <button className="w-full border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 font-semibold transition-colors">
-                        Get Directions
-                      </button>
-                    </div>
-                  </div>
                 </div>
-              ) : (
-                <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-                  <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">
-                    Select a clinic to view details
-                  </p>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
