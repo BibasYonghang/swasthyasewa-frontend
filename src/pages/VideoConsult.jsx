@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Video,
   Clock,
@@ -25,14 +25,17 @@ export default function VideoConsult() {
   const [priceFilter, setPriceFilter] = useState("all");
   const [loading, setLoading] = useState(false);
 
-  const specialties = [
-    "General Medicine",
-    "Cardiology",
-    "Orthopedics",
-    "Dermatology",
-    "Pediatrics",
-    "Psychiatry",
-  ];
+  const specialties = useMemo(
+    () => [
+      "General Medicine",
+      "Cardiology",
+      "Orthopedics",
+      "Dermatology",
+      "Pediatrics",
+      "Psychiatry",
+    ],
+    [],
+  );
 
   const availableSlots = [
     "9:00 AM",
@@ -93,7 +96,7 @@ export default function VideoConsult() {
     };
 
     loadDoctors();
-  }, []);
+  }, [specialties]);
 
   useEffect(() => {
     let filtered = [...doctors];

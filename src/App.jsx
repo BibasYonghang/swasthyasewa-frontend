@@ -29,6 +29,8 @@ import Wallet from "./pages/Wallet.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import HealthTests from "./pages/HealthTest.jsx";
 import Support from "./pages/Support.jsx";
+import FindDoctors from "./pages/FindDoctors.jsx";
+import Medications from "./pages/Medications.jsx";
 
 function AppContent() {
   const dispatch = useDispatch();
@@ -65,6 +67,8 @@ function AppContent() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/health-test" element={<HealthTests />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/doctors" element={<FindDoctors />} />
+        <Route path="/medications" element={<Medications />} />
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/comment" element={<Comment />} />
