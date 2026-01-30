@@ -14,6 +14,7 @@ import {
   Wallet,
   LifeBuoy,
   Sparkles,
+  Stethoscope,
 } from "lucide-react";
 import UserAvatar from "../../../Components/Shared/UserAvatar";
 
@@ -59,6 +60,12 @@ const menuItems = [
     icon: <Settings size={24} />,
     path: "/settings",
     classname: "text-gray-700",
+  },
+  {
+    name: "Find Doctors",
+    icon: <Stethoscope size={24} />,
+    path: "/doctors",
+    classname: "text-teal-500",
   },
 ];
 
