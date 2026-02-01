@@ -47,23 +47,23 @@ export default function ProfileSettings() {
   );
 }
 
-function inputField({ label, value, onChange }) {
-  return (
-    <div>
-      <label className="block text-sm mb-2">{label}</label>
-      <input className="w-full border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
-    </div>
-  );
-}
+// function inputField({ label, value, onChange }) {
+//   return (
+//     <div>
+//       <label className="block text-sm mb-2">{label}</label>
+//       <input className="w-full border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
+//     </div>
+//   );
+// }
 
-function iconInput({ label, icon, value, onChange }) {
-  return (
-    <div>
-      <label className="block text-sm mb-2">{label}</label>
-      <div className="flex items-center gap-2">
-        {icon}
-        <input className="flex-1 border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
-      </div>
-    </div>
-  );
-}
+// function iconInput({ label, icon, value, onChange }) {
+//   return (
+//     <div>
+//       <label className="block text-sm mb-2">{label}</label>
+//       <div className="flex items-center gap-2">
+//         {icon}
+//         <input className="flex-1 border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
+//       </div>
+//     </div>
+//   );
+// }
