@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import SettingsSidebar from "../components/settings/SettingsSidebar";
+import SettingsSidebar from "../Components/settings/SettingsSidebar";
 
 export default function SettingsLayout() {
   return (
