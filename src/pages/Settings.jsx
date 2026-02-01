@@ -100,7 +100,7 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+    <div className="h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -112,7 +112,7 @@ export default function Settings() {
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col h-screen lg:flex-row gap-8">
           {/* Sidebar */}
           <div className="lg:w-64">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
@@ -121,7 +121,7 @@ export default function Settings() {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
+                    className={`w-full flex items-center hover:cursor-pointer gap-3 px-3 py-3 rounded-lg transition-colors ${
                       activeSection === section.id
                         ? "bg-indigo-50 text-indigo-700 font-medium"
                         : "text-gray-700 hover:bg-gray-50"
@@ -516,7 +516,7 @@ export default function Settings() {
 
               {/* Data Management Section */}
               {activeSection === "data" && (
-                <div className="p-6">
+                <div className="p-6 overflow-x-auto">
                   <h2 className="text-xl font-bold text-gray-900 mb-6">
                     Data Management
                   </h2>
