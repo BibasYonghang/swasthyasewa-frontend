@@ -17,6 +17,11 @@ import {
   HeartPulse,
   Stethoscope,
   HelpCircle,
+  Wallet,
+  List,
+  Bookmark,
+  Users,
+  PlusCircle,
 } from "lucide-react";
 import { scrollToTop } from "../../utils/scrollToTop.js";
 import { useSelector } from "react-redux";
@@ -437,12 +442,12 @@ export default function Navbar() {
             </div>
 
             {/* Main Navigation Section */}
-            <div className="overflow-y-auto h-[calc(100%-180px)] ">
+            <div className="overflow-y-auto noscroll-bar h-[calc(100%-180px)] ">
               <div className="py-3">
                 <h3 className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Health Navigation
                 </h3>
-                <div className="space-y-1">
+                <div className="space-y-1 ">
                   <Link
                     to="/home"
                     onClick={scrollToTop}
@@ -460,6 +465,53 @@ export default function Navbar() {
                     <span className="font-medium">Nearby Clinics</span>
                   </Link>
 
+                  <Link
+                    to="/wallet"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <Wallet size={22} className="text-orange-500" />
+                    <span className="font-medium">Wallet</span>
+                  </Link>
+
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <Home size={22} className="text-blue-500" />
+                    <span className="font-medium">Dashboard</span>
+                  </Link>
+
+                  <Link
+                    to="/health-test"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <List size={22} className="text-green-500" />
+                    <span className="font-medium">Health Tests</span>
+                  </Link>
+
+                  <Link
+                    to="/my-reports"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <Bookmark size={22} className="text-yellow-500" />
+                    <span className="font-medium">My Reports</span>
+                  </Link>
+
+                  <Link
+                    to="/doctor-consultations"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <Users size={22} className="text-purple-500" />
+                    <span className="font-medium">Doctor Consultations</span>
+                  </Link>
+
+                  <Link
+                    to="/personal-plans"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
+                  >
+                    <PlusCircle size={22} className="text-indigo-500" />
+                    <span className="font-medium">Personal Plans</span>
+                  </Link>
                   <a
                     href="https://chud-ai.vercel.app/"
                     target="_blank"
@@ -469,25 +521,6 @@ export default function Navbar() {
                     <Sparkles size={22} className="text-purple-500" />
                     <span className="font-medium">Health AI Assistant</span>
                   </a>
-
-                  <Link
-                    to="/video-consult"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <Video size={22} className="text-green-500" />
-                    <span className="font-medium">Video Consult</span>
-                  </Link>
-
-                  <Link
-                    to="/messages"
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <MessageCircle size={22} className="text-blue-400" />
-                    <span className="font-medium">Messages</span>
-                    <span className="ml-auto bg-blue-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                      2
-                    </span>
-                  </Link>
                 </div>
               </div>
 
@@ -521,14 +554,6 @@ export default function Navbar() {
                   Account & Settings
                 </h3>
                 <div className="space-y-1">
-                  <Link
-                    to={`/profile/${currentUser._id}`}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
-                  >
-                    <User size={22} className="text-gray-600" />
-                    <span className="font-medium">My Profile</span>
-                  </Link>
-
                   <Link
                     to="/settings"
                     className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
