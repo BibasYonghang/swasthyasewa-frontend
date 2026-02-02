@@ -11,6 +11,7 @@ import {
   Bookmark,
   Wallet,
   Stethoscope,
+  HeartPulse,
 } from "lucide-react";
 import UserAvatar from "../../Components/Shared/UserAvatar";
 
@@ -52,16 +53,16 @@ const menuItems = [
     classname: "text-orange-500",
   },
   {
-    name: "Settings",
-    icon: <Settings size={24} />,
-    path: "/settings",
-    classname: "text-gray-700",
-  },
-  {
     name: "Find Doctors",
     icon: <Stethoscope size={24} />,
     path: "/doctors",
     classname: "text-teal-500",
+  },
+  {
+    name: "Medications",
+    icon: <HeartPulse size={24} />,
+    path: "/medications",
+    classname: "text-red-500",
   },
 ];
 
