@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import axios from "axios";
 import {
   Search,
   Star,
@@ -9,6 +10,7 @@ import {
   Truck,
   Heart,
 } from "lucide-react";
+import { BACKEND_URL } from "../../config/env.js";
 
 const Medications = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,210 +32,28 @@ const Medications = () => {
     "Anti-Inflammatory",
   ];
 
+  const [medication, setMedication] = useState([]);
+
+  // Fetch medications from backend API
+  useEffect(() => {
+    const fetchMedications = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/medication`);
+        setMedication(res.data);
+      } catch (error) {
+        console.log("Error in Fetching Medicine:", error);
+      }
+    };
+
+    fetchMedications();
+  }, []);
+
+  // Filter and sort medications
   const filteredMedications = useMemo(() => {
-    const medications = [
-      {
-        id: 1,
-        name: "Paracetamol 500mg",
-        category: "Pain Relief",
-        brand: "Crocin",
-        price: 45,
-        mrp: 65,
-        rating: 4.7,
-        reviews: 234,
-        availability: "In Stock",
-        stock: 120,
-        uses: ["Fever", "Headache", "Body Pain"],
-        dosage: "1 tablet twice daily",
-        sideEffects: ["Mild dizziness", "Nausea"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "Next day delivery",
-        discount: 31,
-        description: "Fast relief from fever and body pain",
-      },
-      {
-        id: 2,
-        name: "Aspirin 325mg",
-        category: "Pain Relief",
-        brand: "Bayer",
-        price: 55,
-        mrp: 80,
-        rating: 4.5,
-        reviews: 156,
-        availability: "In Stock",
-        stock: 95,
-        uses: ["Pain", "Fever", "Heart Health"],
-        dosage: "1 tablet once daily",
-        sideEffects: ["Stomach upset"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "2-3 days delivery",
-        discount: 31,
-        description: "Effective pain reliever and anti-inflammatory",
-      },
-      {
-        id: 3,
-        name: "Ibuprofen 400mg",
-        category: "Anti-Inflammatory",
-        brand: "Brufen",
-        price: 65,
-        mrp: 95,
-        rating: 4.8,
-        reviews: 312,
-        availability: "In Stock",
-        stock: 150,
-        uses: ["Inflammation", "Pain", "Fever"],
-        dosage: "1 tablet thrice daily",
-        sideEffects: ["Stomach pain", "Headache"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "Next day delivery",
-        discount: 32,
-        description: "Anti-inflammatory tablet for joint pain",
-      },
-      {
-        id: 4,
-        name: "Cough Syrup",
-        category: "Cold & Cough",
-        brand: "Robitussin",
-        price: 120,
-        mrp: 180,
-        rating: 4.6,
-        reviews: 189,
-        availability: "In Stock",
-        stock: 80,
-        uses: ["Dry cough", "Cold", "Throat irritation"],
-        dosage: "10ml twice daily",
-        sideEffects: ["Drowsiness"],
-        image: "🧴",
-        verified: true,
-        deliveryDays: "Next day delivery",
-        discount: 33,
-        description: "Soothing cough syrup for dry coughs",
-      },
-      {
-        id: 5,
-        name: "Antihistamine Tablet",
-        category: "Allergy",
-        brand: "Allegra",
-        price: 85,
-        mrp: 125,
-        rating: 4.7,
-        reviews: 267,
-        availability: "In Stock",
-        stock: 110,
-        uses: ["Allergy", "Hay fever", "Skin rashes"],
-        dosage: "1 tablet once daily",
-        sideEffects: ["Dry mouth", "Drowsiness"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "2-3 days delivery",
-        discount: 32,
-        description: "Relief from allergic reactions",
-      },
-      {
-        id: 6,
-        name: "Omeprazole 20mg",
-        category: "Digestive Health",
-        brand: "Nexium",
-        price: 110,
-        mrp: 165,
-        rating: 4.8,
-        reviews: 298,
-        availability: "Low Stock",
-        stock: 25,
-        uses: ["Acidity", "GERD", "Heartburn"],
-        dosage: "1 tablet once daily before breakfast",
-        sideEffects: ["Headache", "Nausea"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "3-4 days delivery",
-        discount: 33,
-        description: "Effective acid reflux medication",
-      },
-      {
-        id: 7,
-        name: "Multivitamin",
-        category: "Vitamins & Minerals",
-        brand: "Revital",
-        price: 180,
-        mrp: 250,
-        rating: 4.6,
-        reviews: 445,
-        availability: "In Stock",
-        stock: 200,
-        uses: ["Immunity", "Energy", "Overall health"],
-        dosage: "1 tablet daily after breakfast",
-        sideEffects: ["Rarely", "Generally safe"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "Next day delivery",
-        discount: 28,
-        description: "Daily multivitamin for complete nutrition",
-      },
-      {
-        id: 8,
-        name: "Iron Supplement",
-        category: "Vitamins & Minerals",
-        brand: "Fersolate",
-        price: 95,
-        mrp: 140,
-        rating: 4.5,
-        reviews: 203,
-        availability: "In Stock",
-        stock: 85,
-        uses: ["Anemia", "Iron deficiency", "Fatigue"],
-        dosage: "1 tablet daily",
-        sideEffects: ["Dark stools", "Constipation"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "2-3 days delivery",
-        discount: 32,
-        description: "Iron supplement for anemia treatment",
-      },
-      {
-        id: 9,
-        name: "Vitamin D3 1000IU",
-        category: "Vitamins & Minerals",
-        brand: "Nature's Bounty",
-        price: 150,
-        mrp: 220,
-        rating: 4.7,
-        reviews: 356,
-        availability: "In Stock",
-        stock: 130,
-        uses: ["Bone health", "Immunity", "Calcium absorption"],
-        dosage: "1 tablet daily",
-        sideEffects: ["Very rare"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "Next day delivery",
-        discount: 32,
-        description: "Vitamin D for strong bones and immunity",
-      },
-      {
-        id: 10,
-        name: "Antibiotic Capsule",
-        category: "Antibiotics",
-        brand: "Amoxil",
-        price: 125,
-        mrp: 180,
-        rating: 4.6,
-        reviews: 178,
-        availability: "In Stock",
-        stock: 60,
-        uses: ["Bacterial infection", "Throat infection"],
-        dosage: "1 capsule thrice daily",
-        sideEffects: ["Allergic reaction", "Diarrhea"],
-        image: "💊",
-        verified: true,
-        deliveryDays: "2-3 days delivery",
-        discount: 31,
-        description: "Antibiotic for bacterial infections",
-      },
-    ];
-    let result = medications.filter((med) => {
+    let result = [...medication];
+
+    // Search filter
+    result = result.filter((med) => {
       const matchSearch =
         med.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         med.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -259,6 +79,7 @@ const Medications = () => {
       return matchSearch && matchCategory && matchPrice && matchAvailability;
     });
 
+    // Sorting
     if (sortBy === "rating") {
       result.sort((a, b) => b.rating - a.rating);
     } else if (sortBy === "price-low") {
@@ -271,6 +92,7 @@ const Medications = () => {
 
     return result;
   }, [
+    medication,
     searchQuery,
     selectedCategory,
     selectedPrice,
@@ -328,7 +150,7 @@ const Medications = () => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 {categories.map((category) => (
                   <option key={category} value={category}>
@@ -341,7 +163,7 @@ const Medications = () => {
               <select
                 value={selectedPrice}
                 onChange={(e) => setSelectedPrice(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 rounded-lg hover:cursor-pointer border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="All">All Prices</option>
                 <option value="0-100">₹0 - ₹100</option>
@@ -353,7 +175,7 @@ const Medications = () => {
               <select
                 value={selectedAvailability}
                 onChange={(e) => setSelectedAvailability(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 hover:cursor-pointer py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="All">All Availability</option>
                 <option value="In Stock">In Stock</option>
@@ -364,7 +186,7 @@ const Medications = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="rating">Sort by Rating</option>
                 <option value="price-low">Sort by Price (Low to High)</option>
@@ -375,7 +197,7 @@ const Medications = () => {
 
             {/* Cart Button */}
             {cart.length > 0 && (
-              <button className="relative flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-semibold">
+              <button className="relative flex cursor-pointer items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all font-semibold">
                 <ShoppingCart size={18} />
                 Cart ({cart.length})
               </button>
@@ -551,12 +373,12 @@ const Medications = () => {
                   <div className="flex gap-3 pt-4 border-t border-gray-200">
                     <button
                       onClick={() => addToCart(med)}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-semibold text-sm"
+                      className="flex-1 hover:cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-semibold text-sm"
                     >
                       <ShoppingCart size={18} />
                       Add to Cart
                     </button>
-                    <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all font-semibold text-sm">
+                    <button className="flex-1 hover:cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all font-semibold text-sm">
                       <Heart size={18} />
                       Save
                     </button>

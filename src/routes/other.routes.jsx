@@ -3,14 +3,14 @@ import CreateStory from "../pages/CreateStory.jsx";
 import NearbyClinics from "../pages/NearbyClinics.jsx";
 import VideoConsult from "../pages/VideoConsult.jsx";
 import Messages from "../pages/Messages.jsx";
-import MyReports from "../pages/main-left-sidebar/MyReports.jsx";
-import DoctorConsultations from "../pages/main-left-sidebar/DoctorConsultations.jsx";
-import Wallet from "../pages/main-left-sidebar/Wallet.jsx";
-import Dashboard from "../pages/main-left-sidebar/Dashboard.jsx";
-import HealthTests from "../pages/main-left-sidebar/HealthTest.jsx";
+import MyReports from "../pages/main-sidebars/MyReports.jsx";
+import DoctorConsultations from "../pages/main-sidebars/DoctorConsultations.jsx";
+import Wallet from "../pages/main-sidebars/Wallet.jsx";
+import Dashboard from "../pages/main-sidebars/Dashboard.jsx";
+import HealthTests from "../pages/main-sidebars/HealthTest.jsx";
 import Support from "../pages/Support.jsx";
-import FindDoctors from "../pages/main-left-sidebar/FindDoctors.jsx";
-import Medications from "../pages/Medications.jsx";
+import FindDoctors from "../pages/main-sidebars/FindDoctors.jsx";
+import Medications from "../pages/main-sidebars/Medications.jsx";
 import CreatePost from "../pages/CreatePost.jsx";
 
 export const otherRoutes = [
