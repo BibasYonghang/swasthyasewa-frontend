@@ -8,7 +8,6 @@ import { authRoutes } from "./routes/auth.routes.jsx";
 import { mainRoutes } from "./routes/main.routes.jsx";
 import { profileRoutes } from "./routes/profile.routes.jsx";
 import { personalPlansRoutes } from "./routes/personalPlans.routes.jsx";
-import { postsRoutes } from "./routes/posts.routes.jsx";
 import { adminRoutes } from "./routes/admin.routes.jsx";
 import { settingsRoutes } from "./routes/settings.routes.jsx";
 import { otherRoutes } from "./routes/other.routes.jsx";
@@ -34,7 +33,6 @@ function AppContent() {
         {mainRoutes}
         {profileRoutes}
         {personalPlansRoutes}
-        {postsRoutes}
         {adminRoutes}
         {settingsRoutes}
         {otherRoutes}

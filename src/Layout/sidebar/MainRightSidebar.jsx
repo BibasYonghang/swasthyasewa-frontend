@@ -1,13 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  AlertCircle,
   Users,
   Sparkles,
-  FileText,
-  Plus,
-  Clock,
-  Heart,
 } from "lucide-react";
 
 const quickActions = [

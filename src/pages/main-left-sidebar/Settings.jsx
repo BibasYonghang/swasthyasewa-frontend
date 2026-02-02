@@ -16,7 +16,6 @@ import {
   Eye,
   EyeOff,
   Save,
-  X,
 } from "lucide-react";
 
 export default function Settings() {

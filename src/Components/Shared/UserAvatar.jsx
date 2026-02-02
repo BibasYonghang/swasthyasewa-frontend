@@ -40,10 +40,8 @@ export default function UserAvatar({
 
   // Memoize image URL calculation to avoid unnecessary recalculations
   const imageUrl = useMemo(() => {
-    // Use fetched data if available, otherwise use passed user data
     const userData = fetchedUserData || user;
 
-    // Check for profilePicture first, then profilePic (backend might use either)
     let profilePic = isCurrentUser
       ? authUser?.profilePicture || authUser?.profilePic
       : userData?.profilePicture || userData?.profilePic;
@@ -60,7 +58,6 @@ export default function UserAvatar({
       let finalUrl = profilePic;
 
       if (!finalUrl.startsWith("http")) {
-        // If it's a relative path, add the backend URL
         finalUrl = `${BACKEND_URL}${finalUrl.startsWith("/") ? "" : "/"}${finalUrl}`;
       }
 
@@ -71,7 +68,6 @@ export default function UserAvatar({
 
   const sizeInPixels = `${size * 4}px`; // size is in tailwind units (4px each)
 
-  // If we have an image URL and it loaded successfully
   if (imageUrl && imageLoaded) {
     return (
       <img

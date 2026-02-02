@@ -6,7 +6,6 @@ import {
   Sparkles,
   Menu,
   Search,
-  AlertCircle,
   User,
   LogOut,
   Settings,
@@ -17,9 +16,6 @@ import {
   X,
   HeartPulse,
   Stethoscope,
-  FileText,
-  Calendar,
-  Shield,
   HelpCircle,
 } from "lucide-react";
 import { scrollToTop } from "../../utils/scrollToTop.js";

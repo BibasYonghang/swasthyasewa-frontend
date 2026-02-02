@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 import PersonalPlansLayout from "../Layout/PersonalPlansLayout.jsx";
-import PersonalPlans from "../Layout/sidebar/left/PersonalPlans.jsx";
+import PersonalPlans from "../pages/main-left-sidebar/PersonalPlans.jsx";
 
 export const personalPlansRoutes = [
   <Route element={<PersonalPlansLayout />}>

@@ -5,7 +5,6 @@ import {
   TrendingUp,
   Clock,
   CheckCircle,
-  XCircle,
   Download,
   Plus,
   ArrowUpRight,

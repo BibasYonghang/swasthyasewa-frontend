@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 /* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
-import { BACKEND_URL } from "../config/env.js";
+import { BACKEND_URL } from "../../config/env.js";
 
 class Particle {
   constructor(canvas) {
@@ -208,7 +208,7 @@ export default function Register() {
     if (errors.general || errors.name || errors.email || errors.password) {
       const t = setTimeout(
         () => setErrors({ name: "", email: "", password: "", general: "" }),
-        4000
+        4000,
       );
       return () => clearTimeout(t);
     }
@@ -513,7 +513,7 @@ export default function Register() {
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <motion.div
                           className={`h-2 rounded-full ${getPasswordStrengthColor(
-                            passwordStrength
+                            passwordStrength,
                           )}`}
                           variants={progressVariants}
                           initial="initial"

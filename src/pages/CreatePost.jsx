@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
 import { Image, MapPin, Send, Smile, X, Loader } from "lucide-react";
-import { createNewPost } from "../../config/api/posts.js";
+import { createNewPost } from "../config/api/posts.js";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import UserAvatar from "../../Components/Shared/UserAvatar.jsx";
+import UserAvatar from "../Components/Shared/UserAvatar.jsx";
 
-export default function CreatePostPage() {
+export default function CreatePost() {
   const loggedInUser = useSelector((state) => state.auth.user);
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);

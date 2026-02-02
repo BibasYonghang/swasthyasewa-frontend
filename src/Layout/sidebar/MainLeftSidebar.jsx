@@ -1,22 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
   Home,
   PlusCircle,
-  Bell,
-  MessageSquare,
   Users,
   Settings,
   List,
   Bookmark,
   Wallet,
-  LifeBuoy,
-  Sparkles,
   Stethoscope,
 } from "lucide-react";
-import UserAvatar from "../../../Components/Shared/UserAvatar";
+import UserAvatar from "../../Components/Shared/UserAvatar";
 
 const menuItems = [
   {
@@ -75,12 +71,15 @@ export default function LeftSidebar() {
   return (
     <aside className="hidden lg:flex noscroll-bar  overflow-y-auto    h-screen flex-col w-64 bg-white sticky left-0 bg-whiter rounded-2xl border-gray-200 py-2 px-4">
       {/* User Profile */}
-      <div className="mb-4 px-2 flex items-center gap-3">
-        <UserAvatar user={loggedInUser} size={10} />
-        <h1 className="text-lg font-semibold text-indigo-600">
+      <Link
+        to={`profile/${loggedInUser._id}`}
+        className="mb-4 px-2 flex items-center gap-3"
+      >
+        <UserAvatar user={loggedInUser} size={10} fallbackToRedux={true} />
+        <h1 className="text-lg font-semibold hover:underline hover:transform  text-indigo-600">
           {loggedInUser?.name || "Guest"}
         </h1>
-      </div>
+      </Link>
 
       {/* Sidebar Menu */}
       <nav className="overflow-y-auto space-y-4 mt-3">

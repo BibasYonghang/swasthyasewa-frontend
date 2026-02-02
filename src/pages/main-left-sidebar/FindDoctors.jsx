@@ -2,15 +2,12 @@ import React, { useState, useMemo } from "react";
 import {
   Search,
   Star,
-  MapPin,
   Calendar,
   MessageCircle,
   Video,
   Clock,
   Users,
-  TrendingUp,
   Filter,
-  ChevronDown,
 } from "lucide-react";
 
 const FindDoctors = () => {

@@ -3,7 +3,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  Camera,
   X,
   Play,
   Pause,

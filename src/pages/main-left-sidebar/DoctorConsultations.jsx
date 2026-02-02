@@ -6,11 +6,7 @@ import {
   Clock,
   Star,
   MapPin,
-  Filter,
   Search,
-  Phone,
-  Mail,
-  Award,
   CheckCircle,
   XCircle,
 } from "lucide-react";

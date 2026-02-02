@@ -10,15 +10,11 @@ import {
   Paperclip,
   X,
   Menu,
-  ChevronLeft,
   MessageSquare,
   Image,
-  Mic,
-  ThumbsUp,
   Calendar,
   FileText,
   Download,
-  Filter,
   Check,
 } from "lucide-react";
 
@@ -443,8 +439,6 @@ export default function Messages() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 flex">
-  
-
       {/* Conversations List */}
       <div
         className={`fixed md:relative inset-y-0 left-0 z-50 md:z-auto w-full md:w-96 lg:w-80 xl:w-96 bg-white/95 md:bg-white backdrop-blur-sm md:backdrop-blur-none border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out ${
