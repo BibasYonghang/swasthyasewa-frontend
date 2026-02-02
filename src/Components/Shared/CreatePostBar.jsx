@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { Image } from "lucide-react";
 import axios from "axios";
 import { BACKEND_URL } from "../../config/env.js";
 import { setUser } from "../../redux/auth/AuthSlice.jsx";

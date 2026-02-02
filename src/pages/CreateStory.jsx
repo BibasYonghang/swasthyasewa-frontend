@@ -26,14 +26,6 @@ export default function CreateStory() {
     userImage: "https://randomuser.me/api/portraits/lego/1.jpg",
   };
 
-  console.log("=== CreateStory currentUser Final ===");
-  console.log("currentUser object:", currentUser);
-  console.log("currentUser._id:", currentUser._id);
-  console.log("currentUser.name:", currentUser.name);
-  console.log("currentUser.username:", currentUser.username);
-  console.log("currentUser.profilePicture:", currentUser.profilePicture);
-  console.log("currentUser.userImage:", currentUser.userImage);
-
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [mediaType, setMediaType] = useState("");
   const [textStory, setTextStory] = useState("");

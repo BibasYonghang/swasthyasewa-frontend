@@ -25,9 +25,7 @@ export default function ProfileSettings() {
           <h2 className="text-xl font-bold text-gray-900">
             Profile Information
           </h2>
-          <p className="text-gray-600 mt-1">
-            Update your personal details
-          </p>
+          <p className="text-gray-600 mt-1">Update your personal details</p>
         </div>
         <button
           onClick={handleSubmit}
@@ -39,31 +37,24 @@ export default function ProfileSettings() {
       </div>
 
       <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <inputField label="Full Name" value={formData.name} onChange={(v)=>setFormData({...formData,name:v})} />
-        <iconInput label="Email" icon={<Mail size={20} />} value={formData.email} onChange={(v)=>setFormData({...formData,email:v})} />
-        <iconInput label="Phone" icon={<Smartphone size={20} />} value={formData.phone} onChange={(v)=>setFormData({...formData,phone:v})} />
+        <inputField
+          label="Full Name"
+          value={formData.name}
+          onChange={(v) => setFormData({ ...formData, name: v })}
+        />
+        <iconInput
+          label="Email"
+          icon={<Mail size={20} />}
+          value={formData.email}
+          onChange={(v) => setFormData({ ...formData, email: v })}
+        />
+        <iconInput
+          label="Phone"
+          icon={<Smartphone size={20} />}
+          value={formData.phone}
+          onChange={(v) => setFormData({ ...formData, phone: v })}
+        />
       </form>
     </div>
   );
 }
-
-// function inputField({ label, value, onChange }) {
-//   return (
-//     <div>
-//       <label className="block text-sm mb-2">{label}</label>
-//       <input className="w-full border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
-//     </div>
-//   );
-// }
-
-// function iconInput({ label, icon, value, onChange }) {
-//   return (
-//     <div>
-//       <label className="block text-sm mb-2">{label}</label>
-//       <div className="flex items-center gap-2">
-//         {icon}
-//         <input className="flex-1 border rounded-lg px-4 py-3" value={value} onChange={(e)=>onChange(e.target.value)} />
-//       </div>
-//     </div>
-//   );
-// }

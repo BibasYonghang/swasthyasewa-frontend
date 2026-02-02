@@ -3,7 +3,6 @@ import {
   FileText,
   Download,
   Share2,
-  Printer,
   Calendar,
   TrendingUp,
   BarChart3,

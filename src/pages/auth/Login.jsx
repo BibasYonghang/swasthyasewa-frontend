@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/auth/AuthSlice.jsx";
+import { setUser } from "../../redux/auth/AuthSlice.jsx";
 import {
   Mail,
   Lock,
@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 /* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
-import { BACKEND_URL } from "../config/env.js";
+import { BACKEND_URL } from "../../config/env.js";
 
 class Particle {
   constructor(canvas) {
@@ -167,7 +167,7 @@ export default function Login() {
       navigate("/home");
     } catch (err) {
       setError(
-        err?.response?.data?.message || "Login failed. Please try again."
+        err?.response?.data?.message || "Login failed. Please try again.",
       );
       setForm((prev) => ({ ...prev, password: "" }));
     } finally {
