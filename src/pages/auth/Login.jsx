@@ -164,8 +164,8 @@ export default function Login() {
       const res = await axios.post(
         `${BACKEND_URL}/api/login`,
         {
-          ...form,
-          role,
+          email: form.email,
+          password: form.password,
         },
         {
           headers: { "Content-Type": "application/json" },

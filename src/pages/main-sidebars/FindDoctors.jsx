@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Search,
   Star,
@@ -9,6 +9,8 @@ import {
   Users,
   Filter,
 } from "lucide-react";
+import axios from "axios";
+import { BACKEND_URL } from "../../config/env";
 
 const FindDoctors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -17,6 +19,19 @@ const FindDoctors = () => {
   const [selectedRating, setSelectedRating] = useState("All");
   const [sortBy, setSortBy] = useState("rating");
   const [showFilters, setShowFilters] = useState(false);
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    const getDoctors = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/users/doctors`);
+        setDoctors(res.data);
+      } catch (error) {
+        console.log("Error while Fetching Doctors says:", error);
+      }
+    };
+    getDoctors();
+  }, []);
 
   const specialties = useMemo(
     () => [
@@ -29,44 +44,6 @@ const FindDoctors = () => {
       "Neurologist",
       "Gynecologist",
       "Pulmonologist",
-    ],
-    [],
-  );
-
-  const doctors = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "Dr. Priya Sharma",
-        specialty: "Cardiologist",
-        experience: 12,
-        rating: 4.8,
-        reviews: 245,
-        consultationFee: 500,
-        availability: "Available Today",
-        image: "👩‍⚕️",
-        bio: "Expert in heart diseases",
-        languages: ["English", "Hindi"],
-        nextAvailable: "2:30 PM",
-        patients: 2890,
-        expertise: ["Heart Disease", "Hypertension", "Cardiology"],
-      },
-      {
-        id: 2,
-        name: "Dr. Rajesh Kumar",
-        specialty: "General Practitioner",
-        experience: 8,
-        rating: 4.6,
-        reviews: 189,
-        consultationFee: 300,
-        availability: "Available in 1 hour",
-        image: "👨‍⚕️",
-        bio: "Experienced GP",
-        languages: ["English", "Hindi"],
-        nextAvailable: "3:00 PM",
-        patients: 1560,
-        expertise: ["General Health"],
-      },
     ],
     [],
   );
@@ -162,7 +139,7 @@ const FindDoctors = () => {
               <select
                 value={selectedSpecialty}
                 onChange={(e) => setSelectedSpecialty(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 {specialties.map((specialty) => (
                   <option key={specialty} value={specialty}>
@@ -175,7 +152,7 @@ const FindDoctors = () => {
               <select
                 value={selectedExperience}
                 onChange={(e) => setSelectedExperience(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="All">All Experience</option>
                 <option value="5+">5+ Years</option>
@@ -187,7 +164,7 @@ const FindDoctors = () => {
               <select
                 value={selectedRating}
                 onChange={(e) => setSelectedRating(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="All">All Ratings</option>
                 <option value="4.5+">4.5+</option>
@@ -199,7 +176,7 @@ const FindDoctors = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
+                className="px-4 py-2 hover:cursor-pointer rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all bg-white"
               >
                 <option value="rating">Sort by Rating</option>
                 <option value="experience">Sort by Experience</option>
@@ -282,7 +259,7 @@ const FindDoctors = () => {
                       <div>
                         <p className="text-xs text-gray-600">Patients</p>
                         <p className="text-sm font-bold text-gray-800">
-                          {doctor.patients.toLocaleString()}
+                          {(doctor.patients ?? 0).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -309,7 +286,7 @@ const FindDoctors = () => {
                       Expertise
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {doctor.expertise.map((skill) => (
+                      {(doctor.expertise ?? []).map((skill) => (
                         <span
                           key={skill}
                           className="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full"
@@ -331,18 +308,18 @@ const FindDoctors = () => {
                     <div className="text-right">
                       <p className="text-xs text-gray-600">Languages</p>
                       <p className="text-sm font-semibold text-gray-800">
-                        {doctor.languages.length}+ Languages
+                        {doctor?.languages?.length ?? 0}+ Languages
                       </p>
                     </div>
                   </div>
 
                   {/* Action Buttons */}
                   <div className="flex gap-3 pt-4 border-t border-gray-200">
-                    <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-semibold text-sm">
+                    <button className="flex-1 hover:cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all font-semibold text-sm">
                       <Video size={18} />
                       Video Call
                     </button>
-                    <button className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all font-semibold text-sm">
+                    <button className="flex-1 hover:cursor-pointer flex items-center justify-center gap-2 px-4 py-3 bg-gray-100 text-gray-800 rounded-lg hover:bg-gray-200 transition-all font-semibold text-sm">
                       <MessageCircle size={18} />
                       Chat
                     </button>
