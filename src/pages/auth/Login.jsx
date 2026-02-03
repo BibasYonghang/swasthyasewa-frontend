@@ -18,6 +18,7 @@ import {
 /* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../../config/env.js";
+import { useLocation } from "react-router-dom";
 
 class Particle {
   constructor(canvas) {
@@ -62,6 +63,9 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
+  const location = useLocation();
+  const roleFromQuery = new URLSearchParams(location.search).get("role");
+  const role = roleFromQuery || "patient"; // default fallback
 
   const features = [
     {
@@ -157,14 +161,25 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/login`, form, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/login`,
+        {
+          ...form,
+          role,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       dispatch(setUser(res.data.user));
-      navigate("/home");
+      if (role === "doctor") {
+        navigate("/doctor/dashboard");
+      } else {
+        navigate("/home");
+      }
     } catch (err) {
       setError(
         err?.response?.data?.message || "Login failed. Please try again.",
@@ -220,7 +235,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-linear-to- from-slate-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center bg-linear-to-r from-slate-50 via-blue-50 to-indigo-100 px-4 sm:px-6 overflow-hidden">
       {/* Animated Background */}
       <canvas
         ref={canvasRef}
@@ -252,7 +267,7 @@ export default function Login() {
               <Sparkles className="text-indigo-600" size={32} />
             </motion.div>
             <h1 className="text-3xl font-bold bg-linear-to-r from-gray-800 to-indigo-600 bg-clip-text text-transparent">
-              HealthConnect
+              SwasthaySewa
             </h1>
           </motion.div>
 
@@ -311,8 +326,24 @@ export default function Login() {
                   <LogIn className="text-white" size={32} />
                 </motion.div>
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Welcome Back
+                  {role === "doctor" ? "Doctor Login" : "Patient Login"}
                 </h2>
+                <p className="text-xs text-gray-500 mt-2">
+                  Not a {role}?{" "}
+                  <Link
+                    to={`/login?role=${role === "doctor" ? "patient" : "doctor"}`}
+                    className="text-indigo-600 font-semibold"
+                  >
+                    Switch to {role === "doctor" ? "Patient" : "Doctor"} Login
+                  </Link>
+                </p>
+
+                <p className="text-gray-600 text-sm">
+                  Sign in as a{" "}
+                  <span className="font-semibold text-indigo-600 capitalize">
+                    {role}
+                  </span>
+                </p>
               </motion.div>
 
               <AnimatePresence>
@@ -429,7 +460,7 @@ export default function Login() {
                     className="inline-block"
                   >
                     <Link
-                      to="/register"
+                      to={`/register?role=${role}`}
                       className="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors relative"
                     >
                       <span className="relative">

@@ -18,6 +18,7 @@ import {
 /* eslint-disable no-unused-vars -- motion is used in JSX */
 import { motion, AnimatePresence } from "framer-motion";
 import { BACKEND_URL } from "../../config/env.js";
+import { useLocation } from "react-router-dom";
 
 class Particle {
   constructor(canvas) {
@@ -55,6 +56,9 @@ class Particle {
 export default function Register() {
   const navigate = useNavigate();
   const canvasRef = useRef(null);
+  const location = useLocation();
+  const roleFromQuery = new URLSearchParams(location.search).get("role");
+  const role = roleFromQuery || "patient"; // default
 
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState({
@@ -173,12 +177,21 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      await axios.post(`${BACKEND_URL}/api/register`, form, {
-        headers: { "Content-Type": "application/json" },
-      });
+      await axios.post(
+        `${BACKEND_URL}/api/register`,
+        {
+          ...form,
+          role,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        },
+      );
       setSuccess("🎉 Account created successfully! Welcome to HealthConnect!");
       setForm({ name: "", email: "", password: "" });
-      setTimeout(() => navigate("/login"), 2000);
+      setTimeout(() => {
+        navigate(`/login?role=${role}`);
+      }, 2000);
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -364,7 +377,7 @@ export default function Register() {
             whileHover="hover"
           >
             <motion.div
-              className="bg-white/40 backdrop-blur-xl my-5 p-8 rounded-3xl shadow-2xl border border-white/20"
+              className="bg-white/40 backdrop-blur-xl my-2 p-6 rounded-3xl shadow-2xl border border-white/20"
               whileHover={{ boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" }}
             >
               <motion.div className="text-center mb-4" variants={itemVariants}>
@@ -375,9 +388,27 @@ export default function Register() {
                 >
                   <UserPlus className="text-white" size={22} />
                 </motion.div>
-                <h2 className="text-3xl font-bold text-gray-800 mb-2">
-                  Start Your Health Journey
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                  {role === "doctor"
+                    ? "Register as a Doctor"
+                    : "Create Your Patient Account"}
                 </h2>
+                <p className="text-xs text-gray-500 mt-2">
+                  Not a {role}?{" "}
+                  <Link
+                    to={`/register?role=${role === "doctor" ? "patient" : "doctor"}`}
+                    className="text-purple-600 font-semibold"
+                  >
+                    Register as {role === "doctor" ? "Patient" : "Doctor"}
+                  </Link>
+                </p>
+
+                <p className="text-sm text-gray-600">
+                  Signing up as a{" "}
+                  <span className="font-semibold text-purple-600 capitalize">
+                    {role}
+                  </span>
+                </p>
               </motion.div>
               <AnimatePresence>
                 {errors.general && (

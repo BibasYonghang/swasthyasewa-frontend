@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Sparkles, ArrowRight, Zap, Users, Globe, Shield } from "lucide-react";
 import { Link } from "react-router-dom";
 /* eslint-disable no-unused-vars -- motion is used in JSX */
@@ -35,6 +35,7 @@ class Particle {
 
 export default function WelcomePage() {
   const canvasRef = useRef(null);
+  const [role, setRole] = useState("patient");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -233,62 +234,93 @@ export default function WelcomePage() {
 
         {/* Right Side Card */}
         <motion.div
-          className="bg-white/90 backdrop-blur-lg p-4 xs:p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 mx-auto w-full max-w-88 xs:max-w-md lg:max-w-md md:self-center flex flex-col justify-between"
+          className="bg-white/90 backdrop-blur-lg p-4 xs:p-6 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 mx-auto w-full max-w-md flex flex-col justify-between"
           variants={cardVariants}
           whileHover="hover"
         >
+          {/* HEADER */}
           <motion.div
-            className="text-center mb-5 md:mb-6"
+            className="text-center mb-6"
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, delay: 0.7 }}
+            transition={{ type: "spring", stiffness: 200, delay: 0.6 }}
           >
-            <div className="w-12 h-12 md:w-16 md:h-16 bg-linear-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Sparkles className="text-white" size={22} />
+            <div className="w-14 h-14 bg-linear-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+              <Sparkles className="text-white" size={24} />
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800">
-              Welcome 👋
-            </h2>
-            <p className="text-gray-600 mt-2 leading-relaxed text-sm md:text-base">
-              Join millions of users taking control of their health, getting
-              accurate assessments, and connecting with certified doctors
-              instantly.
+
+            <h2 className="text-2xl font-bold text-gray-800">Welcome 👋</h2>
+
+            <p className="text-gray-600 mt-2 text-sm leading-relaxed">
+              Choose your role to continue
             </p>
           </motion.div>
 
-          <div className="space-y-3 md:space-y-4">
-            <motion.div variants={buttonVariants} whileTap="tap">
+          {/* ROLE SELECTOR */}
+          <motion.div
+            className="grid grid-cols-2 gap-3 mb-6"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <button
+              onClick={() => setRole("patient")}
+              className={`py-4 hover:cursor-pointer rounded-xl font-semibold transition-all duration-300 border
+        ${
+          role === "patient"
+            ? "bg-indigo-600 text-white shadow-lg border-indigo-600 scale-[1.02]"
+            : "bg-white text-gray-700 border-gray-200 hover:border-indigo-400"
+        }`}
+            >
+              🧑‍🦱 Patient
+            </button>
+
+            <button
+              onClick={() => setRole("doctor")}
+              className={`py-4 hover:cursor-pointer rounded-xl font-semibold transition-all duration-300 border
+        ${
+          role === "doctor"
+            ? "bg-purple-600 text-white shadow-lg border-purple-600 scale-[1.02]"
+            : "bg-white text-gray-700 border-gray-200 hover:border-purple-400"
+        }`}
+            >
+              🩺 Doctor
+            </button>
+          </motion.div>
+
+          {/* ACTION BUTTONS */}
+          <div className="space-y-4">
+            <motion.div whileTap={{ scale: 0.97 }}>
               <Link
-                to="/login"
-                className="block w-full bg-linear-to-r from-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-base md:text-lg"
+                to={`/login?role=${role}`}
+                className="block w-full bg-linear-to-r  from-indigo-600 to-purple-600 text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all"
               >
-                Sign In to Your Account
+                Sign In as {role === "patient" ? "Patient" : "Doctor"}
               </Link>
             </motion.div>
-            <motion.div variants={buttonVariants} whileTap="tap">
+
+            <motion.div whileTap={{ scale: 0.97 }}>
               <Link
-                to="/register"
-                className="w-full bg-linear-to-r from-gray-900 to-black text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-1 md:gap-3 group text-base md:text-lg"
+                to={`/register?role=${role}`}
+                className=" w-full bg-linear-to-r from-gray-900 to-black text-white py-3 md:py-4 rounded-xl text-center font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
               >
-                Register Your Account
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.3, repeat: Infinity }}
+                Register as {role === "patient" ? "Patient" : "Doctor"}
+                <motion.span
+                  animate={{ x: [0, 6, 0] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
                 >
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </motion.div>
+                  <ArrowRight size={18} />
+                </motion.span>
               </Link>
             </motion.div>
           </div>
 
+          {/* FOOTER */}
           <motion.div
-            className="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-gray-200/50 text-center"
+            className="mt-6 pt-4 border-t border-gray-200/50 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 1.2 }}
           >
             <p className="text-xs text-gray-500">
               By continuing, you agree to our Terms of Service and Privacy
