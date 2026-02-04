@@ -10,6 +10,7 @@ import { profileRoutes } from "./routes/profile.routes.jsx";
 import { personalPlansRoutes } from "./routes/personalPlans.routes.jsx";
 import { adminRoutes } from "./routes/admin.routes.jsx";
 import { settingsRoutes } from "./routes/settings.routes.jsx";
+import { walletRoutes } from "./routes/wallet.routes.jsx";
 import { otherRoutes } from "./routes/other.routes.jsx";
 
 function AppContent() {
@@ -35,6 +36,7 @@ function AppContent() {
         {personalPlansRoutes}
         {adminRoutes}
         {settingsRoutes}
+        {walletRoutes}
         {otherRoutes}
       </Routes>
     </Router>
