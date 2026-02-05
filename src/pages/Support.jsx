@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MessageSquare,
   HelpCircle,
@@ -15,10 +15,13 @@ import {
   CheckCircle,
   Star,
 } from "lucide-react";
+import axios from "axios";
+import { BACKEND_URL } from "../config/env.js";
 
 export default function Support() {
   const [activeTab, setActiveTab] = useState("faq");
   const [searchQuery, setSearchQuery] = useState("");
+  const [faqs, setFaqs] = useState([]);
 
   const faqCategories = [
     { id: "general", label: "General", count: 12 },
@@ -29,50 +32,18 @@ export default function Support() {
     { id: "privacy", label: "Privacy & Security", count: 4 },
   ];
 
-  const faqs = [
-    {
-      id: 1,
-      question: "How do I book a doctor consultation?",
-      answer:
-        'You can book a consultation by navigating to the "Doctor Consultations" page, selecting a doctor, and choosing an available time slot. Payment is processed securely through our platform.',
-      category: "consultation",
-    },
-    {
-      id: 2,
-      question: "Is my health data secure?",
-      answer:
-        "Yes, we use end-to-end encryption and comply with HIPAA/GDPR regulations. Your data is stored securely and never shared without your consent.",
-      category: "privacy",
-    },
-    {
-      id: 3,
-      question: "How do I interpret my health reports?",
-      answer:
-        "Each health report includes detailed explanations of your scores. You can also schedule a consultation with a doctor to discuss your results in detail.",
-      category: "health",
-    },
-    {
-      id: 4,
-      question: "Can I cancel or reschedule an appointment?",
-      answer:
-        "Yes, you can cancel or reschedule appointments up to 24 hours before the scheduled time without any charges.",
-      category: "consultation",
-    },
-    {
-      id: 5,
-      question: "How do I connect my wearable device?",
-      answer:
-        "Go to Settings > Connected Devices and follow the instructions to pair your device. We support most major wearable brands.",
-      category: "technical",
-    },
-    {
-      id: 6,
-      question: "What payment methods are accepted?",
-      answer:
-        "We accept all major credit cards, PayPal, and support various regional payment methods depending on your location.",
-      category: "account",
-    },
-  ];
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/faqs`);
+        setFaqs(res.data.faqs);
+      } catch (error) {
+        console.log("Error while fetching faqs", error);
+      }
+    };
+
+    fetchFaqs();
+  }, []);
 
   const supportContacts = [
     {
@@ -163,7 +134,7 @@ export default function Support() {
               <Clock size={14} />
               <span>{contact.responseTime}</span>
             </div>
-            <button className="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+            <button className="w-full hover:cursor-pointer bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
               {contact.action}
             </button>
           </div>
@@ -177,7 +148,7 @@ export default function Support() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
+              className={`px-4 py-2 hover:cursor-pointer rounded-md text-sm font-medium capitalize transition-colors ${
                 activeTab === tab
                   ? "bg-white text-gray-900 shadow-sm"
                   : "text-gray-600 hover:text-gray-900"
@@ -197,7 +168,7 @@ export default function Support() {
               {faqCategories.map((category) => (
                 <button
                   key={category.id}
-                  className="flex items-center gap-2 px-4 py-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors whitespace-nowrap"
+                  className="flex items-center hover:cursor-pointer gap-2 px-4 py-3 bg-white rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
                   <span className="font-medium text-gray-900">
                     {category.label}
@@ -212,7 +183,7 @@ export default function Support() {
 
           {/* FAQ List */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-6 border-b">
+            <div className="p-6 border-b border-gray-300">
               <div className="flex items-center gap-2">
                 <HelpCircle className="text-indigo-600" size={24} />
                 <h2 className="text-xl font-bold text-gray-900">
@@ -221,9 +192,12 @@ export default function Support() {
               </div>
             </div>
 
-            <div className="divide-y">
-              {filteredFaqs.map((faq) => (
-                <div key={faq.id} className="p-6 hover:bg-gray-50">
+            <div className="">
+              {filteredFaqs?.map((faq) => (
+                <div
+                  key={faq.id}
+                  className="p-6 border border-gray-300 hover:bg-gray-50"
+                >
                   <details className="group">
                     <summary className="flex justify-between items-center cursor-pointer list-none">
                       <div className="flex items-center gap-3">
@@ -255,7 +229,7 @@ export default function Support() {
               ))}
             </div>
 
-            {filteredFaqs.length === 0 && (
+            {filteredFaqs?.length === 0 && (
               <div className="text-center py-12">
                 <HelpCircle className="mx-auto text-gray-400" size={48} />
                 <p className="text-gray-500 mt-4">
