@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Video,
   MessageSquare,
@@ -10,91 +10,30 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
+import axios from "axios";
+import { BACKEND_URL } from "../../config/env.js";
 
 export default function DoctorConsultations() {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [searchTerm, setSearchTerm] = useState("");
+  const [doctors, setDoctors] = useState([]);
 
-  const doctors = [
-    {
-      id: 1,
-      name: "Dr. Sarah Johnson",
-      specialization: "Cardiologist",
-      rating: 4.9,
-      reviews: 124,
-      experience: "15 years",
-      fee: "$120",
-      available: true,
-      nextAvailable: "Today, 3:00 PM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-      languages: ["English", "Spanish"],
-    },
-    {
-      id: 2,
-      name: "Dr. Michael Chen",
-      specialization: "General Physician",
-      rating: 4.8,
-      reviews: 89,
-      experience: "12 years",
-      fee: "$90",
-      available: true,
-      nextAvailable: "Tomorrow, 10:00 AM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-      languages: ["English", "Mandarin"],
-    },
-    {
-      id: 3,
-      name: "Dr. Emily Brown",
-      specialization: "Psychiatrist",
-      rating: 4.7,
-      reviews: 156,
-      experience: "8 years",
-      fee: "$150",
-      available: false,
-      nextAvailable: "Jan 18, 2:00 PM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
-      languages: ["English"],
-    },
-    {
-      id: 4,
-      name: "Dr. Robert Wilson",
-      specialization: "Nutritionist",
-      rating: 4.9,
-      reviews: 67,
-      experience: "10 years",
-      fee: "$80",
-      available: true,
-      nextAvailable: "Today, 5:00 PM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Robert",
-      languages: ["English", "French"],
-    },
-    {
-      id: 5,
-      name: "Dr. Amanda Lee",
-      specialization: "Sleep Specialist",
-      rating: 4.6,
-      reviews: 45,
-      experience: "7 years",
-      fee: "$110",
-      available: true,
-      nextAvailable: "Tomorrow, 11:00 AM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amanda",
-      languages: ["English", "Korean"],
-    },
-    {
-      id: 6,
-      name: "Dr. James Miller",
-      specialization: "Sports Medicine",
-      rating: 4.8,
-      reviews: 92,
-      experience: "14 years",
-      fee: "$130",
-      available: false,
-      nextAvailable: "Jan 20, 9:00 AM",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
-      languages: ["English", "German"],
-    },
-  ];
+  useEffect(() => {
+    const getDoctors = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/users/doctors`);
+
+        const doctors = res.data.map((doctor) => ({
+          ...doctor,
+        }));
+        setDoctors(doctors);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    getDoctors();
+  }, []);
 
   const appointments = [
     {
@@ -209,7 +148,7 @@ export default function DoctorConsultations() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDoctors.map((doctor) => (
             <div
-              key={doctor.id}
+              key={doctor._id}
               className="bg-white rounded-xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
             >
               <div className="flex justify-between items-start mb-4">
@@ -270,7 +209,7 @@ export default function DoctorConsultations() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {doctor.languages.map((lang, index) => (
+                  {doctor.languages?.map((lang, index) => (
                     <span
                       key={index}
                       className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded"
