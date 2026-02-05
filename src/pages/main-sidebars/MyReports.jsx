@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   FileText,
   Download,
@@ -9,97 +9,55 @@ import {
   Filter,
   Search,
   Eye,
-  Archive
-} from 'lucide-react';
+  Archive,
+} from "lucide-react";
+import axios from "axios";
+import { BACKEND_URL } from "../../config/env.js";
 
 export default function MyReports() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterType, setFilterType] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterType, setFilterType] = useState("all");
+  const [myReports, setMyReports] = useState([]);
 
-  const reports = [
-    {
-      id: 1,
-      title: 'Complete Health Assessment',
-      date: '2024-01-15',
-      type: 'comprehensive',
-      doctor: 'Dr. Sarah Johnson',
-      status: 'completed',
-      score: 85,
-      downloadUrl: '#'
-    },
-    {
-      id: 2,
-      title: 'Cardiovascular Report',
-      date: '2024-01-10',
-      type: 'specialized',
-      doctor: 'Dr. Michael Chen',
-      status: 'completed',
-      score: 92,
-      downloadUrl: '#'
-    },
-    {
-      id: 3,
-      title: 'Mental Wellness Analysis',
-      date: '2024-01-05',
-      type: 'mental',
-      doctor: 'Dr. Emily Brown',
-      status: 'pending',
-      score: null,
-      downloadUrl: '#'
-    },
-    {
-      id: 4,
-      title: 'Nutritional Assessment',
-      date: '2023-12-28',
-      type: 'nutrition',
-      doctor: 'Dr. Robert Wilson',
-      status: 'completed',
-      score: 78,
-      downloadUrl: '#'
-    },
-    {
-      id: 5,
-      title: 'Sleep Quality Report',
-      date: '2023-12-20',
-      type: 'sleep',
-      doctor: 'Dr. Amanda Lee',
-      status: 'completed',
-      score: 88,
-      downloadUrl: '#'
-    },
-    {
-      id: 6,
-      title: 'Fitness Progress',
-      date: '2023-12-15',
-      type: 'fitness',
-      doctor: 'Dr. James Miller',
-      status: 'completed',
-      score: 91,
-      downloadUrl: '#'
-    }
-  ];
+  useEffect(() => {
+    const myReports = async () => {
+      try {
+        const res = await axios.get(`${BACKEND_URL}/api/my-reports`);
+        setMyReports(res.data.data);
+      } catch {
+        console.log("Error While Fetching the Reports");
+      }
+    };
+    myReports();
+  }, []);
 
   const reportTypes = [
-    { id: 'all', label: 'All Reports', count: 12 },
-    { id: 'comprehensive', label: 'Comprehensive', count: 3 },
-    { id: 'specialized', label: 'Specialized', count: 5 },
-    { id: 'mental', label: 'Mental Health', count: 2 },
-    { id: 'nutrition', label: 'Nutrition', count: 1 },
-    { id: 'fitness', label: 'Fitness', count: 1 }
+    { id: "all", label: "All Reports", count: 12 },
+    { id: "comprehensive", label: "Comprehensive", count: 3 },
+    { id: "specialized", label: "Specialized", count: 5 },
+    { id: "mental", label: "Mental Health", count: 2 },
+    { id: "nutrition", label: "Nutrition", count: 1 },
+    { id: "fitness", label: "Fitness", count: 1 },
   ];
 
-  const filteredReports = reports.filter(report => {
-    const matchesSearch = report.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterType === 'all' || report.type === filterType;
+  const filteredReports = myReports.filter((report) => {
+    const matchesSearch = report.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesFilter = filterType === "all" || report.type === filterType;
     return matchesSearch && matchesFilter;
   });
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'in-progress': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "completed":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "in-progress":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -109,10 +67,14 @@ export default function MyReports() {
       <div className="mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Health Reports</h1>
-            <p className="text-gray-600 mt-2">Access and manage all your health assessments and reports</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              My Health Reports
+            </h1>
+            <p className="text-gray-600 mt-2">
+              Access and manage all your health assessments and reports
+            </p>
           </div>
-          <button className="bg-indigo-600 text-white px-5 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 whitespace-nowrap">
+          <button className="bg-indigo-600 hover:cursor-pointer text-white px-5 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2 whitespace-nowrap">
             <FileText size={20} />
             Generate New Report
           </button>
@@ -121,7 +83,10 @@ export default function MyReports() {
         {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
             <input
               type="text"
               placeholder="Search reports..."
@@ -133,11 +98,11 @@ export default function MyReports() {
           <div className="flex items-center gap-2">
             <Filter size={20} className="text-gray-500" />
             <select
-              className="border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="border border-gray-300 hover:cursor-pointer rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
             >
-              {reportTypes.map(type => (
+              {reportTypes.map((type) => (
                 <option key={type.id} value={type.id}>
                   {type.label} ({type.count})
                 </option>
@@ -154,18 +119,20 @@ export default function MyReports() {
             <button
               key={type.id}
               onClick={() => setFilterType(type.id)}
-              className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all ${
+              className={`px-4 py-2 hover:cursor-pointer rounded-lg whitespace-nowrap transition-all ${
                 filterType === type.id
-                  ? 'bg-indigo-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                  ? "bg-indigo-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
               }`}
             >
               <span className="font-medium">{type.label}</span>
-              <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                filterType === type.id
-                  ? 'bg-indigo-700'
-                  : 'bg-gray-100 text-gray-600'
-              }`}>
+              <span
+                className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
+                  filterType === type.id
+                    ? "bg-indigo-700"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
                 {type.count}
               </span>
             </button>
@@ -179,12 +146,24 @@ export default function MyReports() {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50 border-b">
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Report Title</th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Date</th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Doctor</th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Score</th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Status</th>
-                <th className="text-left py-4 px-6 font-semibold text-gray-700">Actions</th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Report Title
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Date
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Doctor
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Score
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Status
+                </th>
+                <th className="text-left py-4 px-6 font-semibold text-gray-700">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -196,8 +175,12 @@ export default function MyReports() {
                         <FileText className="text-indigo-600" size={20} />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{report.title}</p>
-                        <p className="text-sm text-gray-500 capitalize">{report.type}</p>
+                        <p className="font-medium text-gray-900">
+                          {report.title}
+                        </p>
+                        <p className="text-sm text-gray-500 capitalize">
+                          {report.type}
+                        </p>
                       </div>
                     </div>
                   </td>
@@ -212,37 +195,45 @@ export default function MyReports() {
                     {report.score ? (
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-gray-200 rounded-full h-2">
-                          <div 
+                          <div
                             className={`h-2 rounded-full ${
-                              report.score >= 80 ? 'bg-green-600' :
-                              report.score >= 60 ? 'bg-yellow-600' : 'bg-red-600'
+                              report.score >= 80
+                                ? "bg-green-600"
+                                : report.score >= 60
+                                  ? "bg-yellow-600"
+                                  : "bg-red-600"
                             }`}
                             style={{ width: `${report.score}%` }}
                           />
                         </div>
-                        <span className="font-bold text-gray-900">{report.score}</span>
+                        <span className="font-bold text-gray-900">
+                          {report.score}
+                        </span>
                       </div>
                     ) : (
                       <span className="text-gray-400">-</span>
                     )}
                   </td>
                   <td className="py-4 px-6">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(report.status)}`}>
-                      {report.status.charAt(0).toUpperCase() + report.status.slice(1)}
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(report.status)}`}
+                    >
+                      {report.status.charAt(0).toUpperCase() +
+                        report.status.slice(1)}
                     </span>
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-2">
-                      <button className="p-2 text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg">
+                      <button className="p-2 text-gray-600 hover:cursor-pointer hover:text-indigo-600 hover:bg-indigo-50 rounded-lg">
                         <Eye size={18} />
                       </button>
-                      <button className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg">
+                      <button className="p-2 text-gray-600 hover:cursor-pointer hover:text-green-600 hover:bg-green-50 rounded-lg">
                         <Download size={18} />
                       </button>
-                      <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                      <button className="p-2 text-gray-600 hover:cursor-pointer hover:text-blue-600 hover:bg-blue-50 rounded-lg">
                         <Share2 size={18} />
                       </button>
-                      <button className="p-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg">
+                      <button className="p-2 text-gray-600 hover:cursor-pointer hover:text-gray-800 hover:bg-gray-100 rounded-lg">
                         <Archive size={18} />
                       </button>
                     </div>
@@ -265,7 +256,9 @@ export default function MyReports() {
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-900">Average Health Score</h3>
+            <h3 className="font-semibold text-gray-900">
+              Average Health Score
+            </h3>
             <TrendingUp className="text-green-600" size={24} />
           </div>
           <p className="text-3xl font-bold text-gray-900">84.2</p>
@@ -287,7 +280,9 @@ export default function MyReports() {
             <BarChart3 className="text-blue-600" size={24} />
           </div>
           <p className="text-3xl font-bold text-gray-900">Improving</p>
-          <p className="text-sm text-blue-600 mt-2">Positive trend in last 3 months</p>
+          <p className="text-sm text-blue-600 mt-2">
+            Positive trend in last 3 months
+          </p>
         </div>
       </div>
     </div>
