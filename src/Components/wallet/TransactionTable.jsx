@@ -72,11 +72,11 @@ export default function TransactionsTable() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold text-gray-900">Recent Transactions</h2>
         <div className="flex gap-2">
-          <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+          <button className="px-4 py-2 hover:cursor-pointer border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
             <Download size={16} />
             Export
           </button>
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+          <button className="px-4 py-2 hover:cursor-pointer bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors">
             Filter
           </button>
         </div>

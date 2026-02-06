@@ -8,7 +8,7 @@ export default function PromoBanner() {
           <h3 className="text-xl font-bold text-gray-900">Get 20% Off Your First Annual Plan</h3>
           <p className="text-gray-600 mt-2">Use code: HEALTH2024</p>
         </div>
-        <button className="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors whitespace-nowrap">
+        <button className="bg-green-600 hover:cursor-pointer text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors whitespace-nowrap">
           Apply Code
         </button>
       </div>
