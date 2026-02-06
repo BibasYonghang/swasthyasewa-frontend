@@ -6,6 +6,9 @@ import {
   CornerUpRight,
   MapPin,
   Clock,
+  MoreVertical,
+  EyeOff,
+  Flag,
 } from "lucide-react";
 
 import ReactionPopup from "./ReactionPopup";
@@ -14,12 +17,35 @@ import CommentModal from "./CommentModal";
 import { getReactionObj } from "../../utils/reactionUtils";
 import UserAvatar from "../Shared/UserAvatar";
 
+function useOutsideClick(ref, isOpen, onClose) {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("touchstart", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("touchstart", handler);
+    };
+  }, [isOpen, onClose, ref]);
+}
 export default function PostCard({ post, updatePost }) {
   const [reactingPost, setReactingPost] = useState(false);
   const [sharePost, setSharePost] = useState(false);
   const [commentModalOpen, setCommentModalOpen] = useState(false);
+  const [options, setOptions] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const [reported, setReported] = useState(false);
 
-  const reactionContainerRef = useRef(null);
+  const reactionRef = useRef(null);
+  const optionsRef = useRef(null);
 
   const handleReaction = (reactionType) => {
     const newReaction =
@@ -35,20 +61,29 @@ export default function PostCard({ post, updatePost }) {
       : setReactingPost(true);
   };
 
-  // Close popup if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        reactingPost &&
-        reactionContainerRef.current &&
-        !reactionContainerRef.current.contains(event.target)
-      ) {
-        setReactingPost(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, [reactingPost]);
+  const handleHidePost = () => {
+    setHidden(true); // instant UX
+    setOptions(false);
+
+    //  backend call placeholder
+    console.log("Post hidden:", post._id);
+    // await api.hidePost(post._id)
+  };
+
+  const handleReportPost = () => {
+    if (reported) return;
+
+    setReported(true);
+    setOptions(false);
+
+    //  backend call placeholder
+    console.log("Post reported:", post._id);
+    // await api.reportPost(post._id)
+  };
+
+  useOutsideClick(reactionRef, reactingPost, () => setReactingPost(false));
+
+  useOutsideClick(optionsRef, options, () => setOptions(false));
 
   const formatTime = (timestamp) =>
     timestamp
@@ -69,14 +104,15 @@ export default function PostCard({ post, updatePost }) {
   };
 
   const images = getPostImages();
+  if (hidden) return null;
 
   return (
     <div className="bg-white shadow-md rounded-xl p-4 mb-4">
-      {/* User Info */}
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex relative items-start gap-3 mb-3">
         <Link to={`/profile/${post?.user?._id}`}>
           <UserAvatar user={post.user} size={12} fallbackToRedux={false} />
         </Link>
+
         <div className="flex-1">
           <Link
             to={`/profile/${post?.user?._id}`}
@@ -97,12 +133,56 @@ export default function PostCard({ post, updatePost }) {
             <span>{formatTime(post?.createdAt)}</span>
           </div>
         </div>
+
+        {/* options */}
+        <div ref={optionsRef} className="relative">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setOptions((p) => !p);
+            }}
+            className="hover:bg-gray-100 hover:cursor-pointer p-2 rounded-full"
+          >
+            <MoreVertical size={20} className="opacity-60" />
+          </button>
+
+          {options && (
+            <div className="h-40 overflow-y-auto p-3 absolute right-10 rounded-lg w-80 bg-white shadow-[0_0_9px_rgba(0,0,0,0.25)]">
+              <div
+                onClick={handleHidePost}
+                className="cursor-pointer flex items-center hover:bg-gray-100 p-2 rounded-md"
+              >
+                <EyeOff size={20} className="text-yellow-700 mr-2" />
+                <h1 className="font-semibold">
+                  Hide Post
+                  <p className="text-xs text-gray-700">
+                    See Fewer Post Like This
+                  </p>
+                </h1>
+              </div>
+
+              <div
+                onClick={handleReportPost}
+                className="cursor-pointer flex items-center hover:bg-gray-100 p-2 rounded-md"
+              >
+                <Flag size={20} className="mr-2 text-red-600" />
+                <h1 className="font-semibold">
+                  {reported ? "Reported" : "Report Post"}
+                  <p className="text-xs text-gray-700">
+                    We won't let anyone Knows Who Reported this
+                  </p>
+                </h1>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Content */}
       <p className="mb-4 text-gray-800 whitespace-pre-line">
         {post?.content || post?.sharedFrom?.content}
       </p>
+
       {images.length > 0 && (
         <div
           className={`mb-4 grid gap-1 rounded-xl overflow-hidden ${
@@ -133,12 +213,12 @@ export default function PostCard({ post, updatePost }) {
       {/* Actions */}
       <div className="flex mt-2 h-10">
         <div
-          ref={reactionContainerRef}
-          className="flex-1 relative justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          ref={reactionRef}
+          className="flex-1 relative hover:bg-gray-100 rounded-md"
         >
           <button
             onClick={handleLikeClick}
-            className="w-full h-full hover:cursor-pointer flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+            className="w-full h-full flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
           >
             {post?.userReaction ? (
               getReactionObj(post.userReaction)?.emoji
@@ -151,12 +231,13 @@ export default function PostCard({ post, updatePost }) {
                 : "Like"}
             </span>
           </button>
+
           {reactingPost && <ReactionPopup handleReaction={handleReaction} />}
         </div>
 
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <MessageCircle size={20} />
           Comment
@@ -164,7 +245,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <CornerUpRight size={20} />
           Share

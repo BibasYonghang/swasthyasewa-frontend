@@ -107,7 +107,7 @@ export default function DoctorConsultations() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-md text-sm font-medium capitalize transition-colors ${
+              className={`px-4 py-2 hover:cursor-pointer rounded-md text-sm font-medium capitalize transition-colors ${
                 activeTab === tab
                   ? "bg-white text-gray-900 shadow-sm"
                   : "text-gray-600 hover:text-gray-900"
@@ -221,11 +221,11 @@ export default function DoctorConsultations() {
               </div>
 
               <div className="flex gap-2">
-                <button className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
+                <button className="flex-1 hover:cursor-pointer bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2">
                   <Video size={18} />
                   Book Video Call
                 </button>
-                <button className="px-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                <button className="px-3 border hover:cursor-pointer border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                   <MessageSquare size={18} />
                 </button>
               </div>
@@ -325,10 +325,10 @@ export default function DoctorConsultations() {
                     <div className="flex items-center gap-2">
                       {appointment.status === "upcoming" ? (
                         <>
-                          <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+                          <button className="px-4 py-2 bg-indigo-600 hover:cursor-pointer text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
                             Join Call
                           </button>
-                          <button className="px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                          <button className="px-3 py-2 border hover:cursor-pointer border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
                             Reschedule
                           </button>
                         </>
