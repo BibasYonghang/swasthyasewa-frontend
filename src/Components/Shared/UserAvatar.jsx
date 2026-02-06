@@ -28,7 +28,6 @@ export default function UserAvatar({
           const response = await axios.get(
             `${BACKEND_URL}/api/users/${user._id}`,
           );
-          console.log("UserAvatar - Fetched user data:", response.data);
           setFetchedUserData(response.data);
         } catch (err) {
           console.log("UserAvatar - Failed to fetch user data:", err.message);
@@ -107,7 +106,6 @@ export default function UserAvatar({
         }}
         className="rounded-full object-cover"
         onLoad={() => {
-          console.log("UserAvatar - Image loaded:", imageUrl);
           setImageLoaded(true);
         }}
         onError={(e) => {
@@ -133,12 +131,6 @@ export default function UserAvatar({
     "bg-teal-500",
   ];
   const index = user?._id ? user._id.charCodeAt(0) % colors.length : 0;
-
-  console.log("UserAvatar - Showing fallback initial:", {
-    name: user?.name,
-    initial,
-    userId: user?._id,
-  });
 
   return (
     <div

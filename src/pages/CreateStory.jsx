@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Camera, X, Type, Film, ChevronLeft } from "lucide-react";
+import React, { useRef, useState } from "react";
+import { Camera, X, Type, Film } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useStories } from "../context/useStories";
 
@@ -9,138 +9,82 @@ export default function CreateStory() {
   const navigate = useNavigate();
   const { addStory } = useStories();
 
-  // Get raw localStorage first
   const rawUserJson = localStorage.getItem("user");
-  console.log("=== RAW localStorage.getItem('user') ===");
-  console.log("Raw JSON string:", rawUserJson);
-  
   const parsedUser = rawUserJson ? JSON.parse(rawUserJson) : null;
-  console.log("After JSON.parse:", parsedUser);
-  console.log("parsedUser._id:", parsedUser?._id);
-  console.log("parsedUser.name:", parsedUser?.name);
-  console.log("parsedUser.profilePicture:", parsedUser?.profilePicture);
 
-  const currentUser = parsedUser || {
-    _id: "default_id",
-    username: "Anonymous",
-    userImage: "https://randomuser.me/api/portraits/lego/1.jpg",
+  const currentUser = {
+    _id: parsedUser?._id || "default_id",
+    username: parsedUser?.username || parsedUser?.name || "Anonymous",
+    userImage:
+      parsedUser?.userImage ||
+      parsedUser?.profilePicture ||
+      "https://randomuser.me/api/portraits/lego/1.jpg",
   };
 
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [mediaType, setMediaType] = useState("");
   const [textStory, setTextStory] = useState("");
-  const [activeTab, setActiveTab] = useState("create");
-  const [selectedBackground] = useState(0);
+  const [activeTab, setActiveTab] = useState("createStory");
+  
+  const buildStoryPayload = (storyData) => ({
+    user: currentUser,
+    stories: [
+      {
+        id: `${Date.now()}`,
+        viewed: false,
+        createdAt: Date.now(),
+        ...storyData,
+      },
+    ],
+  });
 
-  const backgrounds = [
-    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-    "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
-  ];
-
-  // Focus textarea on text tab
-  useEffect(() => {
-    if (activeTab === "text" && textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  }, [activeTab]);
-
-  // Handle file selection (image/video)
   const handleFileSelect = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
+
     reader.onload = () => {
       setSelectedMedia({ file, url: reader.result });
       setMediaType(file.type.startsWith("video") ? "video" : "image");
-      setActiveTab("preview");
+      setActiveTab("media");
     };
+
     reader.readAsDataURL(file);
   };
 
-  // Upload media story
-  const uploadStory = async () => {
+  const uploadStory = () => {
     if (!selectedMedia) return;
 
-    console.log("=== uploadStory called ===");
-    console.log("currentUser at uploadStory time:", currentUser);
-    console.log("currentUser._id at uploadStory time:", currentUser._id);
+    const payload = buildStoryPayload({
+      type: mediaType,
+      url: selectedMedia.url,
+      duration: mediaType === "video" ? 8000 : 5000,
+    });
 
-    // Create story object
-    const newStory = {
-      user: {
-        _id: currentUser._id,
-        username: currentUser.username || currentUser.name || "Anonymous",
-        userImage: currentUser.userImage || currentUser.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
-      },
-      stories: [
-        {
-          id: `${Date.now()}`,
-          type: mediaType,
-          url: selectedMedia.url,
-          viewed: false,
-          duration: mediaType === "video" ? 8000 : 5000,
-          createdAt: Date.now(),
-        },
-      ],
-    };
-
-    console.log("=== Story object created ===");
-    console.log("newStory:", newStory);
-    console.log("newStory.user:", newStory.user);
-    console.log("newStory.user._id:", newStory.user._id);
-    console.log("Calling addStory with:", newStory);
-    
-    addStory(newStory); // Add story to context
-    navigate("/home"); // Go back to home
+    addStory(payload);
+    navigate("/home");
   };
 
-  // Upload text story
-  const uploadTextStory = async () => {
+  const uploadTextStory = () => {
     if (!textStory.trim()) return;
 
-    const newStory = {
-      user: {
-        _id: currentUser._id,
-        username: currentUser.username || currentUser.name || "Anonymous",
-        userImage: currentUser.userImage || currentUser.profilePicture || "https://randomuser.me/api/portraits/lego/1.jpg",
-      },
-      stories: [
-        {
-          id: `${Date.now()}`,
-          type: "text",
-          text: textStory,
-          background: backgrounds[selectedBackground],
-          duration: 5000,
-          viewed: false,
-          createdAt: Date.now(),
-        },
-      ],
-    };
+    const payload = buildStoryPayload({
+      type: "text",
+      text: textStory,
+      duration: 5000,
+    });
 
-    addStory(newStory);
+    addStory(payload);
     navigate("/home");
   };
 
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-        {/* HEADER */}
-        <div className="p-4 border-b flex justify-between items-center">
+        <div className="p-4 border-b border-gray-300 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            {activeTab !== "create" && (
-              <button
-                onClick={() => setActiveTab("create")}
-                className="hover:bg-gray-100 rounded-full p-2"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-            )}
-            <h2 className="text-xl font-bold">Create story</h2>
+            <h2 className="text-xl text-gray-800 font-bold">Create story</h2>
           </div>
           <Link to="/home" className="hover:bg-gray-100 rounded-full p-2">
             <X className="w-5 h-5" />
@@ -148,21 +92,22 @@ export default function CreateStory() {
         </div>
 
         <div className="p-6">
-          {activeTab === "create" && (
+          {activeTab === "createStory" && (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => fileInputRef.current.click()}
-                  className="border-2 p-6 rounded-xl"
+                  className="border-2 flex items-center justify-center gap-2 border-gray-300 hover:border-gray-500 transition-all duration-100 hover:cursor-pointer p-8 rounded-xl"
                 >
-                  <Camera />
+                  <Camera className="text-gray-700" />
                   <p>Photo</p>
                 </button>
+
                 <button
                   onClick={() => fileInputRef.current.click()}
-                  className="border-2 p-6 rounded-xl"
+                  className="border-2 flex items-center justify-center gap-2 border-gray-300 hover:border-gray-500 transition-all duration-100 hover:cursor-pointer p-8 rounded-xl"
                 >
-                  <Film />
+                  <Film className="text-gray-700" />
                   <p>Video</p>
                 </button>
               </div>
@@ -176,15 +121,15 @@ export default function CreateStory() {
 
               <button
                 onClick={() => setActiveTab("text")}
-                className="w-full border-2 p-6 rounded-xl"
+                className="w-full flex items-center justify-center gap-2 border-gray-300 hover:border-gray-500 transition-all duration-100 hover:cursor-pointer border-2 p-8 rounded-xl"
               >
-                <Type />
+                <Type className="text-gray-700" />
                 <p>Create text story</p>
               </button>
             </div>
           )}
 
-          {activeTab === "preview" && selectedMedia && (
+          {activeTab === "media" && selectedMedia && (
             <>
               {mediaType === "image" ? (
                 <img
@@ -198,9 +143,10 @@ export default function CreateStory() {
                   className="w-full h-96"
                 />
               )}
+
               <button
                 onClick={uploadStory}
-                className="w-full mt-4 bg-blue-500 text-white py-3 rounded-lg"
+                className="w-full mt-4 hover:cursor-pointer bg-blue-500 text-white py-3 rounded-lg"
               >
                 Share to Story
               </button>
@@ -209,20 +155,18 @@ export default function CreateStory() {
 
           {activeTab === "text" && (
             <>
-              <div
-                className="h-96 flex items-center justify-center"
-                style={{ background: backgrounds[selectedBackground] }}
-              >
+              <div className="h-96 flex items-center rounded-lg justify-center">
                 <textarea
                   ref={textareaRef}
                   value={textStory}
                   onChange={(e) => setTextStory(e.target.value)}
-                  className="bg-transparent text-white text-2xl text-center w-full h-full"
+                  className="border-none outline-none p-4 bg-sky-700 rounded-lg h-full w-full text-white text-2xl text-center focus:ring-2 focus:ring-white/50"
                 />
               </div>
+
               <button
                 onClick={uploadTextStory}
-                className="w-full mt-4 bg-blue-500 text-white py-3 rounded-lg"
+                className="w-full mt-4 hover:cursor-pointer hover:bg-blue-700 transition-colors duration-100 border-none bg-blue-600 text-white py-3 rounded-lg"
               >
                 Share to Story
               </button>
