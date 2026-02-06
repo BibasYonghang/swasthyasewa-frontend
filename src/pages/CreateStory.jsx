@@ -25,7 +25,18 @@ export default function CreateStory() {
   const [mediaType, setMediaType] = useState("");
   const [textStory, setTextStory] = useState("");
   const [activeTab, setActiveTab] = useState("createStory");
-  
+  const [selectedBackground] = useState(0);
+
+  // Background options for text stories
+  const backgrounds = [
+    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+    "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+  ];
+
   const buildStoryPayload = (storyData) => ({
     user: currentUser,
     stories: [
@@ -72,6 +83,7 @@ export default function CreateStory() {
     const payload = buildStoryPayload({
       type: "text",
       text: textStory,
+      background: backgrounds[selectedBackground], // <-- Added background
       duration: 5000,
     });
 
@@ -155,12 +167,15 @@ export default function CreateStory() {
 
           {activeTab === "text" && (
             <>
-              <div className="h-96 flex items-center rounded-lg justify-center">
+              <div
+                className="h-96 flex items-center rounded-lg justify-center"
+                style={{ background: backgrounds[selectedBackground] }} // <-- Apply background here
+              >
                 <textarea
                   ref={textareaRef}
                   value={textStory}
                   onChange={(e) => setTextStory(e.target.value)}
-                  className="border-none outline-none p-4 bg-sky-700 rounded-lg h-full w-full text-white text-2xl text-center focus:ring-2 focus:ring-white/50"
+                  className="border-none outline-none p-4 h-full w-full text-white text-2xl text-center focus:ring-2 focus:ring-white/50 bg-transparent"
                 />
               </div>
 

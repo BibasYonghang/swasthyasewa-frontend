@@ -147,7 +147,7 @@ export default function PostCard({ post, updatePost }) {
           </button>
 
           {options && (
-            <div className="h-40 overflow-y-auto p-3 absolute right-10 rounded-lg w-80 bg-white shadow-[0_0_9px_rgba(0,0,0,0.25)]">
+            <div className="h-40 overflow-y-auto p-3 absolute z-50 right-0 top-10 rounded-lg w-70 bg-white shadow-[0_0_9px_rgba(0,0,0,0.25)]">
               <div
                 onClick={handleHidePost}
                 className="cursor-pointer flex items-center hover:bg-gray-100 p-2 rounded-md"
@@ -218,7 +218,7 @@ export default function PostCard({ post, updatePost }) {
         >
           <button
             onClick={handleLikeClick}
-            className="w-full h-full flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+            className="w-full h-full hover:cursor-pointer flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
           >
             {post?.userReaction ? (
               getReactionObj(post.userReaction)?.emoji
@@ -237,7 +237,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setCommentModalOpen(true)}
-          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <MessageCircle size={20} />
           Comment
@@ -245,7 +245,7 @@ export default function PostCard({ post, updatePost }) {
 
         <button
           onClick={() => setSharePost(true)}
-          className="flex-1 flex justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
+          className="flex-1 flex hover:cursor-pointer justify-center items-center gap-1 hover:bg-gray-100 rounded-md"
         >
           <CornerUpRight size={20} />
           Share
