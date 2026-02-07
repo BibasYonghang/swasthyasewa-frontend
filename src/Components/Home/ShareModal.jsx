@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { shareToTimeline } from "../../config/api/posts.js";
+import UserAvatar from "../Shared/UserAvatar.jsx";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function ShareModal({ post, close }) {
   const [shareComment, setShareComment] = useState("");
@@ -18,6 +21,8 @@ export default function ShareModal({ post, close }) {
     }
   };
 
+  const loggedInUser = useSelector((state) => state.auth.user);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Background overlay with blur */}
@@ -25,7 +30,7 @@ export default function ShareModal({ post, close }) {
 
       {/* Modal card */}
       <div className="relative bg-white rounded-2xl shadow-lg w-full max-w-md max-h-[80vh] overflow-y-auto p-5">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Share Post</h3>
           <button
             onClick={close}
@@ -33,6 +38,12 @@ export default function ShareModal({ post, close }) {
           >
             ✖
           </button>
+        </div>
+        <div className="flex gap-2 items-center py-2">
+          <Link to={`/profile/${loggedInUser._id}`}>
+            <UserAvatar user={loggedInUser} size={12} fallbackToRedux={false} />
+          </Link>
+          <Link to={`/profile/${loggedInUser._id}`}>{loggedInUser.name}</Link>
         </div>
 
         {/* Textarea */}
@@ -49,7 +60,7 @@ export default function ShareModal({ post, close }) {
         <button
           onClick={handleShare}
           disabled={isSharing}
-          className={`w-full p-3 rounded-lg text-white ${
+          className={`w-full hover:cursor-pointer p-3 rounded-lg text-white ${
             isSharing
               ? "bg-blue-400 cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700"
