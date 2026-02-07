@@ -5,23 +5,21 @@ import { BACKEND_URL } from "../../config/env";
 
 export default function UserAvatar({
   user,
-  size = 48,
+  size = 12,
   fallbackToRedux = true,
 }) {
   const authUser = useSelector((state) => state.auth.user);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [fetchedUserData, setFetchedUserData] = useState(null);
 
-  // If fallbackToRedux and the user is logged in, always use the latest profile picture
+  // Determine if this avatar is for the logged-in user
   const isCurrentUser = fallbackToRedux && authUser?._id === user?._id;
 
-  // Fetch user data if profile picture is missing
+  // Fetch full user data if profile picture is missing
   useEffect(() => {
     const profilePic = isCurrentUser
       ? authUser?.profilePicture || authUser?.profilePic
       : user?.profilePicture || user?.profilePic;
 
-    // If we don't have profile picture and have a user ID, try to fetch full user data
     if (!profilePic && user?._id && !isCurrentUser) {
       const fetchUserProfile = async () => {
         try {
@@ -37,7 +35,7 @@ export default function UserAvatar({
     }
   }, [user?._id, isCurrentUser, authUser, user]);
 
-  // Memoize image URL calculation to avoid unnecessary recalculations
+  // Determine the image URL to use
   const imageUrl = useMemo(() => {
     const userData = fetchedUserData || user;
 
@@ -45,15 +43,14 @@ export default function UserAvatar({
       ? authUser?.profilePicture || authUser?.profilePic
       : userData?.profilePicture || userData?.profilePic;
 
+    // Check other possible fields
     if (!profilePic) {
-      // Check other possible field names
       profilePic = isCurrentUser
         ? authUser?.image || authUser?.avatar || authUser?.photo
         : userData?.image || userData?.avatar || userData?.photo;
     }
 
     if (profilePic && profilePic !== "null" && profilePic.trim() !== "") {
-      // Construct the full URL
       let finalUrl = profilePic;
 
       if (!finalUrl.startsWith("http")) {
@@ -62,63 +59,29 @@ export default function UserAvatar({
 
       return finalUrl;
     }
+
     return null;
   }, [user, authUser, isCurrentUser, fetchedUserData]);
 
-  const sizeInPixels = `${size * 4}px`; // size is in tailwind units (4px each)
+  const sizeInPixels = `${size * 4}px`;
 
-  if (imageUrl && imageLoaded) {
+  // Render image if available
+  if (imageUrl) {
     return (
       <img
         src={imageUrl}
         alt={user?.name || "User"}
-        style={{
-          width: sizeInPixels,
-          height: sizeInPixels,
-        }}
+        style={{ width: sizeInPixels, height: sizeInPixels }}
         className="rounded-full object-cover shrink-0"
-        onLoad={() => {
-          setImageLoaded(true);
-        }}
         onError={(e) => {
-          console.error("UserAvatar - Image load error:", {
-            url: imageUrl,
-            user: user?.name,
-            error: e,
-          });
           e.target.onerror = null;
-          e.target.src = "/default-user.png";
-          setImageLoaded(false);
+          e.target.src = "/default-user.png"; // fallback
         }}
       />
     );
   }
 
-  // Try to show image even if not confirmed loaded
-  if (imageUrl && !imageLoaded) {
-    return (
-      <img
-        src={imageUrl}
-        alt={user?.name || "User"}
-        style={{
-          width: sizeInPixels,
-          height: sizeInPixels,
-        }}
-        className="rounded-full object-cover"
-        onLoad={() => {
-          setImageLoaded(true);
-        }}
-        onError={(e) => {
-          console.error("UserAvatar - Image error, falling back:", imageUrl);
-          e.target.onerror = null;
-          e.target.src = "/default-user.png";
-          setImageLoaded(false);
-        }}
-      />
-    );
-  }
-
-  // Default avatar with first letter
+  // Default avatar with initials
   const initial = (user?.name || "U").charAt(0).toUpperCase();
   const colors = [
     "bg-blue-500",
@@ -134,10 +97,7 @@ export default function UserAvatar({
 
   return (
     <div
-      style={{
-        width: sizeInPixels,
-        height: sizeInPixels,
-      }}
+      style={{ width: sizeInPixels, height: sizeInPixels }}
       className={`rounded-full ${colors[index]} flex items-center justify-center text-white font-semibold text-lg`}
     >
       {initial}

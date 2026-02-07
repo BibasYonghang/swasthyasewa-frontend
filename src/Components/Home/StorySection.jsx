@@ -169,7 +169,6 @@ export default function StorySection() {
   }, [showStoryViewer, nextStory, prevStory, togglePlayPause]);
 
   const viewStory = (user) => {
-    // Validate MongoDB ID format (24 hex characters)
     const isValidMongoId = (id) => {
       return id && /^[a-f0-9]{24}$/.test(id);
     };
@@ -233,27 +232,36 @@ export default function StorySection() {
           </Link>
 
           {validStories.map((user, idx) => {
-            const hasUnviewed = user.stories.some((story) => !story.viewed);
+            const firstStory = user.stories[0];
+
             return (
               <div
                 key={user._id || `story-${idx}`}
-                className="shrink-0 w-32 cursor-pointer"
+                className="shrink-0 w-28 cursor-pointer"
                 onClick={() => viewStory(user)}
               >
-                <div className="relative rounded-lg overflow-hidden shadow-md border-2 hover:shadow-lg transition-shadow">
-                  <div
-                    className={`h-40 relative overflow-hidden ${
-                      hasUnviewed
-                        ? "border-blue-500 border-2"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    <img
-                      src={user.stories[0].url}
-                      alt="story"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
+                <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+                  <div className="h-40 relative overflow-hidden flex items-center justify-center bg-gray-100">
+                    {firstStory.type === "image" ? (
+                      <img
+                        src={firstStory.url}
+                        alt="story"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : firstStory.type === "video" ? (
+                      <video
+                        src={firstStory.url}
+                        className="w-full h-full object-cover"
+                        muted
+                      />
+                    ) : (
+                      <div className="px-2 text-center text-sm font-medium text-gray-800 line-clamp-3 wrap-break-words">
+                        {firstStory.text}
+                      </div>
+                    )}
+                    {firstStory.type !== "text" && (
+                      <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
+                    )}
                   </div>
                   <div className="absolute top-2 left-2 w-10 h-10 rounded-full overflow-hidden border-2 border-white">
                     <img
@@ -347,7 +355,8 @@ export default function StorySection() {
                 alt="story"
                 className="md:w-[95vw] w-[90vw] h-[90vh] object-contain"
               />
-            ) : (
+            ) : currentStory.stories[currentStory.currentStoryIndex].type ===
+              "video" ? (
               <video
                 ref={videoRef}
                 src={currentStory.stories[currentStory.currentStoryIndex].url}
@@ -355,6 +364,17 @@ export default function StorySection() {
                 playsInline
                 className="max-w-full max-h-full"
               />
+            ) : (
+              <div
+                className="w-full h-[90vh] flex items-center justify-center text-white text-3xl px-4 text-center"
+                style={{
+                  background:
+                    currentStory.stories[currentStory.currentStoryIndex]
+                      .background || "black",
+                }}
+              >
+                {currentStory.stories[currentStory.currentStoryIndex].text}
+              </div>
             )}
 
             <button
@@ -388,8 +408,10 @@ export default function StorySection() {
       )}
 
       <style>
-        {" "}
-        {` .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .hide-scrollbar::-webkit-scrollbar { display: none; } `}{" "}
+        {` 
+          .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } 
+          .hide-scrollbar::-webkit-scrollbar { display: none; } 
+        `}
       </style>
     </div>
   );

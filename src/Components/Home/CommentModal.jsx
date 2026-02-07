@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Smile, Image, Send } from "lucide-react";
+import { Smile, Image, Send, Clock, MapPin, User } from "lucide-react";
 import { REACTIONS } from "../reactions.js";
+import UserAvatar from "../Shared/UserAvatar.jsx";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function ReactionIcons({ reactions }) {
   const topReactions = Object.entries(reactions || {})
@@ -33,13 +36,13 @@ function CommentBox({ onComment }) {
     }
   };
 
+  const loggedInUser = useSelector((state) => state.auth.user);
+
   return (
     <div className="flex items-center gap-2 px-4 py-2">
-      <img
-        src="/default-user.png"
-        alt="Your profile"
-        className="w-9 h-9 rounded-full object-cover"
-      />
+      <Link to={`/profile/${loggedInUser._id}`}>
+        <UserAvatar user={loggedInUser} size={12} fallbackToRedux={false} />
+      </Link>{" "}
       <div className="flex-1 flex items-center bg-gray-100 rounded-full px-3 py-2 border border-gray-200">
         <input
           type="text"
@@ -67,21 +70,22 @@ function CommentBox({ onComment }) {
 function CommentItem({ comment }) {
   return (
     <div className="flex items-start gap-2 px-4">
-      <img
-        src={comment.user.profilePicture}
-        alt={comment.user.name}
-        className="w-9 h-9 rounded-full object-cover mt-1"
-      />
-      <div className="flex flex-col">
-        <div className="bg-gray-100 px-3 py-2 rounded-2xl max-w-[80%]">
-          <span className="font-semibold text-sm">{comment.user.name}</span>
-          <span className="ml-1 text-sm text-gray-900">{comment.content}</span>
+      <Link to={`/profile/${comment?.user?._id}`} className="mt-2">
+        <UserAvatar user={comment.user} size={12} fallbackToRedux={false} />
+      </Link>
+
+      <div className="flex flex-col py-2">
+        <div className="bg-gray-100 px-3 py-2 rounded-2xl ">
+          <Link to={`/profile/${comment?.user?._id}`} className="text-sm">
+            {comment.user.name}
+          </Link>
+          <p className=" text-sm text-gray-900">{comment.content}</p>
         </div>
         <div className="flex items-center gap-4 text-xs text-gray-500 mt-1 ml-1">
-          <button className="hover:underline hover:text-blue-600 transition-all">
+          <button className="hover:underline hover:cursor-pointer hover:text-blue-600 transition-all">
             Like
           </button>
-          <button className="hover:underline hover:text-blue-600 transition-all">
+          <button className="hover:underline hover:cursor-pointer hover:text-blue-600 transition-all">
             Reply
           </button>
           <span>{comment.createdAt}</span>
@@ -93,11 +97,12 @@ function CommentItem({ comment }) {
 
 export default function CommentModal({ post, close }) {
   const [comments, setComments] = useState(post.comments || []);
+  const loggedInUser = useSelector((state) => state.auth.user);
 
   const handleNewComment = (text) => {
     const newComment = {
       id: Date.now(),
-      user: { name: "You", profilePicture: "/default-user.png" },
+      user: loggedInUser,
       content: text,
       createdAt: "Just now",
     };
@@ -107,6 +112,18 @@ export default function CommentModal({ post, close }) {
   const totalReactions = post?.reactions
     ? Object.values(post.reactions).reduce((a, b) => a + b, 0)
     : 0;
+
+  const formatTime = (timestamp) => {
+    timestamp
+      ? new Date(timestamp).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        })
+      : "";
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -126,10 +143,32 @@ export default function CommentModal({ post, close }) {
 
         {/* Post content */}
         <div className="px-4 py-3">
+          <div className="flex gap-4 py-4">
+            <Link to={`/profile/${post?.user?._id}`}>
+              <UserAvatar user={post.user} size={12} fallbackToRedux={false} />
+            </Link>
+            <div>
+              <Link to={`/profile/${post?.user?._id}`} className="">
+                {post.user.name}
+              </Link>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                {post?.location && (
+                  <>
+                    <MapPin size={14} />
+                    <span>{post.location}</span>
+                    <span>•</span>
+                  </>
+                )}
+                <Clock size={14} />
+                <span>{formatTime(post?.createdAt)}</span>
+              </div>
+            </div>
+          </div>
+
           {post.content && <p className="text-gray-900 mb-2">{post.content}</p>}
-          {post.images && (
+          {post.images && post.images.length > 0 && post.images[0] && (
             <img
-              src={post.images}
+              src={post.images[0]}
               alt="Post"
               className="rounded-lg max-h-96 w-full object-cover"
             />
@@ -156,8 +195,6 @@ export default function CommentModal({ post, close }) {
         </div>
 
         <div className="border-t border-gray-200" />
-
-        {/* Comment input */}
         <CommentBox onComment={handleNewComment} />
       </div>
     </div>
