@@ -225,7 +225,7 @@ export default function PostCard({ post, updatePost }) {
             ) : (
               <ThumbsUp size={20} />
             )}
-            <span>
+            <span className="">
               {post?.userReaction
                 ? getReactionObj(post.userReaction)?.label
                 : "Like"}

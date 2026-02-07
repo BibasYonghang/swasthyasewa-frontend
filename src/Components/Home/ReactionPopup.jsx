@@ -3,20 +3,20 @@ import { REACTIONS } from "../reactions";
 
 export default function ReactionPopup({ handleReaction }) {
   const handleClick = (reactionType, e) => {
-    e.stopPropagation(); // Prevent bubbling
-    handleReaction(reactionType); // Trigger reaction in PostCard
+    e.stopPropagation();
+    handleReaction(reactionType);
   };
 
   return (
-    <div 
+    <div
       className="absolute bottom-10 flex bg-white shadow-lg rounded-full p-1 gap-1 z-50 border border-gray-200"
-      onClick={(e) => e.stopPropagation()} // Prevent popup click from closing
+      onClick={(e) => e.stopPropagation()}
     >
       {REACTIONS.map((r) => (
         <button
           key={r.id}
           onClick={(e) => handleClick(r.id, e)}
-          className="cursor-pointer text-xl hover:scale-125 transition-transform transform hover:-translate-y-1 duration-200 focus:outline-none"
+          className="cursor-pointer text-3xl hover:scale-125 transition-transform transform hover:-translate-y-1 duration-200 focus:outline-none"
           title={r.label}
           type="button"
         >

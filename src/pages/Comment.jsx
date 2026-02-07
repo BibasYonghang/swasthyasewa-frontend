@@ -8,6 +8,7 @@ import {
   Image,
 } from "lucide-react";
 import { REACTIONS } from "../Components/reactions";
+import UserAvatar from "../Components/Shared/UserAvatar";
 
 // Sample data for demonstration
 const post = {
@@ -83,15 +84,13 @@ function ReactionIcons({ reactions }) {
   );
 }
 
-function CommentBox() {
+function CommentBox({ post }) {
   const [value, setValue] = useState("");
   return (
     <div className="flex items-center py-2 px-4">
-      <img
-        src="/default-profile.png"
-        alt="Your profile"
-        className="w-9 h-9 rounded-full object-cover mr-2"
-      />
+      <Link to={`/profile/${post?.user?._id}`}>
+        <UserAvatar user={post.user} size={12} fallbackToRedux={false} />
+      </Link>
       <div className="flex-1 rounded-3xl bg-gray-100 px-3 py-1.5 border border-gray-200 flex items-center">
         <input
           value={value}
@@ -139,7 +138,7 @@ function CommentItem({ comment }) {
 export default function Comment() {
   const totalReactions = Object.values(post.reactions).reduce(
     (a, b) => a + b,
-    0
+    0,
   );
 
   return (

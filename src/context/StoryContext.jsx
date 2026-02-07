@@ -3,10 +3,13 @@ import { EXPIRY_TIME } from "./constants";
 import { StoryContext } from "./StoryContextCreate";
 
 export function StoryProvider({ children }) {
-  const [stories, setStories] = useState(() => {
-    const saved = localStorage.getItem("stories");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [stories, setStories] = useState(
+    //lazy initialization
+    () => {
+      const saved = localStorage.getItem("stories");
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
